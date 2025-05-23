@@ -1,94 +1,119 @@
-import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Flag, BriefcaseBusiness, ChartArea, Users } from 'lucide-react';
-import AppLogo from './app-logo';
+import * as React from "react"
+import {
+  BookOpen,
+  Bot,
+  Command,
+  Frame,
+  LifeBuoy,
+  Map,
+  Waypoints,
+  User,
+  Settings2,
+  Home,
+  MessageSquare,
+  BriefcaseBusiness,
+  Calendar,
+} from "lucide-react"
 
-const mainNavItems: NavItem[] = [
+import { NavMain } from "@/components/nav-main"
+import { NavProjects } from "@/components/nav-projects"
+import { NavSecondary } from "@/components/nav-secondary"
+import { NavUser } from "@/components/nav-user"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar"
+
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  navMain: [
     {
-        title: 'Statistik Alumni',
-        href: '/statistics',
-        icon: ChartArea,
+      title: "Overview",
+      url: "/",
+      icon: Home,
+      isActive: true,
     },
     {
-        title: 'Ringkasan Survey',
-        href: '/summary-survey',
-        icon: LayoutGrid,
-    }
-];
-
-const alumniItems: NavItem[] = [
-    {
-        title: 'Alumni',
-        href: '/alumnis',
-        icon: Users,
+      title: "Profile & Networks",
+      url: "/my-networks",
+      icon: Waypoints,
     },
     {
-        title: 'Tracer Study',
-        href: '/tracer-study',
-        icon: Flag,
-    }
-]
-
-const cmsNavItems: NavItem[] = [
-    {
-        title: 'Berita',
-        href: '/news',
-        icon: LayoutGrid,
+      title: "Tracer Study",
+      url: "/tracer-study",
+      icon: BookOpen,
     },
     {
-        title: 'Acara',
-        href: '/events',
-        icon: LayoutGrid,
+      title: "Forum",
+      url: "/forum-discussion",
+      icon: MessageSquare,
     },
     {
-        title: 'Lowongan',
-        href: '/job-recruitments',
-        icon: BriefcaseBusiness
-    }
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
+      title: "Job & Internships",
+      url: "/job-vacancies",
+      icon: BriefcaseBusiness,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+      title: "Events",
+      url: "/events",
+      icon: Calendar,
     },
-];
+  ],
+  navSecondary: [
+    {
+      title: "Setting",
+      url: "#",
+      icon: Settings2,
+    },
+    // {
+    //   title: "Feedback",
+    //   url: "#",
+    //   icon: Send,
+    // },
+  ]
+}
 
-export function AppSidebar() {
-    return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
-                                <AppLogo />
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
-
-            <SidebarContent>
-                <NavMain title="Dashboard" items={mainNavItems} />
-                <NavMain title="Manajemen Alumni" items={alumniItems} />
-                <NavMain title="CMS" items={cmsNavItems} />
-            </SidebarContent>
-
-            <SidebarFooter>
-                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
-                <NavUser />
-            </SidebarFooter>
-        </Sidebar>
-    );
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar
+    // h-[calc(100svh-var(--header-height))]!
+      className="top-(--header-height) h-min mx-4 my-2 p-1 rounded-lg border bg-background shadow-sm"
+      {...props}
+    >
+      {/* <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <Command className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">Acme Inc</span>
+                  <span className="truncate text-xs">Enterprise</span>
+                </div>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader> */}
+      <SidebarContent className="p-3 bg-background">
+        <NavMain items={data.navMain} />
+        {/* <NavProjects projects={data.projects} /> */}
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+      </SidebarContent>
+      <SidebarFooter className="p-3 bg-background">
+        <NavUser user={data.user} />
+      </SidebarFooter>
+    </Sidebar>
+  )
 }

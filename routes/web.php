@@ -7,7 +7,27 @@ Route::get('/', function () {
     return Inertia::render('alumni/dashboard');
 })->name('home')->middleware(['auth', 'verified']);
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::get('tracer-study', function () {
+    return Inertia::render('alumni/tracer-study');
+})->name('tracer-study')->middleware(['auth', 'verified']);
+
+Route::get('/my-networks', function() {
+    return Inertia::render('alumni/networking');
+})->name('networking')->middleware(['auth', 'verified']);
+
+Route::get('forum-discussion', function() {
+    return Inertia::render('alumni/forum');
+})->name('forum-discussion')->middleware(['auth', 'verified']);
+
+Route::get('events', function () {
+    return Inertia::render('alumni/events');
+})->name('events')->middleware(['auth', 'verified']);
+
+Route::get('job-vacancies', function () {
+    return Inertia::render('alumni/job-internship');
+})->name('job-vacancies')->middleware(['auth', 'verified']);
+
+Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');

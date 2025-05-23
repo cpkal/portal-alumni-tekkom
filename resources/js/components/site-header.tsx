@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useSidebar } from "@/components/ui/sidebar"
+import { Link } from "@inertiajs/react"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
@@ -20,17 +21,19 @@ export function SiteHeader() {
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
       <div className="flex h-(--header-height) w-full items-center gap-2 px-4">
         {/* appbar logo */}
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
-            <img
-              src="/logo.svg"
-              alt="Logo"
-              className="h-6 w-6"
-            />
+        <Link href={route('home')}>
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
+              <img
+                src="/logo.svg"
+                alt="Logo"
+                className="h-6 w-6"
+              />
 
+            </div>
+            <p>Portal Alumni TEKOM</p>
           </div>
-          <p>Portal Alumni TEKOM</p>
-        </div>
+        </Link>
         <Button
           className="h-8 w-8"
           variant="ghost"
@@ -53,7 +56,7 @@ export function SiteHeader() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb> */}
-        <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+        {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
       </div>
     </header>
   )

@@ -5,7 +5,8 @@ import { Separator } from "@/components/ui/separator";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head } from "@inertiajs/react";
-import { Building, MapPin, RotateCcw } from "lucide-react";
+import { Building, Linkedin, Mail, MapPin, RotateCcw, UserPlus } from "lucide-react";
+import { useState } from "react";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -15,6 +16,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function NetworkingPage() {
+
+  // state
+  const [showDetail, setShowDetail] = useState(true);
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Networking with Alumni" />
@@ -59,7 +64,7 @@ export default function NetworkingPage() {
 
               <CardFooter className="flex gap-3">
                 <Button>Connect</Button>
-                <Button variant='outline'>View details</Button>
+                <Button variant='outline' onClick={() => setShowDetail(!showDetail)}>View details</Button>
               </CardFooter>
             </Card>
 
@@ -169,11 +174,102 @@ export default function NetworkingPage() {
         </div>
 
         <div className="w-2/5">
-          <div className="sticky top-24 z-10">
-            <p className="text-2xl mx-auto font-semibold text-center mt-4">Click "View Details" <br /> Show here</p>
-          </div>
+          {showDetail ? (
+            <div className="sticky top-16 z-10">
+              <Card className="bg-background overflow-y-scroll h-[calc(100vh-4rem)] pb-0">
+                <CardContent>
+                  <div className="mx-auto flex flex-col items-center gap-2">
+                    <Avatar className="h-18 w-18">
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <p className="text-xl font-semibold">Alex Morgan <span className="text-xs">He/his</span></p>
+                    <p className="text-sm">Graduation Year 2025</p>
+                    <p className="text-sm">Loving Technology</p>
+                    <p>New York, LA - Technology</p>
+                  </div>
+
+                  <div>
+                    <p className="my-2 font-semibold">About</p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque aperiam molestiae, impedit molestias ab nemo sed dignissimos ratione minima numquam vero, assumenda quae doloremque illum fugit unde blanditiis quidem? Voluptas.
+                  </div>
+
+                  <div>
+                    <p className="my-2 font-semibold">Contact Information</p>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex gap-2">
+                        <Mail />
+                        sandi.sandiaga@upi.edu
+                      </div>
+                      <div className="flex gap-2">
+                        <Linkedin />
+                        linked.in/in/sandi.sandiaga
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="my-2 font-semibold">Experience</p>
+                    <div className="flex flex-col gap-1">
+                      <div>
+                        <p className="font-medium">Achme Corp (2020 - 2025)</p>
+                        <p className="text-sm">Software Engineer</p>
+                      </div>
+
+                      <div>
+                        <p className="font-medium">Innova Solutions (2017 - 2020)</p>
+                        <p className="text-sm">Junior Software Developer</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="my-2 font-semibold">Education</p>
+                    <div className="flex flex-col gap-1">
+                      <div>
+                        <p className="font-medium">Boston University (2024 - now)</p>
+                        <p className="text-sm">Master's Degree - Applied Quantum Physics</p>
+                      </div>
+
+                      <div>
+                        <p className="font-medium">Universitas Pendidikan Indonesia (2020 - 2024)</p>
+                        <p className="text-sm">Bachelor's Degree - Computer Engineering</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="my-2 font-semibold">Achievements</p>
+                    <div className="flex flex-col gap-1">
+                      <div>
+                        <p className="font-medium">1st IOI Olympiads 2019</p>
+                      </div>
+
+                      <div>
+                        <p className="font-medium">1st ICPC Moskow 2021</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </CardContent>
+
+                <div className="sticky bottom-0 p-3 bg-background border mt-auto">
+                  <Button className="w-full">
+                    Connect
+                    <UserPlus className="ml-2" />
+                  </Button>
+                </div>
+              </Card>
+            </div>
+          ) : (
+            <div className="sticky top-24 z-10">
+              <p className="text-2xl mx-auto font-semibold text-center mt-4">Click "View Details" <br /> Show here</p>
+            </div>
+          )}
+
+
         </div>
-      </div>
-    </AppLayout>
+      </div >
+    </AppLayout >
   )
 }

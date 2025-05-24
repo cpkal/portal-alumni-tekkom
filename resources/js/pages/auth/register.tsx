@@ -8,10 +8,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 
 type RegisterForm = {
     name: string;
     email: string;
+    nim: string;
+    graduation_year: string;
+    active_phone_number: string;
+    date_of_birth: string;
     password: string;
     password_confirmation: string;
 };
@@ -20,6 +26,10 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
         name: '',
         email: '',
+        nim: '',
+        graduation_year: '',
+        active_phone_number: '+62',
+        date_of_birth: '',
         password: '',
         password_confirmation: '',
     });
@@ -31,11 +41,29 @@ export default function Register() {
         });
     };
 
+    const onChangeActivePhoneNumber = (value: string) => {
+        // Ensure the prefix starts with +62
+        const prefix = '+62';
+
+        // If the input doesn't start with +62, force it
+        if (!value.startsWith(prefix)) {
+            value = prefix + value.replace(/[^0-9]/g, ''); // remove any non-digit characters
+        }
+
+        // Remove everything except digits after +62
+        const rest = value.slice(prefix.length).replace(/\D/g, ''); // keep only digits
+
+        const formattedValue = prefix + rest;
+
+        setData('active_phone_number', formattedValue);
+    };
+
     return (
         <AuthLayout title="Create an account" description="Enter your details below to create your account">
             <Head title="Register" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
+                    <p className='text-xl font-semibold'>Account Information</p>
                     <div className="grid gap-2">
                         <Label htmlFor="name">Name</Label>
                         <Input
@@ -99,6 +127,81 @@ export default function Register() {
                             placeholder="Confirm password"
                         />
                         <InputError message={errors.password_confirmation} />
+                    </div>
+
+                    <p className='text-xl font-semibold'>Personal Information</p>
+                    <div className="grid gap-2">
+                        <Label htmlFor="nim">NIM</Label>
+                        <Input
+                            id="nim"
+                            type="text"
+                            required
+                            tabIndex={5}
+                            autoComplete="nim"
+                            value={data.nim}
+                            onChange={(e) => setData('nim', e.target.value)}
+                            disabled={processing}
+                            placeholder="NIM"
+                        />
+                        <InputError message={errors.nim} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="graduation_year">Graduation Year</Label>
+                        <Select onValueChange={(value) => setData('graduation_year', value)} defaultValue={data.graduation_year}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Graduation Year" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="2020">2020</SelectItem>
+                                <SelectItem value="2021">2021</SelectItem>
+                                <SelectItem value="2022">2022</SelectItem>
+                                <SelectItem value="2023">2023</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        {/* <Input
+                            id="graduation_year"
+                            type="text"
+                            required
+                            tabIndex={6}
+                            autoComplete="graduation_year"
+                            value={data.graduation_year}
+                            onChange={(e) => setData('graduation_year', e.target.value)}
+                            disabled={processing}
+                            placeholder="Graduation Year"
+                        /> */}
+                        <InputError message={errors.graduation_year} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="active_phone_number">Active Phone Number</Label>
+                        <Input
+                            id="active_phone_number"
+                            type="text"
+                            required
+                            tabIndex={7}
+                            autoComplete="active_phone_number"
+                            value={data.active_phone_number}
+                            onChange={(e) => onChangeActivePhoneNumber(e.target.value)}
+                            disabled={processing}
+                            placeholder="Active Phone Number"
+                        />
+                        <InputError message={errors.active_phone_number} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="date_of_birth">Date of Birth</Label>
+                        <Input
+                            id="date_of_birth"
+                            type="date"
+                            required
+                            tabIndex={8}
+                            autoComplete="date_of_birth"
+                            value={data.date_of_birth}
+                            onChange={(e) => setData('date_of_birth', e.target.value)}
+                            disabled={processing}
+                        />
+                        <InputError message={errors.date_of_birth} />
                     </div>
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>

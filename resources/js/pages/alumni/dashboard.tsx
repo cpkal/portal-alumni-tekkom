@@ -71,7 +71,7 @@ export default function Dashboard() {
           <Card className='bg-background flex flex-col justify-between'>
             <CardHeader>
               <div className="flex h-full justify-between items-center gap-2">
-                <p>Tracer Study Status</p>
+                <p>Recent Forum Activity</p>
                 <MessagesSquare />
               </div>
             </CardHeader>

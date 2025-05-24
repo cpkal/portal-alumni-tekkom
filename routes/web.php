@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Alumni\TracerStudyController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -7,9 +9,9 @@ Route::get('/', function () {
     return Inertia::render('alumni/dashboard');
 })->name('home')->middleware(['auth', 'verified']);
 
-Route::get('tracer-study', function () {
-    return Inertia::render('alumni/tracer-study');
-})->name('tracer-study')->middleware(['auth', 'verified']);
+Route::get('tracer-study', [TracerStudyController::class, 'show'])->middleware(['auth', 'verified']);
+
+Route::post('tracer-study', [TracerStudyController::class, 'store'])->name('tracer-study.post')->middleware(['auth', 'verified']);
 
 Route::get('/my-networks', function() {
     return Inertia::render('alumni/networking');

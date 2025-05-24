@@ -15,11 +15,12 @@ return new class extends Migration
             // one to one with user
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('nim')->nullable()->change();
-            $table->string('fullname')->nullable()->change();
-            $table->string('short_description')->nullable()->change();
-            $table->string('graduation_year')->nullable()->change();
-            $table->string('active_phone_number')->nullable()->change();
+            $table->string('nim');
+            $table->string('fullname');
+            $table->string('short_description')->nullable();
+            $table->string('graduation_year');
+            $table->string('active_phone_number');
+            $table->string('date_of_birth')->nullable();
         });
     }
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterAlumniRequest;
+use App\Models\Alumni;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -28,18 +30,18 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RegisterAlumniRequest $request)   
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+        return $request->all();
+        $user = User::create($request->only('name', 'email', 'password') + [
             'password' => Hash::make($request->password),
+            'role' => 'alumni',
+        ]);
+        
+
+        $alumni = Alumni::create($request->only('nim', 'graduation_year', 'active_phone_number', 'date_of_birth') + [
+            'user_id' => $user->id,
+            'fullname' => $request->name,
         ]);
 
         event(new Registered($user));

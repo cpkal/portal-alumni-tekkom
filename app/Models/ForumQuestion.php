@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ForumQuestion extends Model
+{
+    protected $table = "forum_questions";
+}

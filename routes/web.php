@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Alumni\JobVacancyController;
+use App\Http\Controllers\Alumni\MyNetworkController;
 use App\Http\Controllers\Alumni\TracerStudyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -13,9 +15,7 @@ Route::get('tracer-study', [TracerStudyController::class, 'show'])->middleware([
 
 Route::post('tracer-study', [TracerStudyController::class, 'store'])->name('tracer-study.post')->middleware(['auth', 'verified']);
 
-Route::get('/my-networks', function() {
-    return Inertia::render('alumni/networking');
-})->name('networking')->middleware(['auth', 'verified']);
+Route::get('/my-networks', [MyNetworkController::class, 'index'])->name('networking')->middleware(['auth', 'verified']);
 
 Route::get('forum-discussion', function() {
     return Inertia::render('alumni/forum');
@@ -25,9 +25,7 @@ Route::get('events', function () {
     return Inertia::render('alumni/events');
 })->name('events')->middleware(['auth', 'verified']);
 
-Route::get('job-vacancies', function () {
-    return Inertia::render('alumni/job-internship');
-})->name('job-vacancies')->middleware(['auth', 'verified']);
+Route::get('job-vacancies', [JobVacancyController::class, 'index'])->name('job-vacancies')->middleware(['auth', 'verified']);
 
 Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

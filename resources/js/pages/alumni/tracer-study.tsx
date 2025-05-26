@@ -23,7 +23,12 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function TracerStudyPage() {
+type TracerStudyPageProps = {
+  tracer: any; // Replace with actual type
+  is_user_has_submitted_tracer_study?: boolean;
+};
+
+export default function TracerStudyPage({ tracer, is_user_has_submitted_tracer_study }: TracerStudyPageProps) {
 
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 5; // Assuming there are 5 steps in the tracer study
@@ -39,30 +44,39 @@ export default function TracerStudyPage() {
         <div className="flex flex-row items-center justify-between">
           <div>
             <h1 className="text-xl">Tracer Study Form</h1>
+
             <p>Help us improve by sharing your progress after graduation.</p>
           </div>
 
+
           <div className="sticky top-8 z-10">
-            <p>Status:  <Badge>Not Submitted</Badge> </p>
+            <p>
+              Status: &nbsp;
+              {is_user_has_submitted_tracer_study ? (
+                <Badge className="bg-green-500">Submitted</Badge>
+              ) : (
+                <Badge>Not Submitted</Badge>
+              )}
+            </p>
           </div>
         </div>
 
         {/* timeline progression steps */}
-        <ProgressStepper currentPage={currentPage} />
+        <ProgressStepper currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </div>
 
       <div className="w-2/3 mx-auto mt-12">
 
         {currentPage === 1 ? (
-          <PersonalInformation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+          <PersonalInformation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} isSubmitted={is_user_has_submitted_tracer_study} />
         ) : currentPage === 2 ? (
-          <SocialMediaInformation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+          <SocialMediaInformation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} isSubmitted={is_user_has_submitted_tracer_study} />
         ) : currentPage === 3 ? (
-          <FurtherStudy currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+          <FurtherStudy currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} isSubmitted={is_user_has_submitted_tracer_study} />
         ) : currentPage === 4 ? (
-          <CareerInformation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+          <CareerInformation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} isSubmitted={is_user_has_submitted_tracer_study} />
         ) : currentPage === 5 ? (
-          <EducationEvaluation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
+          <EducationEvaluation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} isSubmitted={is_user_has_submitted_tracer_study} />
         ) : ''}
 
         <Alert variant='default' className="my-12">

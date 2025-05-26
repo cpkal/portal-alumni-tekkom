@@ -3,11 +3,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { useEffect, useState } from "react";
+import { usePage } from "@inertiajs/react";
 
 type PersonalInformationProps = {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalPages: number;
+  isSubmitted?: boolean;
 };
 
 type PersonalInformation = {
@@ -21,21 +23,10 @@ type PersonalInformation = {
   email: string;
 };
 
-export default function PersonalInformation({ currentPage, setCurrentPage, totalPages }: PersonalInformationProps) {
+export default function PersonalInformation({ currentPage, setCurrentPage, totalPages, isSubmitted }: PersonalInformationProps) {
   const [isNextButtonDisabled, setNextButtonDisabled] = useState(true);
 
-  // useEffect(() => {
-  //   const lPersonalInformation: PersonalInformation = {
-  //     full_name: localStorage.getItem('full_name') ?? '',
-  //     nim: localStorage.getItem('nim') ?? '',
-  //     enrollment_year: string;
-  //     graduation_year: string;
-  //     undergraduate_thesis_title: string;
-  //     address: string;
-  //     active_phone_number: string;
-  //     email: string;
-  //   }
-  // }, []);
+  const { tracer } : any = usePage().props;
 
   return (
     <Card>
@@ -46,10 +37,11 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
         <div className="flex flex-col gap-3">
           <Label htmlFor="full_name">Nama Lengkap</Label>
           <Input
+            disabled={isSubmitted}
             id="full_name"
             type="text"
             autoComplete="full_name"
-            defaultValue={localStorage.getItem('full_name') ?? ''}
+            defaultValue={isSubmitted ? tracer.full_name : localStorage.getItem('full_name') ?? ''}
             onChange={(e) => localStorage.setItem('full_name', e.target.value)}
             required
 
@@ -59,10 +51,11 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
         <div className="flex flex-col gap-3">
           <Label htmlFor="nim">Nomor Induk Mahasiswa (NIM)</Label>
           <Input
+            disabled={isSubmitted}
             id="nim"
             type="text"
             autoComplete="nim"
-            defaultValue={localStorage.getItem('nim') ?? ''}
+            defaultValue={isSubmitted ? tracer.nim : localStorage.getItem('nim') ?? ''}
             onChange={(e) => localStorage.setItem('nim', e.target.value)}
             placeholder="Ex. 2309xxx"
           />
@@ -70,10 +63,11 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
         <div className="flex flex-col gap-3">
           <Label htmlFor="enrollment_year">Tahun Masuk</Label>
           <Input
+            disabled={isSubmitted}
             id="enrollment_year"
             type="text"
             autoComplete="enrollment_year"
-            defaultValue={localStorage.getItem('enrollment_year') ?? ''}
+            defaultValue={isSubmitted ? tracer.enrollment_year : localStorage.getItem('enrollment_year') ?? ''}
             onChange={(e) => localStorage.setItem('enrollment_year', e.target.value)}
             placeholder="Ex. 2020"
           />
@@ -81,10 +75,11 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
         <div className="flex flex-col gap-3">
           <Label htmlFor="graduation_year">Tahun Lulus</Label>
           <Input
+            disabled={isSubmitted}
             id="graduation_year"
             type="text"
             autoComplete="graduation_year"
-            defaultValue={localStorage.getItem('graduation_year') ?? ''}
+            defaultValue={isSubmitted ? tracer.graduation_year : localStorage.getItem('graduation_year') ?? ''}
             onChange={(e) => localStorage.setItem('graduation_year', e.target.value)}
             placeholder="Ex. 2024"
           />
@@ -92,18 +87,20 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
         <div className="flex flex-col gap-3">
           <Label htmlFor="undergraduate_thesis_title">Judul Skripsi</Label>
           <Input
+            disabled={isSubmitted}
             id="undergraduate_thesis_title"
             type="text"
-            defaultValue={localStorage.getItem('undergraduate_thesis_title') ?? ''}
+            defaultValue={isSubmitted ? tracer.undergraduate_thesis_title : localStorage.getItem('undergraduate_thesis_title') ?? ''}
             onChange={(e) => localStorage.setItem('undergraduate_thesis_title', e.target.value)}
             placeholder="Ex. Rancang Bangun xxx" />
         </div>
         <div className="flex flex-col gap-3">
           <Label htmlFor="address">Alamat</Label>
           <Input
+            disabled={isSubmitted}
             id="address"
             type="text"
-            defaultValue={localStorage.getItem('address') ?? ''}
+            defaultValue={isSubmitted ? tracer.addrses : localStorage.getItem('address') ?? ''}
             onChange={(e) => localStorage.setItem('address', e.target.value)}
             placeholder="Ex. Jl. Panyileukan Gg. Sukarsari"
           />
@@ -111,9 +108,10 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
         <div className="flex flex-col gap-3">
           <Label htmlFor="active_phone_number">Nomor Telepon</Label>
           <Input
+            disabled={isSubmitted}
             id="active_phone_number"
             type="text"
-            defaultValue={localStorage.getItem('active_phone_number') ?? ''}
+            defaultValue={isSubmitted ? tracer.active_phone_number : localStorage.getItem('active_phone_number') ?? ''}
             onChange={(e) => localStorage.setItem('active_phone_number', e.target.value)}
             placeholder="Ex. 08231xxxx"
           />
@@ -121,9 +119,10 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
         <div className="flex flex-col gap-3">
           <Label htmlFor="email">Email</Label>
           <Input
+            disabled={isSubmitted}
             id="email"
             type="email"
-            defaultValue={localStorage.getItem('email') ?? ''}
+            defaultValue={isSubmitted ? tracer.email : localStorage.getItem('email') ?? ''}
             onChange={(e) => localStorage.setItem('email', e.target.value)}
             placeholder="Ex. sandi.setiawan@upi.edu"
           />

@@ -4,19 +4,23 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useEffect, useState } from "react";
+import { usePage } from "@inertiajs/react";
 
 type FurtherStudyProps = {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalPages: number;
+  isSubmitted?: boolean;
 };
 
-export default function FurtherStudy({ currentPage, setCurrentPage, totalPages }: FurtherStudyProps) {
+export default function FurtherStudy({ currentPage, setCurrentPage, totalPages, isSubmitted }: FurtherStudyProps) {
   const [isContinuingFurtherStudy, setContinuingFurtherStudy] = useState<string>('yes');
 
   useEffect(() => {
     setContinuingFurtherStudy(localStorage.getItem('continuing_study') ?? 'yes');
   }, []);
+
+  const { tracer } : any = usePage().props;
 
   return (
     <Card>
@@ -26,7 +30,7 @@ export default function FurtherStudy({ currentPage, setCurrentPage, totalPages }
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
           <label htmlFor="continuing_study">Apakah Anda melanjutkan studi setelah lulus? (Ya/Tidak)</label>
-          <RadioGroup defaultValue={ localStorage.getItem('continuing_study') ?? 'yes' } id="continuing_study" onValueChange={(val) => {
+          <RadioGroup disabled={isSubmitted} defaultValue={ isSubmitted ? (tracer.is_continuing_study ? 'yes' : 'no') : localStorage.getItem('continuing_study') ?? 'yes' } id="continuing_study" onValueChange={(val) => {
             setContinuingFurtherStudy(val)
             localStorage.setItem('continuing_study', val)
           }}>
@@ -46,10 +50,11 @@ export default function FurtherStudy({ currentPage, setCurrentPage, totalPages }
             <div className="flex flex-col gap-3">
               <Label htmlFor="institution_name">Nama Institusi</Label>
               <Input
+                disabled={isSubmitted}
                 id="institution_name"
                 type="text"
                 autoComplete="institution_name"
-                defaultValue={localStorage.getItem('institution_name') ?? ''}
+                defaultValue={ isSubmitted ? tracer.institution_name : localStorage.getItem('institution_name') ?? ''}
                 onChange={(e) => localStorage.setItem('institution_name', e.target.value)}
                 required
 
@@ -59,10 +64,11 @@ export default function FurtherStudy({ currentPage, setCurrentPage, totalPages }
             <div className="flex flex-col gap-3">
               <Label htmlFor="major">Program Studi</Label>
               <Input
+                disabled={isSubmitted}
                 id="major"
                 type="text"
                 autoComplete="major"
-                defaultValue={localStorage.getItem('major') ?? ''}
+                defaultValue={ isSubmitted ? tracer.major : localStorage.getItem('major') ?? ''}
                 onChange={(e) => localStorage.setItem('major', e.target.value)}
                 placeholder="Ex. Magister Fisika"
               />
@@ -70,17 +76,18 @@ export default function FurtherStudy({ currentPage, setCurrentPage, totalPages }
             <div className="flex flex-col gap-3">
               <Label htmlFor="education_level">Jenjang Pendidikan</Label>
               <Input
+                disabled={isSubmitted}
                 id="education_level"
                 type="text"
                 autoComplete="education_level"
-                defaultValue={localStorage.getItem('education_level') ?? ''}
+                defaultValue={ isSubmitted ? tracer.education_level : localStorage.getItem('education_level') ?? ''}
                 onChange={(e) => localStorage.setItem('education_level', e.target.value)}
                 placeholder="Ex. Magister / S2"
               />
             </div>
             <div className="flex flex-col gap-3">
               <label htmlFor="is_further_study_related_to_major">Apakah studi lanjut Anda relevan dengan bidang studi S1 Anda? (Ya/Tidak)</label>
-              <RadioGroup defaultValue={localStorage.getItem('is_further_study_related_to_major') ?? ''} id="is_further_study_related_to_major" onValueChange={(val) => {
+              <RadioGroup disabled={isSubmitted} defaultValue={ isSubmitted ? (tracer.is_further_study_related_to_major ? 'yes' : 'no') : localStorage.getItem('is_further_study_related_to_major') ?? ''} id="is_further_study_related_to_major" onValueChange={(val) => {
                 localStorage.setItem('is_further_study_related_to_major', val);
               }}>
                 <div className="flex items-center space-x-2">

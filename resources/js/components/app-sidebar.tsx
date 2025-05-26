@@ -28,6 +28,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { usePage } from "@inertiajs/react"
 
 const data = {
   user: {
@@ -40,7 +41,7 @@ const data = {
       title: "Overview",
       url: "/",
       icon: Home,
-      isActive: true,
+      // isActive: true,
     },
     {
       title: "Profile & Networks",
@@ -83,9 +84,10 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { auth }: any = usePage().props;
   return (
     <Sidebar
-    // h-[calc(100svh-var(--header-height))]!
+      // h-[calc(100svh-var(--header-height))]!
       className="top-(--header-height) h-min mx-4 my-2 p-1 rounded-lg border bg-background shadow-sm"
       {...props}
     >
@@ -112,7 +114,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter className="p-3 bg-background">
-        <NavUser user={data.user} />
+        <NavUser user={auth.user} />
       </SidebarFooter>
     </Sidebar>
   )

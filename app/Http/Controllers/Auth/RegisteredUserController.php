@@ -32,7 +32,6 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterAlumniRequest $request)   
     {
-        return $request->all();
         $user = User::create($request->only('name', 'email', 'password') + [
             'password' => Hash::make($request->password),
             'role' => 'alumni',
@@ -48,6 +47,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return to_route('dashboard');
+        return to_route('login');
     }
 }

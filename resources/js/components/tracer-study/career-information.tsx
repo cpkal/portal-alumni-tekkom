@@ -5,19 +5,23 @@ import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
+import { usePage } from "@inertiajs/react";
 
 type CareerInformationProps = {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalPages: number;
+  isSubmitted?: boolean;
 };
 
-export default function CareerInformation({ currentPage, setCurrentPage, totalPages }: CareerInformationProps) {
+export default function CareerInformation({ currentPage, setCurrentPage, totalPages, isSubmitted }: CareerInformationProps) {
   const [isCurrentlyHaveJob, setJobStatus] = useState<string>('yes');
 
   useEffect(() => {
     setJobStatus(localStorage.getItem('continuing_working') ?? 'yes');
   }, []);
+
+  const { tracer } : any = usePage().props;
 
   return (
     <Card>
@@ -27,7 +31,7 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
           <label htmlFor="continuing_working">Apakah Anda bekerja saat ini? (Ya/Tidak)</label>
-          <RadioGroup defaultValue={localStorage.getItem('continuing_working') ?? 'yes'} id="continuing_working" onValueChange={(val) => {
+          <RadioGroup disabled={isSubmitted} defaultValue={ isSubmitted ? (tracer.is_continuing_working ? 'yes' : 'no') : localStorage.getItem('continuing_working') ?? 'yes'} id="continuing_working" onValueChange={(val) => {
             setJobStatus(val)
             localStorage.setItem('continuing_working', val);
           }}>
@@ -47,10 +51,11 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
             <div className="flex flex-col gap-3">
               <Label htmlFor="company_name">Nama Perusahaan/Instansi</Label>
               <Input
+                disabled={isSubmitted}
                 id="company_name"
                 type="text"
                 autoComplete="company_name"
-                defaultValue={localStorage.getItem('company_name') ?? ''}
+                defaultValue={ isSubmitted ? tracer.company_name : localStorage.getItem('company_name') ?? ''}
                 onChange={(e) => localStorage.setItem('company_name', e.target.value)}
                 required
 
@@ -60,10 +65,11 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
             <div className="flex flex-col gap-3">
               <Label htmlFor="company_address">Alamat Perusahaan/Instansi</Label>
               <Input
+                disabled={isSubmitted}
                 id="company_address"
                 type="text"
                 autoComplete="company_address"
-                defaultValue={localStorage.getItem('company_address') ?? ''}
+                defaultValue={ isSubmitted ? tracer.company_address : localStorage.getItem('company_address') ?? ''}
                 onChange={(e) => localStorage.setItem('company_address', e.target.value)}
                 placeholder="Ex. PT Cahaya xxx"
               />
@@ -71,10 +77,11 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
             <div className="flex flex-col gap-3">
               <Label htmlFor="job_position">Posisi/Jabatan</Label>
               <Input
+                disabled={isSubmitted}
                 id="job_position"
                 type="text"
                 autoComplete="job_position"
-                defaultValue={localStorage.getItem('job_position') ?? ''}
+                defaultValue={ isSubmitted ? tracer.job_position : localStorage.getItem('job_position') ?? ''}
                 onChange={(e) => localStorage.setItem('job_position', e.target.value)}
                 placeholder="Ex. Magister / S2"
               />
@@ -82,17 +89,18 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
             <div className="flex flex-col gap-3">
               <Label htmlFor="company_business_field">Bidang Usaha Perusahaan/Instansi</Label>
               <Input
+                disabled={isSubmitted}
                 id="company_business_field"
                 type="text"
                 autoComplete="company_business_field"
-                defaultValue={localStorage.getItem('company_business_field') ?? ''}
+                defaultValue={ isSubmitted ? tracer.company_business_field : localStorage.getItem('company_business_field') ?? ''}
                 onChange={(e) => localStorage.setItem('company_business_field', e.target.value)}
                 placeholder="Ex. Magister / S2"
               />
             </div>
             <div className="flex flex-col gap-3">
               <Label htmlFor="wait_time_first_job">Berapa lama setelah lulus Anda mendapatkan pekerjaan pertama?</Label>
-              <Select defaultValue={localStorage.getItem('wait_time_first_job') ?? ''} onValueChange={(val) => {
+              <Select disabled={isSubmitted} defaultValue={ isSubmitted ? tracer.wait_time_first_job : localStorage.getItem('wait_time_first_job') ?? ''} onValueChange={(val) => {
                 localStorage.setItem('wait_time_first_job', val);
               }}>
                 <SelectTrigger className="w-full">
@@ -111,6 +119,7 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
                 </SelectContent>
               </Select>
               {/* <Input
+                disabled={isSubmitted}
                 id="wait_time_first_job"
                 type="text"
                 autoComplete="wait_time_first_job"
@@ -121,7 +130,7 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
             </div>
             <div className="flex flex-col gap-3">
               <label htmlFor="is_job_related_to_major">Apakah studi lanjut Anda relevan dengan bidang studi S1 Anda? (Ya/Tidak)</label>
-              <RadioGroup defaultValue="yes" id="is_job_related_to_major" onValueChange={(val) => {
+              <RadioGroup disabled={isSubmitted} defaultValue={ isSubmitted ? (tracer.is_job_related_to_major ? 'yes' : 'no') : localStorage.getItem('is_job_related_to_major') ?? 'yes'} id="is_job_related_to_major" onValueChange={(val) => {
                 localStorage.setItem('is_job_related_to_major', val);
               }}>
                 <div className="flex items-center space-x-2">
@@ -137,6 +146,7 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
             <div className="flex flex-col gap-3">
               <Label htmlFor="monthly_salary">Pendapatan per Bulan</Label>
               <Input
+                disabled={isSubmitted}
                 id="monthly_salary"
                 type="text"
                 autoComplete="monthly_salary"

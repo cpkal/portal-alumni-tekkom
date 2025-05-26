@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('job_vacancies', function (Blueprint $table) {
             $table->id();
-            $table->string('job_title')->nullable();
+            $table->string('job_title');
             // job qualifications
             $table->text('qualifications')->nullable();
             $table->text('job_description')->nullable();
             // company name
-            $table->string('company_name')->nullable();
+            $table->string('company_name');
             // employment_type
-            $table->enum('employment_type', ['full_time', 'part_time', 'internship', 'freelance'])->nullable();
+            $table->enum('employment_type', ['full_time', 'part_time', 'internship', 'freelance']);
             // job type
-            $table->enum('job_type', ['remote', 'on_site', 'hybrid'])->nullable();
+            $table->enum('job_type', ['remote', 'on_site', 'hybrid']);
             // link to apply
-            $table->string('apply_link')->nullable();
+            $table->string('apply_link');
             // location
-            $table->string('location')->nullable();
+            $table->string('location');
             // salary start
             $table->decimal('salary_start', 10, 2)->nullable();
             // salary end

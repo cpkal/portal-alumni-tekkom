@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { AvatarImage } from '@/components/ui/avatar';
 import { Check, BookOpenCheck, MessagesSquare, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Dashboard() {
+  const { job_vacancies }: any = usePage().props;
+
+  console.log(job_vacancies)
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Dashboard" />
@@ -165,27 +169,18 @@ export default function Dashboard() {
               <CardContent>
                 <div className='flex flex-col gap-4'>
 
-                  <div className='flex gap-3 items-center'>
-                    <div>
-                      <img className='w-12 h-12' src='' />
+                  {job_vacancies.map((jobVacancy: any) => (
+                    <div className='flex gap-3 items-center'>
+                      <div>
+                        <img className='w-12 h-12' src='' />
+                      </div>
+                      <div className='flex flex-col gap-1'>
+                        <p>{jobVacancy?.job_title}</p>
+                        <p className='text-xs'>{jobVacancy?.company_name} - {jobVacancy?.location}</p>
+                        <Badge>{jobVacancy?.employment_type_formatted}</Badge>
+                      </div>
                     </div>
-                    <div className='flex flex-col gap-1'>
-                      <p>Software Engineering</p>
-                      <p className='text-xs'>PT Digital Nusantara - Bandung</p>
-                      <Badge>Internship</Badge>
-                    </div>
-                  </div>
-
-                  <div className='flex gap-3 items-center'>
-                    <div>
-                      <img className='w-12 h-12' src='' />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                      <p>Software Engineering</p>
-                      <p className='text-xs'>PT Digital Nusantara - Bandung</p>
-                      <Badge>Internship</Badge>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>

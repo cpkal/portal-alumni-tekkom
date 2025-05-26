@@ -25,7 +25,7 @@ export default function EventsPage() {
       <div className="px-3 flex gap-4">
         <div className="w-3/5">
           <div className="flex justify-between items-end">
-            <p>Showing Alumni</p>
+            <p>Showing Events</p>
             <Button>
               <RotateCcw />
               Filter

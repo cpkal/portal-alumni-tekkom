@@ -1,15 +1,13 @@
 <?php
 
+use App\Http\Controllers\Alumni\DashboardController;
 use App\Http\Controllers\Alumni\JobVacancyController;
 use App\Http\Controllers\Alumni\MyNetworkController;
 use App\Http\Controllers\Alumni\TracerStudyController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('alumni/dashboard');
-})->name('home')->middleware(['auth', 'verified']);
+Route::get('/', [DashboardController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
 
 Route::get('tracer-study', [TracerStudyController::class, 'show'])->middleware(['auth', 'verified']);
 

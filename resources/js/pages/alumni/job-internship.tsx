@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, router, usePage } from "@inertiajs/react";
-import { Building, Clock, DollarSign, DoorOpen, MapPin, RotateCcw, Verified, X } from "lucide-react";
+import { Building, Clock, DollarSign, DoorOpen, Filter, MapPin, RotateCcw, Verified, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -86,9 +86,9 @@ export default function JobInternshipPage(): any {
       <div className="px-3 flex gap-4">
         <div className="w-2/5">
           <div className="flex justify-between items-end">
-            <p className="relative">Showing Alumni</p>
+            <p>Showing Jobs</p>
             <Button>
-              <RotateCcw />
+              <Filter />
               Filter
             </Button>
           </div>

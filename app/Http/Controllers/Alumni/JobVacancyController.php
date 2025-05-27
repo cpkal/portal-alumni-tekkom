@@ -13,16 +13,31 @@ class JobVacancyController extends Controller
     {   
         // get query params
         $jobId = $request->query('jobId');
-        $jobVacancy = JobVacancy::where('id', $jobId)->paginate(1); //don't change it. it has to return only one object, paginate 1 is alternative to first or get method
+        $employmentType = $request->query('employmentType');
+        $jobType = $request->query('jobType');
+        $search = $request->query('search');
+        $salaryStart = $request->query('salaryStart');
+        $salaryEnd = $request->query('salaryEnd');
+
+        // $jobVacancy = JobVacancy::where('employment_type', $employmentType)
+        //     ->where('job_type', $jobType)
+        //     ->where('job_title', $search);
+            // ->where('')
+
+        if($jobId) {
+            $jobVacancy = JobVacancy::where('id', $jobId)->first();
+
+            return Inertia::render("alumni/job-internship", ["job_vacancy" => $jobVacancy]);
+        }
 
         $job_vacancies = JobVacancy::paginate(4);
 
         return Inertia::render("alumni/job-internship", ["job_vacancies" => $job_vacancies]);
     }
 
-    public function find($id)
+    public function show($id)
     {
         $job_vacancy = JobVacancy::find($id);
-        return Inertia::render("job_vacancy", ["job_vacancy" => $job_vacancy]);
+        return Inertia::render("alumni/job-internship", ["job_vacancy" => $job_vacancy]);
     }
 }

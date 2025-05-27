@@ -1,5 +1,5 @@
+import DetailJob from "@/components/detail-job";
 import LoadingDots from "@/components/loading-dots";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -7,8 +7,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, router, usePage } from "@inertiajs/react";
-import { Building, Clock, DollarSign, DoorOpen, Filter, MapPin, RotateCcw, Verified, X } from "lucide-react";
+import { DollarSign, Filter, MapPin } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -27,13 +40,30 @@ export default function JobInternshipPage(): any {
   const [jobs, setJobs] = useState(job_vacancies.data);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
+  const [searchJobText, setSearchJobText] = useState('');
+  const [jobType, setJobType] = useState('all');
+  const [employmentType, setEmploymentType] = useState('all');
+  const [salaryStart, setSalaryStart] : any = useState(null);
+  const [salaryEnd, setSalaryEnd] : any = useState(null);
+
   const getDetailJob = (jobVacancy: any) => {
     setShowDetail(true);
     setLoading(true);
-    setTimeout(() => {
-      setDetailJob(jobVacancy);
-      setLoading(false);
-    }, 500);
+    router.get(`/job-vacancies?jobId=${jobVacancy.id}`, {}, {
+      preserveState: true,
+      preserveScroll: true,
+      only: ['job_vacancy'],
+      onSuccess: (page) => {
+        console.log(page.props.job_vacancy);
+        const job = (page.props.job_vacancy);
+        setDetailJob(job);
+        setLoading(false);
+      },
+    });
+    // setTimeout(() => {
+    //   setDetailJob(jobVacancy);
+    //   setLoading(false);
+    // }, 500);
   };
 
   const loadMore = () => {
@@ -54,7 +84,6 @@ export default function JobInternshipPage(): any {
     });
   }
 
-  // Observer for infinite scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -80,6 +109,20 @@ export default function JobInternshipPage(): any {
     window.open(applicationLink, "_blank");
   };
 
+  const filterJobs = () => {
+    router.get(`/job-vacancies?search=${searchJobText}&jobType=${jobType}&employmentType=${employmentType}&salaryStart=${salaryStart}&salaryEnd=${salaryEnd}`, {}, {
+      preserveState: true,
+      preserveScroll: true,
+      only: ['job_vacancies'],
+      onSuccess: (page) => {
+        const jobVacancies = page.props.job_vacancies;
+        // setJobs(jobVacancies.data);
+        // setNextPageUrl(jobVacancies.next_page_url);
+        setShowDetail(false);
+      },
+    });
+  };
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Events" />
@@ -87,10 +130,94 @@ export default function JobInternshipPage(): any {
         <div className="w-2/5">
           <div className="flex justify-between items-end">
             <p>Showing Jobs</p>
-            <Button>
-              <Filter />
-              Filter
-            </Button>
+            
+            <Dialog>
+              <DialogTrigger>
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  Filter
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="flex gap-2 items-center"><Filter /> Filter </DialogTitle>
+                  <DialogDescription>
+                    Filter job vacancies based on your preferences.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4">
+                  <Label htmlFor="job-title" className="block mb-2">Judul Pekerjaan</Label>
+                  <Input
+                    type="text"
+                    id="job-title"
+                    className="bg-background"
+                    placeholder="Masukkan judul pekerjaan"
+                    onChange={(e) => setSearchJobText(e.target.value)}
+                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="job-type" className="block mb-2">Lokasi</Label>
+                      <Select defaultValue="all" onValueChange={(value) => setJobType(value)}>
+                        <SelectTrigger >
+                          <SelectValue placeholder="Theme" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All</SelectItem>
+                          <SelectItem value="remote">Remote</SelectItem>
+                          <SelectItem value="on_site">On Site</SelectItem>
+                          <SelectItem value="hybrid">Hybrid</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="employment" className="block mb-2">Sistem kerja</Label>
+                      <Select defaultValue="all" onValueChange={(value) => setEmploymentType(value)}>
+                        <SelectTrigger >
+                          <SelectValue placeholder="Location" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All</SelectItem>
+                          <SelectItem value="full_time">Fulltime</SelectItem>
+                          <SelectItem value="part_time">Part Time</SelectItem>
+                          <SelectItem value="internship">Internship</SelectItem>
+                          <SelectItem value="contract">Contract</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {/* input range salary */}
+                    <div>
+                      <Label htmlFor="salary-start" className="block mb-2">Gaji awal</Label>
+                      <Input
+                        type="number"
+                        id="salary-start"
+                        className="bg-background"
+                        placeholder="Masukkan rentang gaji awal"
+                        onChange={(e) => setSalaryStart(e.target.value)}
+                        // onChange={(e) => setSalaryStart(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="salary-end" className="block mb-2">Gaji akhir</Label>
+                      <Input
+                        type="text"
+                        id="salary-end"
+                        className="bg-background"
+                        placeholder="Masukkan rentang gaji akhir"
+                        onChange={(e) => setSalaryEnd(e.target.value)}
+                        // onChange={(e) => setSalaryEnd(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <DialogClose className="w-full" onClick={() => filterJobs()}>
+                    <Button className="w-full">
+                      Simpan
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
           <Separator className="my-2" />
 
@@ -139,57 +266,7 @@ export default function JobInternshipPage(): any {
 
         {showDetail ? (
           !isLoading ? (
-            <div className="w-3/5">
-              <div className="sticky top-16 z-10 overflow-y-scroll h-[calc(100vh-4rem)] pb-0">
-                <div className="relative">
-                  <X className="absolute top-2 right-2 bg-background rounded-full hover:cursor-pointer" onClick={() => setShowDetail(false)} />
-                  <img className="rounded-t-md" src="https://image-service-cdn.seek.com.au/dd4a0d6cbc6de353bc702a0d239709b351a9162b/205993b4ce5632be9b98efc740d1679152a970f7" alt="" />
-                </div>
-                <div className="my-4">
-                  <p className="text-2xl font-medium">{detailJob?.job_title}</p>
-                  <p className="flex gap-2">{detailJob?.company_name} <Verified /> </p>
-
-                  <div className="flex flex-col gap-2 mt-3">
-                    <div className="flex gap-2">
-                      <MapPin />
-                      <p>{detailJob?.location}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Building />
-                      <p>{detailJob?.job_title}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Clock />
-                      <p>{detailJob?.employment_type_formatted}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <DoorOpen />
-                      <p>{detailJob?.job_type_formatted}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <DollarSign />
-                      <p>{detailJob?.salary_start_rupiah} - {detailJob?.salary_end_rupiah} {detailJob?.salary_period}</p>
-                    </div>
-
-                    <div>
-                      <p className="my-2 font-semibold">Qualifications</p>
-                      {detailJob?.qualifications}
-                    </div>
-
-                    <div>
-                      <p className="my-2 font-semibold">About</p>
-                      {detailJob?.job_description}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="sticky bottom-0 p-3 bg-background border mt-auto">
-                  <Button className="w-full" onClick={() => goToJobApplication(detailJob?.apply_link)}>
-                    Go Apply
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <DetailJob detailJob={detailJob} setShowDetail={setShowDetail} goToJobApplication={goToJobApplication} />
           ) : (
             <div className="w-3/5 h-screen sticky top-16">
               <Skeleton className="h-full w-full" />

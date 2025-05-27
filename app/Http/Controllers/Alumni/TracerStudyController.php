@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class TracerStudyController extends Controller
 {
-    public function store(StoreTracerStudyRequest $request)
+    public function store(StoreTracerStudyRequest $request) //storetracerstudyrequest bermasalah
     {
         $tracer = new TracerStudy();
         $tracer->full_name = $request->full_name;

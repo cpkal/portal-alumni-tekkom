@@ -30,13 +30,12 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function JobInternshipPage(): any {
-  const { job_vacancies }: any = usePage().props;
+export default function JobInternshipPage({ job_vacancies }: any): any {
   const [isLoading, setLoading] = useState(false);
   const [loadingInfiniteScroll, setLoadingInfiniteScroll] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [detailJob, setDetailJob]: any = useState(null);
-  const [nextPageUrl, setNextPageUrl] = useState(job_vacancies.next_page_url || null);
+  const [nextPageUrl, setNextPageUrl] = useState(job_vacancies.next_page_url);
   const [jobs, setJobs] = useState(job_vacancies.data);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,7 +46,7 @@ export default function JobInternshipPage(): any {
   const [salaryEnd, setSalaryEnd]: any = useState(null);
 
   useEffect(() => {
-    console.log(jobType);
+    
   }, [jobType]);
 
   const getDetailJob = (jobVacancy: any) => {
@@ -63,14 +62,12 @@ export default function JobInternshipPage(): any {
         setLoading(false);
       },
     });
-    // setTimeout(() => {
-    //   setDetailJob(jobVacancy);
-    //   setLoading(false);
-    // }, 500);
   };
 
   const loadMore = () => {
-    if (!nextPageUrl || loadingInfiniteScroll) return;
+    if (!nextPageUrl || loadingInfiniteScroll) {
+      return;
+    }
     setLoadingInfiniteScroll(true);
     router.get(`${nextPageUrl}&${getFilterString()}`, {}, {
       preserveState: true,
@@ -113,7 +110,7 @@ export default function JobInternshipPage(): any {
 
   const filterJobs = () => {
     const filterString = getFilterString();
-    console.log(filterString);
+    
     router.get(`/job-vacancies?${filterString}`, {}, {
       preserveState: true,
       preserveScroll: true,
@@ -122,6 +119,7 @@ export default function JobInternshipPage(): any {
         const jobVacancies = page.props.job_vacancies as any;
         setJobs(jobVacancies.data);
         setNextPageUrl(jobVacancies.next_page_url);
+        console.log(searchJobText)
         setShowDetail(false);
       },
     });
@@ -168,12 +166,13 @@ const getFilterString = () => {
                     id="job-title"
                     className="bg-background"
                     placeholder="Masukkan judul pekerjaan"
+                    value={searchJobText}
                     onChange={(e) => setSearchJobText(e.target.value)}
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="job-type" className="block mb-2">Lokasi</Label>
-                      <Select defaultValue="all" onValueChange={(value) => setJobType(value)}>
+                      <Select value={jobType} defaultValue="all" onValueChange={(value) => setJobType(value)}>
                         <SelectTrigger >
                           <SelectValue placeholder="Theme" />
                         </SelectTrigger>
@@ -226,7 +225,7 @@ const getFilterString = () => {
                   </div>
                 </div>
                 <DialogFooter>
-                  <DialogClose className="w-full" onClick={() => filterJobs()}>
+                  <DialogClose className="w-full" onClick={filterJobs}>
                     <Button className="w-full">
                       Simpan
                     </Button>

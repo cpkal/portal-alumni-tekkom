@@ -27,13 +27,6 @@ class JobVacancyController extends Controller
             return Inertia::render("alumni/job-internship", ["job_vacancy" => $jobVacancy]);
         }
 
-        // if no jobId, show all job vacancies with filters
-        Log::info([
-            'employmentType' => $employmentType,
-            'jobType' => $jobType,
-            'search' => $search,
-        ]);
-
         $jobVacancy = JobVacancy::query();
         if ($employmentType != null) {
             $jobVacancy->where('employment_type', $employmentType);
@@ -48,12 +41,44 @@ class JobVacancyController extends Controller
 
         $job_vacancies = $jobVacancy->paginate(4);
 
-        // return $job_vacancies;
-
+        //bool is last page
+        $isLastPage = $job_vacancies->currentPage() == $job_vacancies->lastPage();
+        
         return Inertia::render("alumni/job-internship", [
             "job_vacancies" => $job_vacancies,
-            // "filter_string" => 
+            "is_last_page" => $isLastPage,
         ]);
+    }
+
+    private function filterQueryString(Request $request) {
+        $queryString = '';
+        $jobId = $request->query('jobId');
+        $employmentType = $request->query('employmentType');
+        $jobType = $request->query('jobType');
+        $search = $request->query('search');
+        $salaryStart = $request->query('salaryStart');
+        $salaryEnd = $request->query('salaryEnd');
+
+        if ($jobId) {
+            $queryString .= 'jobId=' . $jobId . '&';
+        }
+        if ($employmentType) {
+            $queryString .= 'employmentType=' . $employmentType . '&';
+        }
+        if ($jobType) {
+            $queryString .= 'jobType=' . $jobType . '&';
+        }
+        if ($search) {
+            $queryString .= 'search=' . $search . '&';
+        }
+        if ($salaryStart) {
+            $queryString .= 'salaryStart=' . $salaryStart . '&';
+        }
+        if ($salaryEnd) {
+            $queryString .= 'salaryEnd=' . $salaryEnd . '&';
+        }
+
+        return rtrim($queryString, '&');
     }
 
     public function show($id)

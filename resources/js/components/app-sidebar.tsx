@@ -60,7 +60,7 @@ const data = {
     },
     {
       title: "Job & Internships",
-      url: "/job-vacancies",
+      url: "/job-vacancies?page=1",
       icon: BriefcaseBusiness,
     },
     {

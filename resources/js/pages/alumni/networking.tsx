@@ -63,7 +63,7 @@ export default function NetworkingPage() {
               </CardContent>
 
               <CardFooter className="flex gap-3">
-                <Button>Connect</Button>
+                
                 <Button variant='outline' onClick={() => setShowDetail(!showDetail)}>View details</Button>
               </CardFooter>
             </Card>
@@ -95,7 +95,7 @@ export default function NetworkingPage() {
               </CardContent>
 
               <CardFooter className="flex gap-3">
-                <Button>Connect</Button>
+                
                 <Button variant='outline'>View details</Button>
               </CardFooter>
             </Card>
@@ -127,7 +127,7 @@ export default function NetworkingPage() {
               </CardContent>
 
               <CardFooter className="flex gap-3">
-                <Button>Connect</Button>
+                
                 <Button variant='outline'>View details</Button>
               </CardFooter>
             </Card>
@@ -159,7 +159,7 @@ export default function NetworkingPage() {
               </CardContent>
 
               <CardFooter className="flex gap-3">
-                <Button>Connect</Button>
+                
                 <Button variant='outline'>View details</Button>
               </CardFooter>
             </Card>
@@ -254,10 +254,7 @@ export default function NetworkingPage() {
                 </CardContent>
 
                 <div className="sticky bottom-0 p-3 bg-background border mt-auto">
-                  <Button className="w-full">
-                    Connect
-                    <UserPlus className="ml-2" />
-                  </Button>
+                  
                 </div>
               </Card>
             </div>

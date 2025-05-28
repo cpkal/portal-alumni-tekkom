@@ -36,25 +36,28 @@ export default function JobInternshipPage(): any {
   const [loadingInfiniteScroll, setLoadingInfiniteScroll] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [detailJob, setDetailJob]: any = useState(null);
-  const [nextPageUrl, setNextPageUrl] = useState(job_vacancies.next_page_url);
+  const [nextPageUrl, setNextPageUrl] = useState(job_vacancies.next_page_url || null);
   const [jobs, setJobs] = useState(job_vacancies.data);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
   const [searchJobText, setSearchJobText] = useState('');
   const [jobType, setJobType] = useState('all');
   const [employmentType, setEmploymentType] = useState('all');
-  const [salaryStart, setSalaryStart] : any = useState(null);
-  const [salaryEnd, setSalaryEnd] : any = useState(null);
+  const [salaryStart, setSalaryStart]: any = useState(null);
+  const [salaryEnd, setSalaryEnd]: any = useState(null);
+
+  useEffect(() => {
+    console.log(jobType);
+  }, [jobType]);
 
   const getDetailJob = (jobVacancy: any) => {
     setShowDetail(true);
     setLoading(true);
-    router.get(`/job-vacancies?jobId=${jobVacancy.id}`, {}, {
+    router.get(`/job-vacancies?jobId=${jobVacancy.id}&${getFilterString()}`, {}, {
       preserveState: true,
       preserveScroll: true,
       only: ['job_vacancy'],
       onSuccess: (page) => {
-        console.log(page.props.job_vacancy);
         const job = (page.props.job_vacancy);
         setDetailJob(job);
         setLoading(false);
@@ -69,8 +72,7 @@ export default function JobInternshipPage(): any {
   const loadMore = () => {
     if (!nextPageUrl || loadingInfiniteScroll) return;
     setLoadingInfiniteScroll(true);
-
-    router.get(nextPageUrl, {}, {
+    router.get(`${nextPageUrl}&${getFilterString()}`, {}, {
       preserveState: true,
       preserveScroll: true,
       only: ['job_vacancies'],
@@ -110,18 +112,32 @@ export default function JobInternshipPage(): any {
   };
 
   const filterJobs = () => {
-    router.get(`/job-vacancies?search=${searchJobText}&jobType=${jobType}&employmentType=${employmentType}&salaryStart=${salaryStart}&salaryEnd=${salaryEnd}`, {}, {
+    const filterString = getFilterString();
+    console.log(filterString);
+    router.get(`/job-vacancies?${filterString}`, {}, {
       preserveState: true,
       preserveScroll: true,
       only: ['job_vacancies'],
       onSuccess: (page) => {
-        const jobVacancies = page.props.job_vacancies;
-        // setJobs(jobVacancies.data);
-        // setNextPageUrl(jobVacancies.next_page_url);
+        const jobVacancies = page.props.job_vacancies as any;
+        setJobs(jobVacancies.data);
+        setNextPageUrl(jobVacancies.next_page_url);
         setShowDetail(false);
       },
     });
   };
+
+const getFilterString = () => {
+  const params = new URLSearchParams();
+  if (searchJobText) params.append('search', searchJobText);
+  if (jobType && jobType !== 'all') params.append('jobType', jobType);
+  if (employmentType && employmentType !== 'all') params.append('employmentType', employmentType);
+  if (salaryStart) params.append('salaryStart', salaryStart);
+  if (salaryEnd) params.append('salaryEnd', salaryEnd);
+
+  return params.toString(); // hasil: search=foo&jobType=remote
+};
+
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -130,7 +146,7 @@ export default function JobInternshipPage(): any {
         <div className="w-2/5">
           <div className="flex justify-between items-end">
             <p>Showing Jobs</p>
-            
+
             <Dialog>
               <DialogTrigger>
                 <Button variant="outline" className="flex items-center gap-2">
@@ -185,7 +201,7 @@ export default function JobInternshipPage(): any {
                       </Select>
                     </div>
                     {/* input range salary */}
-                    <div>
+                    {/* <div>
                       <Label htmlFor="salary-start" className="block mb-2">Gaji awal</Label>
                       <Input
                         type="number"
@@ -206,7 +222,7 @@ export default function JobInternshipPage(): any {
                         onChange={(e) => setSalaryEnd(e.target.value)}
                         // onChange={(e) => setSalaryEnd(e.target.value)}
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <DialogFooter>
@@ -228,6 +244,7 @@ export default function JobInternshipPage(): any {
                 <CardContent>
                   <div className="flex gap-2">
                     <div>
+                      <p>{jobVacancy.id}</p>
                       <p className="text-xl font-semibold">{jobVacancy.job_title}</p>
                       <p className="text-sm">{jobVacancy.company_name}</p>
                     </div>

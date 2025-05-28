@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Alumni\DashboardController;
+use App\Http\Controllers\Alumni\EventController;
 use App\Http\Controllers\Alumni\JobVacancyController;
 use App\Http\Controllers\Alumni\MyNetworkController;
 use App\Http\Controllers\Alumni\TracerStudyController;
@@ -19,9 +20,7 @@ Route::get('forum-discussion', function() {
     return Inertia::render('alumni/forum');
 })->name('forum-discussion')->middleware(['auth', 'verified']);
 
-Route::get('events', function () {
-    return Inertia::render('alumni/events');
-})->name('events')->middleware(['auth', 'verified']);
+Route::get('events', [EventController::class, 'index'])->name('events')->middleware(['auth', 'verified']);
 
 Route::get('job-vacancies', [JobVacancyController::class, 'index'])->name('job-vacancies')->middleware(['auth', 'verified']);
 Route::get('job-vacancies/{id}', [JobVacancyController::class, 'show'])->name('job-vacancies.show')->middleware(['auth', 'verified']);

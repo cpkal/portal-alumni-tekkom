@@ -45,40 +45,8 @@ class JobVacancyController extends Controller
         $isLastPage = $job_vacancies->currentPage() == $job_vacancies->lastPage();
         
         return Inertia::render("alumni/job-internship", [
-            "job_vacancies" => $job_vacancies,
-            "is_last_page" => $isLastPage,
+            "job_vacancies" => $job_vacancies
         ]);
-    }
-
-    private function filterQueryString(Request $request) {
-        $queryString = '';
-        $jobId = $request->query('jobId');
-        $employmentType = $request->query('employmentType');
-        $jobType = $request->query('jobType');
-        $search = $request->query('search');
-        $salaryStart = $request->query('salaryStart');
-        $salaryEnd = $request->query('salaryEnd');
-
-        if ($jobId) {
-            $queryString .= 'jobId=' . $jobId . '&';
-        }
-        if ($employmentType) {
-            $queryString .= 'employmentType=' . $employmentType . '&';
-        }
-        if ($jobType) {
-            $queryString .= 'jobType=' . $jobType . '&';
-        }
-        if ($search) {
-            $queryString .= 'search=' . $search . '&';
-        }
-        if ($salaryStart) {
-            $queryString .= 'salaryStart=' . $salaryStart . '&';
-        }
-        if ($salaryEnd) {
-            $queryString .= 'salaryEnd=' . $salaryEnd . '&';
-        }
-
-        return rtrim($queryString, '&');
     }
 
     public function show($id)

@@ -45,10 +45,6 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
   const [salaryStart, setSalaryStart]: any = useState(null);
   const [salaryEnd, setSalaryEnd]: any = useState(null);
 
-  useEffect(() => {
-    
-  }, [jobType]);
-
   const getDetailJob = (jobVacancy: any) => {
     setShowDetail(true);
     setLoading(true);
@@ -110,7 +106,7 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
 
   const filterJobs = () => {
     const filterString = getFilterString();
-    
+
     router.get(`/job-vacancies?${filterString}`, {}, {
       preserveState: true,
       preserveScroll: true,
@@ -125,16 +121,16 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
     });
   };
 
-const getFilterString = () => {
-  const params = new URLSearchParams();
-  if (searchJobText) params.append('search', searchJobText);
-  if (jobType && jobType !== 'all') params.append('jobType', jobType);
-  if (employmentType && employmentType !== 'all') params.append('employmentType', employmentType);
-  if (salaryStart) params.append('salaryStart', salaryStart);
-  if (salaryEnd) params.append('salaryEnd', salaryEnd);
+  const getFilterString = () => {
+    const params = new URLSearchParams();
+    if (searchJobText) params.append('search', searchJobText);
+    if (jobType && jobType !== 'all') params.append('jobType', jobType);
+    if (employmentType && employmentType !== 'all') params.append('employmentType', employmentType);
+    if (salaryStart) params.append('salaryStart', salaryStart);
+    if (salaryEnd) params.append('salaryEnd', salaryEnd);
 
-  return params.toString(); // hasil: search=foo&jobType=remote
-};
+    return params.toString(); // hasil: search=foo&jobType=remote
+  };
 
 
   return (
@@ -243,7 +239,6 @@ const getFilterString = () => {
                 <CardContent>
                   <div className="flex gap-2">
                     <div>
-                      <p>{jobVacancy.id}</p>
                       <p className="text-xl font-semibold">{jobVacancy.job_title}</p>
                       <p className="text-sm">{jobVacancy.company_name}</p>
                     </div>

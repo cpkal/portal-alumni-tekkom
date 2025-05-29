@@ -9,6 +9,7 @@ import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowUp, Bot, BriefcaseBusiness, Code, Flame, Layers, School } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layer } from "recharts";
+import AskQuestion from "@/components/ask-question";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -18,25 +19,14 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function ForumPage() {
+export default function ForumPage({ forum_questions }: any) {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Tracer Study" />
       <div className="flex flex-row relative">
         <div className="mx-3 w-2/3">
           {/* you ask something */}
-          <Card className="bg-background">
-            <CardContent>
-              <div className="flex flex-row gap-3 items-center">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-
-                <Input placeholder="What do you want to ask? Start typing..." />
-              </div>
-            </CardContent>
-          </Card>
+          <AskQuestion />
 
           {/* forum questions */}
           <Card className="bg-background mt-8">
@@ -247,28 +237,6 @@ export default function ForumPage() {
           <Card className="bg-background sticky top-16">
             <CardHeader className="">
               <Input placeholder="Explore question around the world" />
-              <div className="flex flex-row gap-2 mt-4">
-                <Layers />
-                <p className="font-semibold">Categories</p>
-              </div>
-
-              <div className="flex flex-row gap-2 mt-4">
-                <BriefcaseBusiness />
-                <p>Careers</p>
-              </div>
-              <div className="flex flex-row gap-2 mt-1">
-                <Code />
-                <p>Coding</p>
-              </div>
-              <div className="flex flex-row gap-2 mt-1">
-                <Bot />
-                <p>Robotics</p>
-              </div>
-              <div className="flex flex-row gap-2 mt-1">
-                <School />
-                <p>Events</p>
-              </div>
-
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row gap-2 mt-8">
                   <Flame />

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('forum_questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('alumni_id')->constrained('alumnis')->onDelete('cascade');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('tags')->nullable();

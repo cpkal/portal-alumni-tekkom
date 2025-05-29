@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Alumni\DashboardController;
 use App\Http\Controllers\Alumni\EventController;
+use App\Http\Controllers\Alumni\ForumController;
 use App\Http\Controllers\Alumni\JobVacancyController;
 use App\Http\Controllers\Alumni\MyNetworkController;
 use App\Http\Controllers\Alumni\TracerStudyController;
@@ -16,11 +17,15 @@ Route::post('tracer-study', [TracerStudyController::class, 'store'])->name('trac
 
 Route::get('/my-networks', [MyNetworkController::class, 'index'])->name('networking')->middleware(['auth', 'verified']);
 
-Route::get('forum-discussion', function() {
-    return Inertia::render('alumni/forum');
-})->name('forum-discussion')->middleware(['auth', 'verified']);
+Route::get('forum-discussion', [ForumController::class, 'show'])->name('forum')->middleware(['auth', 'verified']);
+Route::get('forum-discussion/my-questions', [ForumController::class, 'myQuestions'])->name('forum.my-questions')->middleware(['auth', 'verified']);
+Route::post('forum-discussion', [ForumController::class, 'store'])->name('forum.my-questions.store')->middleware(['auth', 'verified']);
+
+
 
 Route::get('events', [EventController::class, 'index'])->name('events')->middleware(['auth', 'verified']);
+Route::post('events/register', [EventController::class, 'register'])->name('events.register')->middleware(['auth', 'verified']);
+Route::get('events/registered', [EventController::class, 'registered'])->name('events.registered')->middleware(['auth', 'verified']);
 
 Route::get('job-vacancies', [JobVacancyController::class, 'index'])->name('job-vacancies')->middleware(['auth', 'verified']);
 Route::get('job-vacancies/{id}', [JobVacancyController::class, 'show'])->name('job-vacancies.show')->middleware(['auth', 'verified']);
@@ -50,9 +55,9 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('news');
     })->name('news');
 
-    Route::get('events', function() {
-        return Inertia::render('event');
-    })->name('events');
+    // Route::get('events', function() {
+    //     return Inertia::render('event');
+    // })->name('events');
 
     Route::get('job-recruitments', function() {
         return Inertia::render('job-rec');

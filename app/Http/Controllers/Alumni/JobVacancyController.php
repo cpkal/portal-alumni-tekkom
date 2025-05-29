@@ -17,8 +17,6 @@ class JobVacancyController extends Controller
         $employmentType = $request->query('employmentType');
         $jobType = $request->query('jobType');
         $search = $request->query('search');
-        $salaryStart = $request->query('salaryStart');
-        $salaryEnd = $request->query('salaryEnd');
 
         // if jobId is present, show the specific job vacancy
         if ($jobId) {

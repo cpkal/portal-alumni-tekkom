@@ -1,7 +1,6 @@
 import LoadingDots from "@/components/loading-dots";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +31,13 @@ export default function EventsPage({ events }: any): any {
 
   const [searchEventText, setSearchEventText] = useState('');
   const [eventType, setEventType] = useState('all');
+
+  // flash success
+  useEffect(() => {
+    if (events.flash?.success) {
+      
+    }
+  }, [events.flash]);
 
   const getDetailEvent = (event: any) => {
     setShowDetail(true);
@@ -96,7 +102,7 @@ export default function EventsPage({ events }: any): any {
       preserveScroll: true,
       only: ['events'],
       onSuccess: (page) => {
-        const x = page.props.job_vacancies as any;
+        const x = page.props.events as any;
         setAcara(x.data);
         setNextPageUrl(x.next_page_url);
         setShowDetail(false);
@@ -112,8 +118,21 @@ export default function EventsPage({ events }: any): any {
     return params.toString(); // hasil: search=foo&jobType=remote
   };
 
-  const goToEventApplication = (applicationLink: string) => {
-    window.open(applicationLink, "_blank");
+  const registerEventNow = (eventId: number) => {
+    if (!eventId) {
+      return;
+    }
+    // post 
+    router.post('/events/register', { event_id: eventId }, {
+      preserveState: true,
+      preserveScroll: true,
+      onSuccess: () => {
+        router.reload();
+      },
+      onError: (error) => {
+        console.error('Error registering for event:', error);
+      },
+    });
   };
 
   return (
@@ -207,17 +226,16 @@ export default function EventsPage({ events }: any): any {
                   </CardContent>
 
                   <CardFooter className="flex gap-3">
-                    <Button onClick={() => goToEventApplication(a.event_link)}>Register</Button>
+                    <Button onClick={() => registerEventNow(a.id)}>Daftar</Button>
                     <Button variant='outline' onClick={() => getDetailEvent(a)}>View details</Button>
                   </CardFooter>
                 </Card>
               )
             })}
 
-            {loadingInfiniteScroll && <LoadingDots />}
           </div>
 
-
+          {loadingInfiniteScroll && <LoadingDots />}
           <div ref={loaderRef} className="h-10" />
         </div>
 
@@ -258,8 +276,8 @@ export default function EventsPage({ events }: any): any {
                   </CardContent>
 
                   <div className="sticky bottom-0 p-3 bg-background border mt-auto">
-                    <Button className="w-full" onClick={() => goToEventApplication(detailEvent.apply_link)}>
-                      Go to Registration
+                    <Button className="w-full" onClick={() => registerEventNow(detailEvent.id)}>
+                      Daftar Sekarang
                     </Button>
                   </div>
                 </Card>

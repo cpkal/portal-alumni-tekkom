@@ -6,11 +6,23 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, router } from "@inertiajs/react";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowUp, Bot, BriefcaseBusiness, Car, Code, Flame, Layers, Pencil, School } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Layer } from "recharts";
-import AskQuestion from "@/components/ask-question";
-import ForumReply from "@/components/forum-reply";
+import { EditBioModal } from "@/components/edit-bio-modal";
+import { EditAboutMeModal } from "@/components/edit-about-me-modal";
+import BioSection from "@/components/profile/bio-section";
+import AboutMeSection from "@/components/profile/about-me-section";
+import { useState } from "react";
+import { AddExperienceModal } from "@/components/experience/add-experience-modal";
+import { EditExperienceModal } from "@/components/experience/edit-experience-modal";
+import ExperienceSection from "@/components/profile/experience-section";
+import { AddEducationModal } from "@/components/education/add-education-modal";
+import { EditEducationModal } from "@/components/education/edit-education-modal";
+import EducationSection from "@/components/profile/education-section";
+import { AddProjectModal } from "@/components/project/add-project-modal";
+import { EditProjectModal } from "@/components/project/edit-project-modal";
+import ProjectSection from "@/components/profile/project-section";
+import DetailAlumniCard from "@/components/detail-alumni-card";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -20,189 +32,84 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function MePage() {
+export default function MePage({
+  user,
+  showEditBio,
+  showEditShortDesc,
+  showAddExperience,
+  showEditExperience,
+  showAddEducation,
+  showEditEducation,
+  education,
+  experience,
+  showAddProject,
+  showEditProject,
+  project
+}:
+  {
+    user: any,
+    showEditBio: boolean,
+    showEditShortDesc: boolean,
+    showAddExperience: boolean,
+    showEditExperience: any,
+    experience: any,
+    showAddEducation: boolean,
+    showEditEducation: boolean,
+    education: any,
+    showAddProject: boolean,
+    showEditProject: boolean,
+    project: any,
+  }) {
+
+  const [editExperience, setEditExperience] = useState(false);
+  const [editEducation, setEditEducation] = useState(false);
+  const [editProject, setEditProject] = useState(false);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Me" />
-      <div className="mx-4">
-        <Card className="w-full">
-          <CardHeader>
-            <div className="flex justify-between items-center w-full">
-              <h2 className="text-lg font-semibold">Profil Saya</h2>
-              <div>
-                <Button variant="outline" size="sm" onClick={() => router.visit('/profile/edit')}>
-                  <Pencil />
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex gap-3 mx-4 py-2 items-center border-b border-border">
-              {/* avatar */}
-              <Avatar className="w-24 h-24">
-                <AvatarImage src="/avatars/shadcn.jpg" alt="shadcn" />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col justify-center">
-                <h1>Name</h1>
-                {/* graduation year */}
-                <p className="text-sm text-muted-foreground">Teknik Komputer, Universitas XYZ</p>
-                {/* active phone number */}
-                <p className="text-sm text-muted-foreground">+62 812-3456-7890</p>                
-                {/* date of birth */}
-                <p className="text-sm text-muted-foreground">Tanggal Lahir: 1 Januari 1990</p>
-                
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card className="w-full mt-4">
-          <CardHeader>
-            <div className="flex justify-between items-center w-full">
-              <h2 className="text-lg font-semibold">Tentang Saya</h2>
-              <Button variant="outline" size="sm" onClick={() => router.visit('/profile/edit')}>
-                <Pencil />
-              </Button>
-            </div>
+      {showEditBio && (
+        <EditBioModal show={showEditBio} user={user} />
+      )}
 
-          </CardHeader>
-          <CardContent>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora molestiae aliquam, quisquam iste at voluptas in reiciendis illum quam? Possimus cum suscipit iste voluptatum neque esse omnis magnam. Recusandae, optio?</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et excepturi vel minima non, debitis exercitationem nemo voluptatem? Odio neque ratione quo eius praesentium doloribus? Porro quaerat nihil sed labore magnam.</p>
-          </CardContent>
-        </Card>
+      {showEditShortDesc && (
+        <EditAboutMeModal show={showEditShortDesc} user={user} />
+      )}
 
-        <Card className="w-full mt-4">
-          <CardHeader>
-            <div className="flex justify-between items-center w-full">
-              <h2 className="text-lg font-semibold">Keterampilan</h2>
-              <Button variant="outline" size="sm" onClick={() => router.visit('/profile/edit')}>
-                <Pencil />
-              </Button>
-            </div>
-            
-          </CardHeader>
-          <CardContent>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora molestiae aliquam, quisquam iste at voluptas in reiciendis illum quam? Possimus cum suscipit iste voluptatum neque esse omnis magnam. Recusandae, optio?</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et excepturi vel minima non, debitis exercitationem nemo voluptatem? Odio neque ratione quo eius praesentium doloribus? Porro quaerat nihil sed labore magnam.</p>
-          </CardContent>
-        </Card>
+      {showAddExperience && (
+        <AddExperienceModal show={showAddExperience} user={user} />
+      )}
 
-        <Card className="w-full mt-4">
-          <CardHeader>
-            <div className="flex justify-between items-center w-full">
-              <h2 className="text-lg font-semibold">Pengalaman Kerja</h2>
-              <Button variant="outline" size="sm" onClick={() => router.visit('/profile/edit')}>
-                <Pencil />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {/* timeline pengalaman kerja */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-10 h-10">
-                  <AvatarImage src="/avatars/company1.jpg" alt="Company 1" />
-                  <AvatarFallback>CP1</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">Software Engineer at Company 1</h3>
-                  <p className="text-sm text-muted-foreground">Jan 2020 - Present</p>
-                  {/* sub penjelasan poin poin */}
-                  <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
-                    <li>Developed and maintained web applications using React and Node.js</li>
-                    <li>Collaborated with cross-functional teams to define, design, and ship new features</li>
-                    <li>Participated in code reviews and contributed to team knowledge sharing</li>
-                  </ul>
-                </div>
-              </div>
+      {showEditExperience && (
+        <EditExperienceModal show={showEditExperience} user={user} experience={experience} />
+      )}
 
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-10 h-10">
-                  <AvatarImage src="/avatars/company2.jpg" alt="Company 2" />
-                  <AvatarFallback>CP2</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">Frontend Developer at Company 2</h3>
-                  <p className="text-sm text-muted-foreground">Jun 2018 - Dec 2019</p>
-                  <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
-                    <li>Implemented responsive web designs using HTML, CSS, and JavaScript</li>
-                    <li>Worked closely with designers to create user-friendly interfaces</li>
-                    <li>Optimized web applications for maximum speed and scalability</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {showAddEducation && (
+        <AddEducationModal show={showAddEducation} user={user} />
+      )}
 
-        <Card className="w-full mt-4">
-          <CardHeader>
-            <div className="flex justify-between items-center w-full">
-              <h2 className="text-lg font-semibold">Pendidikan</h2>
-              <Button variant="outline" size="sm" onClick={() => router.visit('/profile/edit')}>
-                <Pencil />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-10 h-10">
-                  <AvatarImage src="/avatars/university.jpg" alt="University" />
-                  <AvatarFallback>UNI</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">Bachelor of Computer Science</h3>
-                  <p className="text-sm text-muted-foreground">Teknik Komputer, Universitas XYZ</p>
-                  <p className="text-sm text-muted-foreground">Graduated: 2018</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {showEditEducation && (
+        <EditEducationModal show={showEditEducation} user={user} education={education} />
+      )}
 
-        <Card className="w-full mt-4">
-          <CardHeader>
-            <div className="flex justify-between items-center w-full">
-              <h2 className="text-lg font-semibold">Proyek</h2>
-              <Button variant="outline" size="sm" onClick={() => router.visit('/profile/edit')}>
-                <Pencil />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-10 h-10">
-                  <AvatarImage src="/avatars/project1.jpg" alt="Project 1" />
-                  <AvatarFallback>PR1</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">Project Management Tool</h3>
-                  <p className="text-sm text-muted-foreground">A web application for managing projects and tasks.</p>
-                  <Button variant="link" onClick={() => router.visit('/projects/1')}>View Project</Button>
-                </div>
-              </div>
+      {showAddProject && (
+        <AddProjectModal show={showAddProject} user={user} />
+      )}
 
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-10 h-10">
-                  <AvatarImage src="/avatars/project2.jpg" alt="Project 2" />
-                  <AvatarFallback>PR2</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">E-commerce Website</h3>
-                  <p className="text-sm text-muted-foreground">An online store built with React and Node.js.</p>
-                  <Button variant="link" onClick={() => router.visit('/projects/2')}>View Project</Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {showEditProject && (
+        <EditProjectModal show={showEditProject} user={user} project={project} />
+      )}
 
-        <Card className="w-full mt-4">
+      <div className="flex">
+        <div className="mx-4 w-2/3">
+          <BioSection user={user} />
+          <AboutMeSection user={user} />
+          <ExperienceSection user={user} editExperience={editExperience} setEditExperience={setEditExperience} />
+          <EducationSection user={user} editEducation={editEducation} setEditEducation={setEditEducation} />
+          <ProjectSection user={user} editProject={editProject} setEditProject={setEditProject} />
+
+          {/* <Card className="w-full mt-4">
           <CardHeader>
             <div className="flex justify-between items-center w-full">
               <h2 className="text-lg font-semibold">Sertifikasi</h2>
@@ -274,7 +181,12 @@ export default function MePage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
+        </div>
+
+        <div className="w-1/3">
+          <DetailAlumniCard user={user} isPreview={true} />
+        </div>
       </div>
 
       {/* card about */}

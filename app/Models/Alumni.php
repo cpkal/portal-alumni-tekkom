@@ -16,5 +16,23 @@ class Alumni extends Model
         'active_phone_number',
         'date_of_birth',
     ];
+
+    // has many alumni experiences
+    public function experiences()
+    {
+        return $this->hasMany(AlumniExperience::class, 'alumni_id');
+    }
+
+    // has many education histories
+    public function educations()
+    {
+        return $this->hasMany(AlumniEducation::class, 'alumni_id');
+    }
+
+    // has many projects
+    public function projects()
+    {
+        return $this->hasMany(AlumniProject::class, 'alumni_id');
+    }
     
 }

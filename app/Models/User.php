@@ -53,4 +53,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventParticipant::class);
     }
+
+    // one on one relationship with Alumni
+    public function alumni()
+    {
+        return $this->hasOne(Alumni::class);
+    }
 }

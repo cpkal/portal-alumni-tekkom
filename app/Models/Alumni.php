@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Alumni extends Model
 {
+    use HasFactory;
+
     protected $table = "alumnis";
 
     protected $fillable = [
@@ -15,6 +18,7 @@ class Alumni extends Model
         'graduation_year',
         'active_phone_number',
         'date_of_birth',
+        'short_description',
     ];
 
     // has many alumni experiences

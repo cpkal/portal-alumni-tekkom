@@ -17,8 +17,8 @@ export default function VerifyEmail({ status }: { status?: string }) {
     };
 
     return (
-        <AuthLayout title="Verify email" description="Please verify your email address by clicking on the link we just emailed to you.">
-            <Head title="Email verification" />
+        <AuthLayout title="Akun Verifikasi" description="Akun anda belum diverifikasi. Silakan menunggu dan cek email secara berkala.">
+            <Head title="Verifikasi Akun" />
 
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
@@ -26,7 +26,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 </div>
             )}
 
-            <form onSubmit={submit} className="space-y-6 text-center">
+            {/* <form onSubmit={submit} className="space-y-6 text-center">
                 <Button disabled={processing} variant="secondary">
                     {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                     Resend verification email
@@ -35,7 +35,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 <TextLink href={route('logout')} method="post" className="mx-auto block text-sm">
                     Log out
                 </TextLink>
-            </form>
+            </form> */}
         </AuthLayout>
     );
 }

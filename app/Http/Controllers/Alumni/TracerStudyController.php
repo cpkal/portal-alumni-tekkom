@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class TracerStudyController extends Controller
 {
-    public function store(StoreTracerStudyRequest $request) //storetracerstudyrequest bermasalah
+    public function store(Request $request) //storetracerstudyrequest bermasalah
     {
         $tracer = new TracerStudy();
         $tracer->full_name = $request->full_name;
@@ -55,7 +55,7 @@ class TracerStudyController extends Controller
 
         $tracer->save();
 
-        return Inertia::render("welcome");
+        return redirect()->route('tracer-study.index')->with('success', 'Tracer study berhasil disimpan.');
     }
 
     public function show()

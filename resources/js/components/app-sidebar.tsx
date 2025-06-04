@@ -44,7 +44,7 @@ const data = {
       // isActive: true,
     },
     {
-      title: "Profile & Networks",
+      title: "Profile & Networking",
       url: "/my-networks",
       icon: Waypoints,
     },
@@ -54,17 +54,17 @@ const data = {
       icon: BookOpen,
     },
     {
-      title: "Forum",
+      title: "Forum Diskusi",
       url: "/forum-discussion",
       icon: MessageSquare,
     },
     {
-      title: "Job & Internships",
+      title: "Loker & Magang",
       url: "/job-vacancies?page=1",
       icon: BriefcaseBusiness,
     },
     {
-      title: "Events",
+      title: "Acara Tekkom",
       url: "/events",
       icon: Calendar,
     },

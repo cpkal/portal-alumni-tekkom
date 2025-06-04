@@ -10,48 +10,51 @@ use App\Http\Controllers\Alumni\JobVacancyController;
 use App\Http\Controllers\Alumni\MeController;
 use App\Http\Controllers\Alumni\MyNetworkController;
 use App\Http\Controllers\Alumni\TracerStudyController;
+use App\Http\Middleware\VerifiedUser;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', [DashboardController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
-Route::get('/profile/me', [MeController::class, 'index'])->name('profile.me')->middleware(['auth', 'verified']);
-Route::get('/profile/me/edit', [MeController::class, 'edit'])->name('profile.me.edit')->middleware(['auth', 'verified']);
-Route::post('/profile/me/update', [MeController::class, 'update'])->name('profile.me.update')->middleware(['auth', 'verified']);
-Route::get('/profile/me/shortdesc/edit', [MeController::class, 'editShortDesc'])->name('profile.me.shortdesc.edit')->middleware(['auth', 'verified']);
-Route::post('/profile/me/shortdesc/update', [MeController::class, 'updateShortDesc'])->name('profile.me.shortdesc.update')->middleware(['auth', 'verified']);
-Route::get('/profile/me/experience/add', [MeController::class, 'addExperience'])->name('profile.me.experience.add')->middleware(['auth', 'verified']);
-Route::post('/profile/me/experience/store', [MeController::class, 'storeExperience'])->name('profile.me.experience.store')->middleware(['auth', 'verified']);
-Route::get('/profile/me/experience/{id}/edit', [MeController::class, 'editExperience'])->name('profile.me.experience.edit')->middleware(['auth', 'verified']);
-Route::post('/profile/me/experience/{id}/update', [MeController::class, 'updateExperience'])->name('profile.me.experience.update')->middleware(['auth', 'verified']);
-Route::delete('/profile/me/experience/{id}/delete', [MeController::class, 'deleteExperience'])->name('profile.me.experience.delete')->middleware(['auth', 'verified']);
-Route::get('/profile/me/education/add', [MeController::class, 'addEducation'])->name('profile.me.education.add')->middleware(['auth', 'verified']);
-Route::post('/profile/me/education/store', [MeController::class, 'storeEducation'])->name('profile.me.education.store')->middleware(['auth', 'verified']);
-Route::get('/profile/me/education/{id}/edit', [MeController::class, 'editEducation'])->name('profile.me.education.edit')->middleware(['auth', 'verified']);
-Route::post('/profile/me/education/{id}/update', [MeController::class, 'updateEducation'])->name('profile.me.education.update')->middleware(['auth', 'verified']);
-Route::delete('/profile/me/education/{id}/delete', [MeController::class, 'deleteEducation'])->name('profile.me.education.delete')->middleware(['auth', 'verified']);
-Route::get('/profile/me/project/add', [MeController::class, 'addProject'])->name('profile.me.project.add')->middleware(['auth', 'verified']);
-Route::post('/profile/me/project/store', [MeController::class, 'storeProject'])->name('profile.me.project.store')->middleware(['auth', 'verified']);
-Route::get('/profile/me/project/{id}/edit', [MeController::class, 'editProject'])->name('profile.me.project.edit')->middleware(['auth', 'verified']);
-Route::post('/profile/me/project/{id}/update', [MeController::class, 'updateProject'])->name('profile.me.project.update')->middleware(['auth', 'verified']);
-Route::delete('/profile/me/project/{id}/delete', [MeController::class, 'deleteProject'])->name('profile.me.project.delete')->middleware(['auth', 'verified']);
+Route::middleware(['auth', VerifiedUser::class])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
+    Route::get('/profile/me', [MeController::class, 'index'])->name('profile.me');
+    Route::get('/profile/me/edit', [MeController::class, 'edit'])->name('profile.me.edit');
+    Route::post('/profile/me/update', [MeController::class, 'update'])->name('profile.me.update');
+    Route::get('/profile/me/shortdesc/edit', [MeController::class, 'editShortDesc'])->name('profile.me.shortdesc.edit');
+    Route::post('/profile/me/shortdesc/update', [MeController::class, 'updateShortDesc'])->name('profile.me.shortdesc.update');
+    Route::get('/profile/me/experience/add', [MeController::class, 'addExperience'])->name('profile.me.experience.add');
+    Route::post('/profile/me/experience/store', [MeController::class, 'storeExperience'])->name('profile.me.experience.store');
+    Route::get('/profile/me/experience/{id}/edit', [MeController::class, 'editExperience'])->name('profile.me.experience.edit');
+    Route::post('/profile/me/experience/{id}/update', [MeController::class, 'updateExperience'])->name('profile.me.experience.update');
+    Route::delete('/profile/me/experience/{id}/delete', [MeController::class, 'deleteExperience'])->name('profile.me.experience.delete');
+    Route::get('/profile/me/education/add', [MeController::class, 'addEducation'])->name('profile.me.education.add');
+    Route::post('/profile/me/education/store', [MeController::class, 'storeEducation'])->name('profile.me.education.store');
+    Route::get('/profile/me/education/{id}/edit', [MeController::class, 'editEducation'])->name('profile.me.education.edit');
+    Route::post('/profile/me/education/{id}/update', [MeController::class, 'updateEducation'])->name('profile.me.education.update');
+    Route::delete('/profile/me/education/{id}/delete', [MeController::class, 'deleteEducation'])->name('profile.me.education.delete');
+    Route::get('/profile/me/project/add', [MeController::class, 'addProject'])->name('profile.me.project.add');
+    Route::post('/profile/me/project/store', [MeController::class, 'storeProject'])->name('profile.me.project.store');
+    Route::get('/profile/me/project/{id}/edit', [MeController::class, 'editProject'])->name('profile.me.project.edit');
+    Route::post('/profile/me/project/{id}/update', [MeController::class, 'updateProject'])->name('profile.me.project.update');
+    Route::delete('/profile/me/project/{id}/delete', [MeController::class, 'deleteProject'])->name('profile.me.project.delete');
 
-Route::get('tracer-study', [TracerStudyController::class, 'show'])->middleware(['auth', 'verified']);
+    Route::get('tracer-study', [TracerStudyController::class, 'show'])->name('tracer-study.index');
 
-Route::post('tracer-study', [TracerStudyController::class, 'store'])->name('tracer-study.post')->middleware(['auth', 'verified']);
+    Route::post('tracer-study', [TracerStudyController::class, 'store'])->name('tracer-study.post');
 
-Route::get('/my-networks', [MyNetworkController::class, 'index'])->name('networking')->middleware(['auth', 'verified']);
+    Route::get('/my-networks', [MyNetworkController::class, 'index'])->name('networking');
 
-Route::get('forum-discussion', [ForumController::class, 'show'])->name('forum')->middleware(['auth', 'verified']);
-Route::get('forum-discussion/my-questions', [ForumController::class, 'myQuestions'])->name('forum.my-questions')->middleware(['auth', 'verified']);
-Route::post('forum-discussion', [ForumController::class, 'store'])->name('forum.my-questions.store')->middleware(['auth', 'verified']);
-Route::get('forum-discussion/{id}', [ForumController::class, 'showQuestion'])->name('forum.show')->middleware(['auth', 'verified']);
+    Route::get('forum-discussion', [ForumController::class, 'show'])->name('forum');
+    Route::get('forum-discussion/my-questions', [ForumController::class, 'myQuestions'])->name('forum.my-questions');
+    Route::post('forum-discussion', [ForumController::class, 'store'])->name('forum.my-questions.store');
+    Route::get('forum-discussion/{id}', [ForumController::class, 'showQuestion'])->name('forum.show');
 
-Route::get('events', [EventController::class, 'index'])->name('events')->middleware(['auth', 'verified']);
-Route::post('events/register', [EventController::class, 'register'])->name('events.register')->middleware(['auth', 'verified']);
-Route::get('events/registered', [EventController::class, 'registered'])->name('events.registered')->middleware(['auth', 'verified']);
+    Route::get('events', [EventController::class, 'index'])->name('events');
+    Route::post('events/register', [EventController::class, 'register'])->name('events.register');
+    Route::get('events/registered', [EventController::class, 'registered'])->name('events.registered');
 
-Route::get('job-vacancies', [JobVacancyController::class, 'index'])->name('job-vacancies')->middleware(['auth', 'verified']);
-Route::get('job-vacancies/{id}', [JobVacancyController::class, 'show'])->name('job-vacancies.show')->middleware(['auth', 'verified']);
+    Route::get('job-vacancies', [JobVacancyController::class, 'index'])->name('job-vacancies');
+    Route::get('job-vacancies/{id}', [JobVacancyController::class, 'show'])->name('job-vacancies.show');
+});
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {

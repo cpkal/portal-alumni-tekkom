@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role', // assuming you have a role field
         'email_verified_at',
+        'is_verified',
     ];
 
     /**
@@ -58,5 +59,10 @@ class User extends Authenticatable
     public function alumni()
     {
         return $this->hasOne(Alumni::class);
+    }
+    // has one tracer study
+    public function tracerStudy()
+    {
+        return $this->hasOne(TracerStudy::class);
     }
 }

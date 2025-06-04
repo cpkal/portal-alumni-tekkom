@@ -8,6 +8,21 @@ class JobVacancy extends Model
 {
     protected $table = "job_vacancies";
 
+    protected $fillable = [
+        'job_title',
+        'qualifications',
+        'job_description',
+        'company_name',
+        'employment_type',
+        'job_type',
+        'apply_link',
+        'location',
+        'salary_start',
+        'salary_end',
+        'poster', // Assuming poster is a file path
+        'job_banner', // Assuming job_banner is a file path
+    ];
+
     protected $casts = [
         'salary_start' => 'float',
         'salary_end' => 'float',

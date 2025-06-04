@@ -12,9 +12,17 @@ class ForumController extends Controller
 {
     public function show()
     {
-        $forum_questions = ForumQuestion::with(['tags', 'replies'])->latest()->paginate(10);
+        // user who post question, taga, replies and user who replies
+        $forum_questions = ForumQuestion::with(['user', 'tags', 'replies.alumni'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // get random forum tags
+        $forum_tags = ForumTag::inRandomOrder()->take(10)->get();
+    
         return inertia('alumni/forum', [
             'forum_questions' => $forum_questions,
+            'forum_tags' => $forum_tags,
         ]);
     }
 
@@ -52,5 +60,21 @@ class ForumController extends Controller
         }
         
         return redirect()->route('forum.my-questions')->with('success', 'Pertanyaan berhasil dibuat');
+    }
+
+    public function showQuestion($id)
+    {
+        // get question by id
+        $forum_question = ForumQuestion::with(['user', 'tags', 'replies.alumni'])
+            ->where('id', $id)
+            ->firstOrFail();
+
+        // get random forum tags
+        $forum_tags = ForumTag::inRandomOrder()->take(10)->get();
+
+        return inertia('alumni/detail-forum', [
+            'forum_question' => $forum_question,
+            'forum_tags' => $forum_tags,
+        ]);
     }
 }

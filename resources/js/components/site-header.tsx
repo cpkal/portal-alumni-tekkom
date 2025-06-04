@@ -85,7 +85,7 @@ export function SiteHeader() {
 
         {/* Breadcrumbs */}
 
-        <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+        {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
       </div>
     </header>
   )

@@ -32,6 +32,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { router } from "@inertiajs/react"
 
 export function NavUser({
   user,
@@ -70,20 +71,25 @@ export function NavUser({
             align="end"
             sideOffset={4}
           >
-          
-            
+
+
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Settings />
                 Setting
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.get(route('profile.me'), {
+                })
+              }}>
                 <Eye />
                 View Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              router.post('/logout',)
+            }}>
               <LogOut />
               Log out
             </DropdownMenuItem>

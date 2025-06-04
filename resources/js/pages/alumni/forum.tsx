@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowUp, Bot, BriefcaseBusiness, Code, Flame, Layers, School } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layer } from "recharts";
 import AskQuestion from "@/components/ask-question";
+import ForumReply from "@/components/forum-reply";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -19,7 +20,15 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function ForumPage({ forum_questions }: any) {
+export default function ForumPage({ forum_questions, forum_tags }: any) {
+
+  const goToDetailQuestion = (id: number) => {
+    router.get(`/forum-discussion/${id}`, {}, {
+      preserveScroll: true,
+      preserveState: true,
+    });
+  };
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Tracer Study" />
@@ -29,200 +38,58 @@ export default function ForumPage({ forum_questions }: any) {
           <AskQuestion />
 
           {/* forum questions */}
-          <Card className="bg-background mt-8">
-            <CardHeader>
-              <div className="flex flex-row gap-3 items-start justify-between">
-                <div className="flex items-start gap-4">
-                  <Avatar className="h-8 w-8">
+          {forum_questions.data.map((question: any) => (
+            <Card className="bg-background mt-8" id={question.id} key={question.id}>
+              <div className="hover:cursor-pointer" onClick={() => goToDetailQuestion(question.id)}>
+                <CardHeader>
+                  <div className="flex flex-row gap-3 items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+
+                      <div className="flex items-center">
+                        <p>{question.user.name}</p>
+                        <p className="text-xs">&nbsp; asked on {question.created_at}</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Badge>#careerTalk</Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="flex flex-col gap-2">
+                  {/* question title */}
+                  <h2 className="text-2xl">{question.title}</h2>
+
+                  {/* limit question char and render as html */}
+                  <p className="text-md" dangerouslySetInnerHTML={{ __html: question.question }}></p>
+
+
+                  {/* tags */}
+                  {question.replies.map((reply: any) => (
+                    <ForumReply reply={reply} key={reply.id} />
+                  ))}
+                </CardContent>
+              </div>
+
+              {question.status == 'open' && (
+                <div className="flex flex-row gap-3 items-center px-4">
+                  <Avatar className="h-12 w-12">
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
 
-                  <div className="flex items-center">
-                    <p>Alex Chan</p>
-                    <p className="text-xs">&nbsp; asked on May, 2025</p>
-                  </div>
+                  <Input placeholder="What do you want to ask? Start typing..." />
+
+                  <Button>Post</Button>
                 </div>
-
-                <div>
-                  <Badge>#careerTalk</Badge>
-                </div>
-              </div>
-            </CardHeader>
-
-            <CardContent className="flex flex-col gap-2">
-              {/* answer */}
-              <Card className="bg-background">
-                <div className="flex flex-row">
-                  <div className="mx-auto px-3 gap-1 flex flex-col items-center justify-center">
-                    <ArrowUp />
-                    <p className="text-md">23</p>
-                  </div>
-                  <div>
-                    <CardHeader>
-                      <div className="flex flex-row gap-3 items-start justify-between">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                          </Avatar>
-
-                          <div className="flex items-center">
-                            <p>Goofy</p>
-                            <p className="text-xs">&nbsp; answered on May, 2025</p>
-                          </div>
-                        </div>
-
-                        <div>
-                          <Badge className="bg-green-500">Best Answer</Badge>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="mt-3s">
-                      <p>You could try to applies some CV to some companies. Try upksiling while waiting for another interview to come</p>
-                    </CardContent>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="bg-background">
-                <div className="flex flex-row">
-                  <div className="mx-auto px-3 gap-1 flex flex-col items-center justify-center">
-                    <ArrowUp />
-                    <p className="text-md">11</p>
-                  </div>
-                  <div>
-                    <CardHeader>
-                      <div className="flex flex-row gap-3 items-start justify-between">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                          </Avatar>
-
-                          <div className="flex items-center">
-                            <p>Alex Chan</p>
-                            <p className="text-xs">&nbsp; answered on May, 2025</p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="mt-3s">
-                      <p>You could try to applies some CV to some companies. Try upksiling while waiting for another interview to come</p>
-                    </CardContent>
-                  </div>
-                </div>
-              </Card>
-            </CardContent>
-
-            <div className="flex flex-row gap-3 items-center px-4">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-
-              <Input placeholder="What do you want to ask? Start typing..." />
-
-              <Button>Post</Button>
-            </div>
-          </Card>
-          <Card className="bg-background mt-8">
-            <CardHeader>
-              <div className="flex flex-row gap-3 items-start justify-between">
-                <div className="flex items-start gap-4">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-
-                  <div className="flex items-center">
-                    <p>Alex Chan</p>
-                    <p className="text-xs">&nbsp; asked on May, 2025</p>
-                  </div>
-                </div>
-
-                <div>
-                  <Badge>#careerTalk</Badge>
-                </div>
-              </div>
-            </CardHeader>
-
-            <CardContent className="flex flex-col gap-2">
-              {/* answer */}
-              <Card className="bg-background">
-                <div className="flex flex-row">
-                  <div className="mx-auto px-3 gap-1 flex flex-col items-center justify-center">
-                    <ArrowUp />
-                    <p className="text-md">23</p>
-                  </div>
-                  <div>
-                    <CardHeader>
-                      <div className="flex flex-row gap-3 items-start justify-between">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                          </Avatar>
-
-                          <div className="flex items-center">
-                            <p>Goofy</p>
-                            <p className="text-xs">&nbsp; answered on May, 2025</p>
-                          </div>
-                        </div>
-
-                        <div>
-                          <Badge className="bg-green-500">Best Answer</Badge>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="mt-3s">
-                      <p>You could try to applies some CV to some companies. Try upksiling while waiting for another interview to come</p>
-                    </CardContent>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="bg-background">
-                <div className="flex flex-row">
-                  <div className="mx-auto px-3 gap-1 flex flex-col items-center justify-center">
-                    <ArrowUp />
-                    <p className="text-md">11</p>
-                  </div>
-                  <div>
-                    <CardHeader>
-                      <div className="flex flex-row gap-3 items-start justify-between">
-                        <div className="flex items-start gap-4">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                          </Avatar>
-
-                          <div className="flex items-center">
-                            <p>Alex Chan</p>
-                            <p className="text-xs">&nbsp; answered on May, 2025</p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="mt-3s">
-                      <p>You could try to applies some CV to some companies. Try upksiling while waiting for another interview to come</p>
-                    </CardContent>
-                  </div>
-                </div>
-              </Card>
-            </CardContent>
-
-            <div className="flex flex-row gap-3 items-center px-4">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-
-              <Input placeholder="What do you want to ask? Start typing..." />
-
-              <Button>Post</Button>
-            </div>
-          </Card>
+              )}
+            </Card>
+          ))}
 
           {/* loading animation */}
           <div className="flex justify-center items-center h-24 space-x-2">
@@ -240,18 +107,14 @@ export default function ForumPage({ forum_questions }: any) {
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row gap-2 mt-8">
                   <Flame />
-                  <p className="font-semibold">Trending Tags</p>
+                  <p className="font-semibold">Tags</p>
                   {/* badges */}
                 </div>
 
                 <div className="flex flex-wrap gap-1">
-                  <Badge>#design</Badge>
-                  <Badge>#careers</Badge>
-                  <Badge>#marketing</Badge>
-                  <Badge>#chill</Badge>
-                  {/* add more badges here, and they'll wrap to the next line */}
-                  <Badge>#marketing</Badge>
-                  <Badge>#chill</Badge>
+                  {forum_tags.map((tag: any) => (
+                    <Badge>#{tag.name}</Badge>
+                  ))}
                 </div>
               </div>
             </CardHeader>

@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('alumni_id')->constrained('alumnis')->onDelete('cascade');
             $table->string('event_name')->nullable();
-            $table->string('event_type')->nullable(); // e.g., seminar, workshop, conference
+            $table->string('event_type')->nullable(); // e.g., seminar, workshop, conference, virtual meeting
             $table->string('event_date')->nullable();
             $table->string('event_location')->nullable();
             $table->string('event_description')->nullable();
             $table->string('event_organizer')->nullable();
             $table->string('event_link')->nullable(); // link to event details or registration
             $table->string('event_image')->nullable(); // link to event image
+            $table->boolean('public_can_register')->default(false); // to control visibility
             $table->timestamps();
         });
     }

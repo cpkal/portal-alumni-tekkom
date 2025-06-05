@@ -185,7 +185,7 @@ export default function MePage({
         </div>
 
         <div className="w-1/3">
-          <DetailAlumniCard user={user} isPreview={true} />
+          <DetailAlumniCard alumni={user.alumni} isPreview={true} />
         </div>
       </div>
 

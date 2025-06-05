@@ -28,7 +28,10 @@ class EventController extends Controller
                 $event->is_registered = true;
             }
 
-            return Inertia::render("alumni/events", ["event" => $event]);
+            return Inertia::render("alumni/events", [
+                "event" => $event,
+                "events" => Event::paginate(4),
+            ]);
         }
 
         $event = Event::query();

@@ -100,7 +100,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
             disabled={isSubmitted}
             id="address"
             type="text"
-            defaultValue={isSubmitted ? tracer.addrses : localStorage.getItem('address') ?? ''}
+            defaultValue={isSubmitted ? tracer.address : localStorage.getItem('address') ?? ''}
             onChange={(e) => localStorage.setItem('address', e.target.value)}
             placeholder="Ex. Jl. Panyileukan Gg. Sukarsari"
           />

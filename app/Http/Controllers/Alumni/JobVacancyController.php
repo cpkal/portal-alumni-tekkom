@@ -22,7 +22,10 @@ class JobVacancyController extends Controller
         if ($jobId) {
             $jobVacancy = JobVacancy::where('id', $jobId)->first();
 
-            return Inertia::render("alumni/job-internship", ["job_vacancy" => $jobVacancy]);
+            return Inertia::render("alumni/job-internship", [
+                "job_vacancy" => $jobVacancy,
+                "job_vacancies" => JobVacancy::paginate(4),
+            ]);
         }
 
         $jobVacancy = JobVacancy::query();

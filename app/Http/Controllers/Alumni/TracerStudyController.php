@@ -13,12 +13,13 @@ class TracerStudyController extends Controller
 {
     public function store(Request $request) //storetracerstudyrequest bermasalah
     {
+        
         $tracer = new TracerStudy();
         $tracer->full_name = $request->full_name;
         $tracer->nim = $request->nim;
         $tracer->enrollment_year = $request->enrollment_year;
         $tracer->graduation_year = $request->graduation_year;
-        $tracer->undergraduate_thesis_title = $request->undergraduation_thesis_title;
+        $tracer->undergraduate_thesis_title = $request->undergraduate_thesis_title;
         $tracer->address = $request->address;
         $tracer->active_phone_number = $request->active_phone_number;
         $tracer->email = $request->email;
@@ -28,7 +29,7 @@ class TracerStudyController extends Controller
         $tracer->instagram_name = $request->instagram_name;
 
         $tracer->is_continuing_study = $request->continuing_study == 'yes' ? true : false;
-        if ($request->is_continuing_study == 'yes') {
+        if ($request->continuing_study == 'yes') {
             $tracer->institution_name = $request->institution_name;
             $tracer->major = $request->major;
             $tracer->education_level = $request->education_level;
@@ -36,7 +37,7 @@ class TracerStudyController extends Controller
         }
 
         $tracer->is_continuing_working = $request->continuing_working == 'yes' ? true : false;
-        if ($request->is_continuing_working == 'yes') {
+        if ($request->continuing_working == 'yes') {
             $tracer->company_name = $request->company_name;
             $tracer->company_address    = $request->company_address;
             $tracer->job_position = $request->job_position;

@@ -16,7 +16,8 @@
         </div>
     @endif
 
-    <form action="{{ $beritas ? route('admin.berita.updateBerita', $beritas->id) : route('admin.berita.store') }}" method="POST">
+    <form action="{{ $beritas ? route('admin.berita.updateBerita', $beritas->id) : route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
+        {{-- CSRF token for security --}}
         @csrf
         @if($beritas)
             @method('PUT')

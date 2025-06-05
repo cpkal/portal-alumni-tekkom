@@ -38,7 +38,7 @@
                         <td>{{ $lowongan->id }}</td> 
                         <td>
                           @if($lowongan->poster)
-                            <img src="{{ $lowongan->poster }}" class="rounded" width="32" height="32" alt="poster">
+                            <img src="{{ asset('storage/'. $lowongan->poster) }}" class="rounded" width="32" height="32" alt="poster">
                           @endif
                         </td>
                         <td>{{ $lowongan->company_name }}</td>

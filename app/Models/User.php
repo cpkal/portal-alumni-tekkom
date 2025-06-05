@@ -65,4 +65,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(TracerStudy::class);
     }
+
+    // event participants
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'user_id');
+    }
 }

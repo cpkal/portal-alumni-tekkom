@@ -35,7 +35,7 @@ export default function EventsPage({ events }: any): any {
   // flash success
   useEffect(() => {
     if (events.flash?.success) {
-      
+
     }
   }, [events.flash]);
 
@@ -124,7 +124,6 @@ export default function EventsPage({ events }: any): any {
     }
     // post 
     router.post('/events/register', { event_id: eventId }, {
-      preserveState: true,
       preserveScroll: true,
       onSuccess: () => {
         router.reload();
@@ -226,7 +225,15 @@ export default function EventsPage({ events }: any): any {
                   </CardContent>
 
                   <CardFooter className="flex gap-3">
-                    <Button onClick={() => registerEventNow(a.id)}>Daftar</Button>
+                    {a.is_registered ? (
+                      <Button variant='secondary' disabled>
+                        Terdaftar
+                      </Button>
+                    ) : (
+                      <Button onClick={() => registerEventNow(a.id)}>
+                        Daftar Sekarang
+                      </Button>
+                    )}
                     <Button variant='outline' onClick={() => getDetailEvent(a)}>View details</Button>
                   </CardFooter>
                 </Card>
@@ -276,9 +283,15 @@ export default function EventsPage({ events }: any): any {
                   </CardContent>
 
                   <div className="sticky bottom-0 p-3 bg-background border mt-auto">
-                    <Button className="w-full" onClick={() => registerEventNow(detailEvent.id)}>
-                      Daftar Sekarang
-                    </Button>
+                    {detailEvent.is_registered ? (
+                      <Button variant='secondary' className="w-full" disabled>
+                        Terdaftar
+                      </Button>
+                    ) : (
+                      <Button className="w-full" onClick={() => registerEventNow(detailEvent.id)}>
+                        Daftar Sekarang {detailEvent.is_registered}
+                      </Button>
+                    )}
                   </div>
                 </Card>
               </div>

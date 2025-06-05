@@ -43,6 +43,7 @@ class BeritaController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            // store image to public/news_images
             $imagePath = $request->file('image')->store('news_images', 'public');
             $news->image = $imagePath;
             $news->save();

@@ -25,7 +25,7 @@
                         <th>ID</th>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Content</th>
+                        <th>Is Published</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -36,11 +36,15 @@
                         <td>{{ $berita->id }}</td> 
                         <td>
                           @if($berita->image)
-                            <img src="{{ $berita->poster }}" class="rounded" width="32" height="32" alt="poster">
+                            <img src="{{ asset('storage/' . $berita->image) }}" class="rounded" width="32" height="32" alt="poster">
                           @endif
                         </td>
                         <td>{{ $berita->title }}</td>
-                        <td>{{ $berita->content }}</td>
+                        <td>
+                            <span class="badge {{ $berita->is_published ? 'bg-success' : 'bg-secondary' }}">
+                                {{ $berita->is_published ? 'Published' : 'Draft' }}
+                            </span>
+                        </td>
                         <td>
                             <a href="{{ route('admin.berita.editBerita', $berita->id) }}" class="text-primary me-2">
                                 <i class="bi bi-pencil-square"></i>

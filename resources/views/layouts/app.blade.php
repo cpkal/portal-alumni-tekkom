@@ -33,12 +33,12 @@
       <ul class="nav flex-column mt-4">
         <li class="nav-item mb-2">
           <a href="/admin/dashboard" class="nav-link text-white">
-            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard & Statistik
           </a>
         </li>
         <li class="nav-item mb-2">
-          <a href="/admin/pengguna" class="nav-link text-white">
-            <i class="bi bi-person me-2"></i>Pengguna
+          <a href="/admin/users" class="nav-link text-white">
+            <i class="bi bi-person me-2"></i>User
           </a>
         </li>
         <li class="nav-item mb-2">

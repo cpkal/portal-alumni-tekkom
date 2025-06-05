@@ -22,6 +22,12 @@ class EventController extends Controller
         if ($eventId) {
             $event = Event::where('id', $eventId)->first();
 
+            // add property is_registered to the event
+            $event->is_registered = false;
+            if ($event->participants()->where('user_id', Auth::id())->exists()) {
+                $event->is_registered = true;
+            }
+
             return Inertia::render("alumni/events", ["event" => $event]);
         }
 
@@ -34,7 +40,15 @@ class EventController extends Controller
             $event->where('event_name', 'like', '%' . $search . '%');
         }
 
-        $events = $event->paginate(4);
+        $user = User::find(Auth::id());
+        $events = $event->with(['participants' => function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])->paginate(4);
+
+        foreach ($events as $e) {
+            // if participant for current user exists, mark as registered
+            $e->is_registered = $e->participants->isNotEmpty();
+        }
 
         return Inertia::render("alumni/events", [
             "events" => $events
@@ -44,6 +58,13 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
+
+        // add property is_registered to the event
+        $event->is_registered = false;
+        if ($event->participants()->where('user_id', Auth::id())->exists()) {
+            $event->is_registered = true;
+        }
+
         return Inertia::render("alumni/events", ["event" => $event]);
     }
 

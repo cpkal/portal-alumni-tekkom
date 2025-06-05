@@ -10,6 +10,7 @@ use App\Http\Controllers\Alumni\JobVacancyController;
 use App\Http\Controllers\Alumni\MeController;
 use App\Http\Controllers\Alumni\MyNetworkController;
 use App\Http\Controllers\Alumni\TracerStudyController;
+use App\Http\Controllers\Alumni\UserController;
 use App\Http\Middleware\VerifiedUser;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -63,6 +64,15 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
             'description' => 'Selamat datang di dashboard admin portal alumni',
         ]);
     })->name('admin.dashboard');
+
+    Route::get('/users', [UserController::class, 'tabelUser'])->name('admin.user.tabelUser');
+    Route::get('/users/create', [UserController::class, 'createUser'])->name('admin.user.create');
+    Route::post('/users', [UserController::class, 'storeUser'])->name('admin.user.store');
+    Route::get('/users/{id}/edit', [UserController::class, 'editUser'])->name('admin.user.edit');
+    Route::put('/users/{id}', [UserController::class, 'updateUser'])->name('admin.user.update');
+    Route::delete('/admin/users/{id}', [UserController::class, 'destroyUser'])->name('admin.user.destroy');
+    Route::post('/admin/users/{id}/verify', [UserController::class, 'verifyUser'])->name('admin.user.verify');
+    Route::get('/users/export', [UserController::class, 'export'])->name('admin.user.export');
 
     Route::get('/lowongan', [LokerController::class, 'tabelLoker'])->name('admin.lowongan.tabelLoker');
     Route::get('lowongan/create', [LokerController::class, 'createLoker'])->name('admin.lowongan.createLoker');

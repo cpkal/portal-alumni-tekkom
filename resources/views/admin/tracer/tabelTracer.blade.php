@@ -26,8 +26,10 @@
                         <th>NIM</th>
                         <th>Tahun Lulus</th>
                         <th>Nomor HP</th>
-                        {{-- <th>Status</th> --}}
                         <th>Diisi Pada</th>
+                        <th>Studi Lanjut?</th>
+                        <th>Bekerja?</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -39,19 +41,49 @@
                         <td>{{ $tracer->nim }}</td>
                         <td>{{ $tracer->graduation_year }}</td>
                         <td>{{ $tracer->active_phone_number }}</td>
-                        {{-- <td>{{ $tracer->status }}</td> --}}
+                        
                         <td>{{ $tracer->created_at }}</td>
                         <td>
-                            <a href="{{ route('admin.berita.editBerita', $tracer->id) }}" class="text-primary me-2">
-                                <i class="bi bi-pencil-square"></i>
+                            @if ($tracer->is_continuing_study)
+                                <span class="badge bg-success">Ya</span>
+                            @else
+                                <span class="badge bg-danger">Tidak</span>
+                            @endif
+                        </td>
+
+                        <td>
+                            @if ($tracer->is_continuing_working)
+                                <span class="badge bg-success">Ya</span>
+                            @else
+                                <span class="badge bg-danger">Tidak</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($tracer->status == 'submitted')
+                                <span class="badge bg-warning">Submitted</span>
+                            @elseif ($tracer->status == 'reviewed')
+                                <span class="badge bg-success">Reviewed</span>
+                            @elseif ($tracer->status == 'rejected')
+                                <span class="badge bg-danger">Rejected</span>
+                            @else
+                                <span class="badge bg-secondary">Unknown</span>
+                            @endif
+                        </td>
+                        <td>
+                            {{-- approve --}}
+                            <a href="{{ route('admin.tracer.review', $tracer->id) }}" class="text-success me-2" onclick="return confirm('Apakah Anda yakin ingin menyetujui tracer study ini?')">
+                                <i class="bi bi-check-circle"></i>
                             </a>
-                            <form action="{{ route('admin.berita.destroy', $tracer->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-link text-danger p-0" onclick="return confirm('Hapus berita ini?')">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </form>
+
+                            {{-- reject --}}
+                            <a href="{{ route('admin.tracer.reject', $tracer->id) }}" class="text-danger me-2" onclick="return confirm('Apakah Anda yakin ingin menolak tracer study ini?')">
+                                <i class="bi bi-x-circle"></i>
+                            </a>
+
+                            {{-- see detail --}}
+                            <a href="{{ route('admin.tracer.show', $tracer->id) }}" class="text-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
                         </td>
                     </tr>
                     @empty

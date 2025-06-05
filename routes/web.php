@@ -88,10 +88,16 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::put('/berita/{id}', [BeritaController::class, 'updateBerita'])->name('admin.berita.updateBerita');
     Route::delete('/admin/berita/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
 
-    Route::get('/tracer', [TracerController::class, 'tabel'])->name('admin.tracer.tabel');
+    Route::get('/tracer', [TracerController::class, 'tabel'])->name('admin.tracer.tabelTracer');
     Route::get('/tracer/{id}/edit', [TracerController::class, 'edit'])->name('admin.tracer.edit');
     Route::put('/tracer/{id}', [TracerController::class, 'update'])->name('admin.tracer.update');
     Route::delete('/admin/tracer/{id}', [TracerController::class, 'destroy'])->name('admin.tracer.destroy');
+    
+    // approve, reject, show
+    Route::get('/tracer/{id}/review', [TracerController::class, 'review'])->name('admin.tracer.review');
+    Route::get('/tracer/{id}/reject', [TracerController::class, 'reject'])->name('admin.tracer.reject');
+    Route::get('/tracer/{id}/show', [TracerController::class, 'show'])->name('admin.tracer.show');
+    Route::get('/tracer/export', [TracerController::class, 'export'])->name('admin.tracer.export');
 });
 
 require __DIR__ . '/settings.php';

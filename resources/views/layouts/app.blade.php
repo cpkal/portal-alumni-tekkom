@@ -33,7 +33,7 @@
       <ul class="nav flex-column mt-4">
         <li class="nav-item mb-2">
           <a href="/admin/dashboard" class="nav-link text-white">
-            <i class="bi bi-speedometer2 me-2"></i>Dashboard & Statistik
+            <i class="bi bi-speedometer2 me-2"></i>Dasbor & Stats
           </a>
         </li>
         <li class="nav-item mb-2">
@@ -62,7 +62,7 @@
           </a>
         </li>
         <li class="nav-item mb-2">
-          <a href="/admin/forum" class="nav-link text-white">
+          <a href="{{ route('forum') }}" class="nav-link text-white">
             <i class="bi bi-chat-dots me-2"></i>Forum
           </a>
         </li>

@@ -12,6 +12,7 @@ import { Layer } from "recharts";
 import AskQuestion from "@/components/ask-question";
 import ForumReply from "@/components/forum-reply";
 import AddReply from "@/components/add-reply";
+import { useState } from "react";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -22,6 +23,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function DetailForumPage({ forum_question, forum_tags }: any) {
+  const [searchQuestionText, setSearchEventText] = useState('');
+  const [tag, setTag] = useState('');
+
+  const filterQuestions = () => {
+    window.location.href = route('forum', {
+      search: searchQuestionText,
+      tag: tag,
+      // eventType: eventType, // Uncomment if you have eventType
+    });
+  };
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={forum_question.title} />
@@ -81,7 +93,15 @@ export default function DetailForumPage({ forum_question, forum_tags }: any) {
         <div className="mr-3 w-1/3">
           <Card className="bg-background sticky top-16">
             <CardHeader className="">
-              <Input placeholder="Explore question around the world" />
+              <Input placeholder="Explore question around the world"
+                value={searchQuestionText}
+                onChange={(e) => setSearchEventText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    filterQuestions();
+                  }
+                }}
+              />
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row gap-2 mt-8">
                   <Flame />
@@ -91,7 +111,10 @@ export default function DetailForumPage({ forum_question, forum_tags }: any) {
 
                 <div className="flex flex-wrap gap-1">
                   {forum_tags.map((tag: any) => (
-                    <Badge>#{tag.name}</Badge>
+                    <Badge className="hover:cursor-pointer" onClick={() => {
+                      setTag(`${tag.name}`);
+                      filterQuestions();
+                    }}>#{tag.name}</Badge>
                   ))}
                 </div>
               </div>

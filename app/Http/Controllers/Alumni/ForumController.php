@@ -84,7 +84,6 @@ class ForumController extends Controller
 
     public function showQuestion($id)
     {
-        // get question by id and sort replies by total votes
         $forum_question = ForumQuestion::with([
             'user',
             'tags',
@@ -97,6 +96,9 @@ class ForumController extends Controller
             ->orderBy('created_at', 'desc')
             ->where('id', $id)
             ->firstOrFail();
+
+        // update view
+        $forum_question->increment('views');
 
         // get random forum tags
         $forum_tags = ForumTag::inRandomOrder()->take(10)->get();

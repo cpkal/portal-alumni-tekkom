@@ -7,10 +7,10 @@ import { BreadcrumbItem } from "@/types";
 import { Head, router } from "@inertiajs/react";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowUp, Bot, BriefcaseBusiness, Code, Flame, Layers, School } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Layer } from "recharts";
 import AskQuestion from "@/components/ask-question";
 import ForumReply from "@/components/forum-reply";
+import { useEffect, useRef, useState } from "react";
+import LoadingDots from "@/components/loading-dots";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -21,6 +21,87 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ForumPage({ forum_questions, forum_tags }: any) {
+  const [isLoading, setLoading] = useState(false);
+  const [loadingInfiniteScroll, setLoadingInfiniteScroll] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
+  const [nextPageUrl, setNextPageUrl] = useState(forum_questions.next_page_url);
+  const [forumQuestions, setForumQuestions] = useState(forum_questions.data);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const [searchQuestionText, setSearchEventText] = useState('');
+  const [tag, setTag] = useState('');
+
+  // flash success
+  useEffect(() => {
+    if (forum_questions.flash?.success) {
+
+    }
+  }, [forum_questions.flash]);
+
+  const loadMore = () => {
+    if (!nextPageUrl || loadingInfiniteScroll) {
+      return;
+    }
+    setLoadingInfiniteScroll(true);
+    router.get(`${nextPageUrl}`, {}, {
+      preserveState: true,
+      preserveScroll: true,
+      only: ['forum_questions'],
+      onSuccess: (page) => {
+        const newData = (page.props.forum_questions as any).data;
+        const newNext = (page.props.forum_questions as any).next_page_url;
+        setForumQuestions((prev: any) => [...prev, ...newData]);
+        setNextPageUrl(newNext);
+        setLoadingInfiniteScroll(false);
+      },
+    });
+  }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [loaderRef, nextPageUrl]);
+
+  const filterQuestions = () => {
+    const filterString = getFilterString();
+
+    router.get(`/forum-discussion?${filterString}`, {}, {
+      preserveState: true,
+      preserveScroll: true,
+      only: ['forum_questions'],
+      onSuccess: (page) => {
+        const x = page.props.forum_questions as any;
+        setForumQuestions(x.data);
+        setNextPageUrl(x.next_page_url);
+        setShowDetail(false);
+      },
+    });
+  };
+
+  const getFilterString = () => {
+    const params = new URLSearchParams();
+    if (searchQuestionText) params.append('search', searchQuestionText);
+    if (tag) params.append('tag', tag);
+
+    return params.toString(); // hasil: search=foo&jobType=remote
+  };
+
 
   const goToDetailQuestion = (id: number) => {
     router.get(`/forum-discussion/${id}`, {}, {
@@ -38,8 +119,8 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
           <AskQuestion />
 
           {/* forum questions */}
-          {forum_questions.data.map((question: any) => (
-            <Card className="bg-background mt-8" id={question.id} key={question.id}>
+          {forumQuestions.map((question: any) => (
+            <Card className="bg-background mt-4" id={question.id} key={question.id}>
               <div className="hover:cursor-pointer" onClick={() => goToDetailQuestion(question.id)}>
                 <CardHeader>
                   <div className="flex flex-row gap-3 items-start justify-between">
@@ -76,7 +157,7 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
                 </CardContent>
               </div>
 
-              {question.status == 'open' && (
+              {/* {question.status == 'open' && (
                 <div className="flex flex-row gap-3 items-center px-4">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src="https://github.com/shadcn.png" />
@@ -87,23 +168,27 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
 
                   <Button>Post</Button>
                 </div>
-              )}
+              )} */}
             </Card>
           ))}
 
-          {/* loading animation */}
-          <div className="flex justify-center items-center h-24 space-x-2">
-            <div className="w-4 h-4 bg-foreground rounded-full animate-[ping_0.9s_infinite]"></div>
-            <div className="w-4 h-4 bg-foreground rounded-full animate-[ping_0.9s_0.15s_infinite]"></div>
-            <div className="w-4 h-4 bg-foreground rounded-full animate-[ping_0.9s_0.3s_infinite]"></div>
-          </div>
+          {loadingInfiniteScroll && <LoadingDots />}
+          <div ref={loaderRef} className="h-10" />
         </div>
 
         {/* search and filters card */}
         <div className="mr-3 w-1/3">
           <Card className="bg-background sticky top-16">
             <CardHeader className="">
-              <Input placeholder="Explore question around the world" />
+              <Input placeholder="Explore question around the world" 
+                value={searchQuestionText}
+                onChange={(e) => setSearchEventText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    filterQuestions();
+                  }
+                }}
+              />
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row gap-2 mt-8">
                   <Flame />
@@ -113,7 +198,10 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
 
                 <div className="flex flex-wrap gap-1">
                   {forum_tags.map((tag: any) => (
-                    <Badge>#{tag.name}</Badge>
+                    <Badge className="hover:cursor-pointer" onClick={() => {
+                      setTag(`${tag.name}`);
+                      filterQuestions();
+                    }}>#{tag.name}</Badge>
                   ))}
                 </div>
               </div>

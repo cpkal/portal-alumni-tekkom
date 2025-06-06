@@ -91,7 +91,7 @@ export default function DetailForumPage({ forum_question, forum_tags }: any) {
 
                 <div className="flex flex-wrap gap-1">
                   {forum_tags.map((tag: any) => (
-                    <Badge key={tag.id}>#{tag.name}</Badge>
+                    <Badge>#{tag.name}</Badge>
                   ))}
                 </div>
               </div>

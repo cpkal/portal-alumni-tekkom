@@ -13,10 +13,29 @@ class ForumController extends Controller
 {
     public function show()
     {
+        $search = request('search');
+        $tag = request('tag');
         // user who post question, taga, replies and user who replies
-        $forum_questions = ForumQuestion::with(['user', 'tags', 'replies.alumni'])
+        $forum_questions = ForumQuestion::with([
+            'user',
+            'tags',
+            'replies' => function ($query) {
+                $query->with('alumni')
+                    ->orderBy('total_votes', 'desc')->limit(1);
+            },
+            'replies.alumni'
+        ])
+            ->when($tag, function ($query, $tag) {
+                return $query->whereHas('tags', function ($q) use ($tag) {
+                    $q->where('name', 'like', '%' . $tag . '%');
+                });
+            })
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            })
+            ->paginate(4);
 
         // get random forum tags
         $forum_tags = ForumTag::inRandomOrder()->take(10)->get();

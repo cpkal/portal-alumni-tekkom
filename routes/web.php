@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\LokerController;
 use App\Http\Controllers\Admin\TracerController;
 use App\Http\Controllers\Alumni\DashboardController;
@@ -48,6 +49,9 @@ Route::middleware(['auth', VerifiedUser::class])->group(function () {
     Route::get('forum-discussion/my-questions', [ForumController::class, 'myQuestions'])->name('forum.my-questions');
     Route::post('forum-discussion', [ForumController::class, 'store'])->name('forum.my-questions.store');
     Route::get('forum-discussion/{id}', [ForumController::class, 'showQuestion'])->name('forum.show');
+    Route::post('forum-discussion/{id}/answer', [ForumController::class, 'storeAnswer'])->name('forum.my-questions.answer.store');
+    // vote
+    Route::post('forum-discussion/{id}/vote', [ForumController::class, 'vote'])->name('forum.vote');
 
     Route::get('events', [EventController::class, 'index'])->name('events');
     Route::post('events/register', [EventController::class, 'register'])->name('events.register');
@@ -98,6 +102,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/tracer/{id}/reject', [TracerController::class, 'reject'])->name('admin.tracer.reject');
     Route::get('/tracer/{id}/show', [TracerController::class, 'show'])->name('admin.tracer.show');
     Route::get('/tracer/export', [TracerController::class, 'export'])->name('admin.tracer.export');
+
+    Route::resource('events', AdminEventController::class);
 });
 
 require __DIR__ . '/settings.php';

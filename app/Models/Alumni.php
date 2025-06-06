@@ -38,5 +38,11 @@ class Alumni extends Model
     {
         return $this->hasMany(AlumniProject::class, 'alumni_id');
     }
+
+    // has many forum replies
+    public function forumReplies()
+    {
+        return $this->hasMany(ForumReply::class, 'alumni_id');
+    }
     
 }

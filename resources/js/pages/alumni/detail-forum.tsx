@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Layer } from "recharts";
 import AskQuestion from "@/components/ask-question";
 import ForumReply from "@/components/forum-reply";
+import AddReply from "@/components/add-reply";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -60,6 +61,9 @@ export default function DetailForumPage({ forum_question, forum_tags }: any) {
             </CardFooter>
           </Card>
 
+          {/* add reply */}
+          <AddReply className="mt-4 bg-background" forumId={forum_question.id} />
+
           <p className="m-4">Jawaban {forum_question.replies.length}</p>
 
           {/* if zero show now replies msg */}
@@ -87,7 +91,7 @@ export default function DetailForumPage({ forum_question, forum_tags }: any) {
 
                 <div className="flex flex-wrap gap-1">
                   {forum_tags.map((tag: any) => (
-                    <Badge>#{tag.name}</Badge>
+                    <Badge key={tag.id}>#{tag.name}</Badge>
                   ))}
                 </div>
               </div>

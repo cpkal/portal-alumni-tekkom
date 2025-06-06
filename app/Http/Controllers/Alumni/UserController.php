@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Alumni;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserVerifiedMail;
 use App\Models\Alumni;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -112,6 +114,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->is_verified = true;
         $user->save();
+
+        Mail::to($user->email)->send(new UserVerifiedMail($user));
+        //nanti ubah jadi queue
 
         return redirect()->route('admin.user.tabelUser')->with('success', 'User berhasil diverifikasi.');
     }

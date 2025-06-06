@@ -14,7 +14,18 @@ use App\Http\Controllers\Alumni\TracerStudyController;
 use App\Http\Controllers\Alumni\UserController;
 use App\Http\Middleware\VerifiedUser;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
+Route::get('/home', function () {
+    return view('publik.dashboard');
+})->name('index');
+
+Route::get('/about', function () {
+    return view('publik.tentang');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('publik.kontak');
+})->name('contact');
 
 Route::middleware(['auth', VerifiedUser::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
@@ -103,7 +114,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/tracer/{id}/show', [TracerController::class, 'show'])->name('admin.tracer.show');
     Route::get('/tracer/export', [TracerController::class, 'export'])->name('admin.tracer.export');
 
-    Route::resource('events', AdminEventController::class);
+    Route::resource('events', AdminEventController::class)
+        ->names('admin.events')
+        ->parameters(['events' => 'id'])
+        ->except(['show']);
 });
 
 require __DIR__ . '/settings.php';

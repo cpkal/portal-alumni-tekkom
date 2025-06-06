@@ -36,10 +36,10 @@ export function SiteHeader() {
         {/* appbar logo */}
         <Link href={route('home')}>
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
-              <img src="/logo.svg" alt="Logo" className="h-6 w-6" />
+            <div className="flex h-8 w-12 items-center justify-center rounded-md bg-muted text-muted-foreground">
+              <img src="/images/logo_tekkom-removebg-preview.png" alt="Logo" className="h-6 w-12" />
             </div>
-            <p>Portal Alumni TEKOM</p>
+            <p className="font-semibold text-primary">Portal Alumni TEKOM</p>
           </div>
         </Link>
 

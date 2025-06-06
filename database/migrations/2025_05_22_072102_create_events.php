@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('event_organizer')->nullable();
             $table->string('event_link')->nullable(); // link to event details or registration
             $table->string('event_image')->nullable(); // link to event image
-            $table->boolean('public_can_register')->default(false); // to control visibility
             $table->timestamps();
         });
     }

@@ -19,11 +19,20 @@
                 </div>
             @endif
 
-            <form action="{{ isset($events) ? route('admin.events.update', $events->id) : route('admin.events.store') }}" method="POST">
+            <form action="{{ isset($events) ? route('admin.events.update', $events->id) : route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if(isset($events)) @method('PUT') @endif
 
                 <div class="row g-3">
+                    {{-- image --}}
+                    <div class="col-md-6">
+                        <label for="event_image" class="form-label">Gambar Event</label>
+                        <input type="file" name="event_image" class="form-control" accept="image/*">
+                        @if(isset($events) && $events->event_image)
+                            <img src="{{ asset('storage/' . $events->event_image) }}" alt="Event Image" class="img-thumbnail mt-2" style="max-width: 200px;">
+                        @endif
+                    </div>
+
                     <div class="col-md-6">
                         <label for="event_name" class="form-label">Nama Event</label>
                         <input type="text" name="event_name" class="form-control" value="{{ old('event_name', $events->event_name ?? '') }}">

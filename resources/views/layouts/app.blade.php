@@ -47,7 +47,7 @@
           </a>
         </li>
         <li class="nav-item mb-2">
-          <a href="/admin/acara" class="nav-link text-white">
+          <a href="/admin/events" class="nav-link text-white">
             <i class="bi bi-calendar-event me-2"></i>Acara
           </a>
         </li>
@@ -67,6 +67,14 @@
           </a>
         </li>
       </ul>
+
+      {{-- logut --}}
+      <form action="{{ route('logout') }}" method="POST" class="mt-4">
+        @csrf
+        <button type="submit" class="btn btn-danger w-100">
+          <i class="bi bi-box-arrow-right me-2"></i>Keluar
+        </button>
+      </form>
     </nav>
 
     <!-- Main Content -->

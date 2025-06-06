@@ -74,12 +74,15 @@ export function NavUser({
 
 
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.get(route('profile.edit'), {})
+              }}>
                 <Settings />
                 Setting
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => {
                 router.get(route('profile.me'), {
+
                 })
               }}>
                 <Eye />

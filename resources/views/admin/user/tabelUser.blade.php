@@ -60,12 +60,15 @@
                             {{-- button verifikasi --}}
                             {{-- button edit --}}
                             {{-- button verifikasi --}}
+                            @if(!$user->is_verified && $user->role == 'alumni')
                             <form action="{{ route('admin.user.verify', $user->id) }}" method="POST" class="d-inline">
                                 @csrf
-                                <button class="btn btn-link text-success p-0" onclick="return confirm('Verifikasi akun ini?')">
+                                <button class="btn btn-link text-success p-0" onclick="return confirm('Verifikasi user ini?')">
                                     <i class="bi bi-check-circle"></i>
                                 </button>
                             </form>
+                            @endif
+                            {{-- button edit --}}
                             <a href="{{ route('admin.user.edit', $user->id) . '?acc_type=' . $user->role }}" class="text-primary me-2">
                                 <i class="bi bi-pencil-square"></i>
                             </a>

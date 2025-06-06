@@ -55,9 +55,9 @@
                     <td>{{ $event->id }}</td>
                     <td>{{ $event->event_name }}</td>
                     <td>{{ $event->event_type }}</td>
-                    <td>{{ $event->event_date->format('Y-m-d') }}</td>
+                    <td>{{ $event->event_date }}</td>
                     <td>
-                        {{ $event->event_time ? \Carbon\Carbon::createFromFormat('H:i:s', $event->event_time)->format('H:i') : '-' }}
+                        {{ $event->event_time }}
                     </td>
                     <td>{{ $event->event_location }}</td>
                     <td>{{ $event->event_organizer }}</td>
@@ -102,7 +102,7 @@
 
                                 @if ($event->event_image)
                                     <p><strong>Gambar Event:</strong></p>
-                                    <img src="{{ $event->event_image }}" alt="Event Image" class="img-fluid rounded">
+                                    <img src="{{ asset('storage/' . $event->event_image) }}" alt="Event Image" class="img-fluid rounded">
                                 @endif
                             </div>
                         </div>

@@ -33,6 +33,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'event_name' => 'required',
             'event_type' => 'required',
             'event_date' => 'required|date',
@@ -44,7 +45,18 @@ class EventController extends Controller
             'event_time' => 'nullable|date_format:H:i',
         ]);
 
+        $imagePath = '';
+
+        // Handle file upload for event_image
+        if ($request->hasFile('event_image')) {
+            $imagePath = $request->file('event_image')->store('events', 'public');
+            $request->merge(['event_image' => 'storage/' . $imagePath]);
+        } else {
+            $request->merge(['event_image' => null]);
+        }
+
         Event::create([
+            'event_image' => $imagePath,
             'event_name' => $request->event_name,
             'event_type' => $request->event_type,
             'event_date' => $request->event_date,
@@ -70,6 +82,7 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         $request->validate([
+            'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'event_name' => 'required',
             'event_type' => 'required',
             'event_date' => 'required|date',
@@ -81,7 +94,18 @@ class EventController extends Controller
             'event_time' => 'nullable|date_format:H:i',
         ]);
 
+        $imagePath = '';
+
+        // Handle file upload for event_image
+        if ($request->hasFile('event_image')) {
+            $imagePath = $request->file('event_image')->store('events', 'public');
+            $request->merge(['event_image' => 'storage/' . $imagePath]);
+        } else {
+            $request->merge(['event_image' => $event->event_image]); // Keep the existing image if not updated
+        }
+
         $event->update([
+            'event_image' => $imagePath,
             'event_name' => $request->event_name,
             'event_type' => $request->event_type,
             'event_date' => $request->event_date,

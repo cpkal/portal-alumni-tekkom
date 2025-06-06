@@ -6,8 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { AvatarImage } from '@/components/ui/avatar';
-import { Check, BookOpenCheck, MessagesSquare, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Check, BookOpenCheck, MessagesSquare } from 'lucide-react';
 
 
 const breadcrumbs: BreadcrumbItem[] = [

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\LokerController;
 use App\Http\Controllers\Admin\TracerController;
@@ -80,12 +81,7 @@ Route::middleware(['auth', VerifiedUser::class])->group(function () {
 });
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard', [
-            'title' => 'Dashboard Admin',
-            'description' => 'Selamat datang di dashboard admin portal alumni',
-        ]);
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/users', [UserController::class, 'tabelUser'])->name('admin.user.tabelUser');
     Route::get('/users/create', [UserController::class, 'createUser'])->name('admin.user.create');

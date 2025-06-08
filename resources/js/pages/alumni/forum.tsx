@@ -4,13 +4,17 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowUp, Bot, BriefcaseBusiness, Code, Flame, Layers, School } from "lucide-react";
+import { ArrowUp, Bot, BriefcaseBusiness, Code, Filter, Flame, Layers, School, Trash } from "lucide-react";
 import AskQuestion from "@/components/ask-question";
 import ForumReply from "@/components/forum-reply";
 import { useEffect, useRef, useState } from "react";
 import LoadingDots from "@/components/loading-dots";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -28,8 +32,14 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
   const [forumQuestions, setForumQuestions] = useState(forum_questions.data);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
+  const [removeReason, setRemoveReason] = useState('all');
+  const [otherReason, setOtherReason] = useState('');
+
   const [searchQuestionText, setSearchEventText] = useState('');
   const [tag, setTag] = useState('');
+
+  const { auth }: any = usePage().props;
+  const user = auth.user;
 
   // flash success
   useEffect(() => {
@@ -110,6 +120,23 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
     });
   };
 
+  const handleRemovePost = (id: number) => {
+    router.post(`/forum-discussion/${id}/delete`, {
+      reason: removeReason === 'other' ? otherReason : removeReason,
+    }, {
+      preserveScroll: true,
+      preserveState: true,
+      onSuccess: () => {
+        // Remove post from forumQuestions state
+        setForumQuestions((prev: any) => prev.filter((question: any) => question.id !== id));
+      },
+      onError: (error) => {
+        console.error('Gagal menghapus:', error);
+        alert('Gagal menghapus. Coba lagi.');
+      },
+    });
+  };
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Tracer Study" />
@@ -120,44 +147,107 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
 
           {/* forum questions */}
           {forumQuestions.map((question: any) => (
-            <Card className="bg-background mt-4" id={question.id} key={question.id}>
-              <div className="hover:cursor-pointer" onClick={() => goToDetailQuestion(question.id)}>
-                <CardHeader>
-                  <div className="flex flex-row gap-3 items-start justify-between">
-                    <div className="flex items-start gap-4">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
-                      </Avatar>
+            <>
+              {user.role === 'admin' && (
+                <div className="flex items-center justify-between gap-2 border translate-y-6 rounded-t-lg p-2 bg-background mb-4">
+                  {/* admin moderation (delete post) */}
+                  <p>Moderasi</p>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button variant="destructive" className="flex items-center gap-2">
+                        <Trash className="h-4 w-4" />
+                        Hapus
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle className="flex gap-2 items-center"><Filter /> Hapus postingan? </DialogTitle>
+                        <DialogDescription>
+                          Pilih alasan mengapa postingan ini dihapus. Pastikan untuk memberikan alasan yang sesuai agar pengguna memahami tindakan ini.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4">
+                        <Label htmlFor="job-type" className="block mb-2">Alasan dihapus</Label>
+                        <Select value={removeReason} defaultValue="all" onValueChange={(value) => setRemoveReason(value)}>
+                          <SelectTrigger >
+                            <SelectValue placeholder="Theme" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="spam">Spam</SelectItem>
+                            <SelectItem value="inappropriate">Konten tidak pantas</SelectItem>
+                            <SelectItem value="duplicate">Duplikat</SelectItem>
+                            <SelectItem value="off-topic">Tidak relevan</SelectItem>
+                            <SelectItem value="copyright">Pelanggaran hak cipta</SelectItem>
+                            <SelectItem value="misinformation">Informasi salah</SelectItem>
+                            <SelectItem value="hate-speech">Ujaran kebencian</SelectItem>
+                            <SelectItem value="harassment">Pelecehan</SelectItem>
+                            <SelectItem value="legal-issue">Masalah hukum</SelectItem>
+                            <SelectItem value="other">Lainnya</SelectItem>
+                          </SelectContent>
+                        </Select>
 
-                      <div className="flex items-center">
-                        <p>{question.user.name}</p>
-                        <p className="text-xs">&nbsp; asked on {question.created_at}</p>
+                        {/* if lainnya buat teksbox */}
+                        {removeReason === 'other' && (
+                          <Input
+                            type="text"
+                            id="other-reason"
+                            className="bg-background"
+                            placeholder="Masukkan alasan lainnya"
+                            value={otherReason}
+                            onChange={(e) => setOtherReason(e.target.value)}
+                          />
+                        )}
+                      </div>
+                      <DialogFooter>
+                        <DialogClose className="w-full" onClick={() => handleRemovePost(question.id)}>
+                          <Button variant={'default'} className="w-full">
+                            Simpan
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                </div>
+              )}
+              <Card className="bg-background mb-4" id={question.id} key={question.id}>
+                <div className="hover:cursor-pointer" onClick={() => goToDetailQuestion(question.id)}>
+                  <CardHeader>
+                    <div className="flex flex-row gap-3 items-start justify-between">
+                      <div className="flex items-start gap-4">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src="https://github.com/shadcn.png" />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+
+                        <div className="flex items-center">
+                          <p>{question.user.name}</p>
+                          <p className="text-xs">&nbsp; asked on {question.created_at}</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Badge>#careerTalk</Badge>
                       </div>
                     </div>
+                  </CardHeader>
 
-                    <div>
-                      <Badge>#careerTalk</Badge>
-                    </div>
-                  </div>
-                </CardHeader>
+                  <CardContent className="flex flex-col gap-2">
+                    {/* question title */}
+                    <h2 className="text-2xl">{question.title}</h2>
 
-                <CardContent className="flex flex-col gap-2">
-                  {/* question title */}
-                  <h2 className="text-2xl">{question.title}</h2>
-
-                  {/* limit question char and render as html */}
-                  <p className="text-md" dangerouslySetInnerHTML={{ __html: question.question }}></p>
+                    {/* limit question char and render as html */}
+                    <p className="text-md" dangerouslySetInnerHTML={{ __html: question.question }}></p>
 
 
-                  {/* tags */}
-                  {question.replies.map((reply: any) => (
-                    <ForumReply reply={reply} key={reply.id} />
-                  ))}
-                </CardContent>
-              </div>
+                    {/* tags */}
+                    {question.replies.map((reply: any) => (
+                      <ForumReply reply={reply} key={reply.id} />
+                    ))}
+                  </CardContent>
+                </div>
 
-              {/* {question.status == 'open' && (
+                {/* {question.status == 'open' && (
                 <div className="flex flex-row gap-3 items-center px-4">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src="https://github.com/shadcn.png" />
@@ -169,7 +259,8 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
                   <Button>Post</Button>
                 </div>
               )} */}
-            </Card>
+              </Card>
+            </>
           ))}
 
           {loadingInfiniteScroll && <LoadingDots />}
@@ -180,7 +271,7 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
         <div className="mr-3 w-1/3">
           <Card className="bg-background sticky top-16">
             <CardHeader className="">
-              <Input placeholder="Explore question around the world" 
+              <Input placeholder="Explore question around the world"
                 value={searchQuestionText}
                 onChange={(e) => setSearchEventText(e.target.value)}
                 onKeyDown={(e) => {
@@ -198,7 +289,7 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
 
                 <div className="flex flex-wrap gap-1">
                   {forum_tags.map((tag: any) => (
-                    <Badge className="hover:cursor-pointer" onClick={() => {
+                    <Badge className="hover:cursor-pointer" key={tag.id} onClick={() => {
                       setTag(`${tag.name}`);
                       filterQuestions();
                     }}>#{tag.name}</Badge>

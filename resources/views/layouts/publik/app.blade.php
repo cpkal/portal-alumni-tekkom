@@ -155,13 +155,13 @@
     <div class="container d-flex justify-content-between align-items-center">
       <!-- Kiri -->
       <div class="d-flex gap-3">
-        <a href="{{ url('publik/tentang-kami') }}" class="nav-link">
+        <a href="{{ route('about') }}" class="nav-link">
           <i class="bi bi-info-circle me-1"></i>Tentang Kami
         </a>
-        <a href="{{ $isHome ? '#statistik' : url('/#statistik') }}" class="nav-link">
+        <a href="{{ route('statistik') }}" class="nav-link">
           <i class="bi bi-graph-up me-1"></i>Statistik
         </a>
-        <a href="{{ $isHome ? '#direktori' : url('/#direktori') }}" class="nav-link">
+        <a href="{{ route('direktori.index') }}" class="nav-link">
           <i class="bi bi-people me-1"></i>Alumni
         </a>
         <a href="{{ $isHome ? '#berita' : url('/#berita') }}" class="nav-link">
@@ -171,7 +171,7 @@
 
       <!-- Logo tengah -->
       <div>
-        <a href="{{ $isHome ? '#beranda' : url('/#beranda') }}" class="navbar-brand">
+        <a href="{{ route('index') }}" class="navbar-brand">
           <img src="/images/logo_tekkom-removebg-preview.png" alt="Logo TEKKOM">
         </a>
       </div>
@@ -187,7 +187,7 @@
         <a href="{{ $isHome ? '#magang' : url('/#magang') }}" class="nav-link">
           <i class="bi bi-mortarboard me-1"></i>Magang
         </a>
-        <a href="{{ url('publik/kontak-section') }}" class="nav-link">
+        <a href="{{ route('contact') }}" class="nav-link">
           <i class="bi bi-envelope me-1"></i>Kontak
         </a>
       </div>
@@ -197,7 +197,13 @@
   
   <!-- Konten -->
   @yield('content')
+
+  <!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
   @include('layouts.publik.footer')
+  
 
 
 </body>

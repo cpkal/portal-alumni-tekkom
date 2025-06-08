@@ -12,12 +12,18 @@ use App\Http\Controllers\Alumni\MeController;
 use App\Http\Controllers\Alumni\MyNetworkController;
 use App\Http\Controllers\Alumni\TracerStudyController;
 use App\Http\Controllers\Alumni\UserController;
+use App\Http\Controllers\BeritaController as ControllersBeritaController;
+use App\Http\Controllers\DirektoriController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StatistikController;
 use App\Http\Middleware\VerifiedUser;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/home', function () {
-    return view('publik.dashboard');
-})->name('index');
+Route::get('/home', [HomeController::class, 'index'])->name('index');
+
+Route::get('/statistik', [StatistikController::class, 'index'])->name('statistik');
+Route::get('/news/{slug}', [ControllersBeritaController::class, 'show'])->name('berita.show');
+Route::get('/direktori-alumni', [DirektoriController::class, 'index'])->name('direktori.index');
 
 Route::get('/about', function () {
     return view('publik.tentang');
@@ -61,7 +67,8 @@ Route::middleware(['auth', VerifiedUser::class])->group(function () {
     Route::post('forum-discussion', [ForumController::class, 'store'])->name('forum.my-questions.store');
     Route::get('forum-discussion/{id}', [ForumController::class, 'showQuestion'])->name('forum.show');
     Route::post('forum-discussion/{id}/answer', [ForumController::class, 'storeAnswer'])->name('forum.my-questions.answer.store');
-    // vote
+    Route::post('forum-discussion/{id}/delete', [ForumController::class, 'deleteQuestion'])->name('forum.my-questions.delete');
+    Route::post('forum-discussion/{id}/replies/{replyId}/delete', [ForumController::class, 'deleteAnswer'])->name('forum.my-questions.answer.delete');
     Route::post('forum-discussion/{id}/vote', [ForumController::class, 'vote'])->name('forum.vote');
 
     Route::get('events', [EventController::class, 'index'])->name('events');

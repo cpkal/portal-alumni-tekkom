@@ -8,6 +8,7 @@ use App\Models\ForumReply;
 use App\Models\ForumTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ForumController extends Controller
 {
@@ -154,5 +155,37 @@ class ForumController extends Controller
             'upvotes' => $reply->upvotes,
             'downvotes' => $reply->downvotes,
         ]);
+    }
+
+    public function deleteQuestion(Request $request, $id)
+    {
+        $forum_question = ForumQuestion::findOrFail($id);
+        
+        // Delete the question and its associated tags and replies
+        $forum_question->tags()->delete();
+        $forum_question->replies()->delete();
+        $forum_question->delete();
+
+        Mail::to($forum_question->user->email)->send(new \App\Mail\QuestionTakenDown($forum_question->user, $forum_question->title, $request->reason));
+
+        return redirect()->route('forum.my-questions')->with('success', 'Pertanyaan berhasil dihapus');
+    }
+
+    public function deleteAnswer(Request $request, $id, $replyId)
+    {
+        $forum_question = ForumQuestion::findOrFail($id);
+        $reply = ForumReply::findOrFail($replyId);
+
+        // Check if the reply belongs to the question
+        if ($reply->forum_question_id !== $forum_question->id) {
+            return redirect()->route('forum.show', ['id' => $id])->with('error', 'Jawaban tidak ditemukan');
+        }
+
+        // Delete the reply
+        $reply->delete();
+
+        // Mail::to($forum_question->user->email)->send(new \App\Mail\QuestionTakenDown($forum_question->user, $forum_question->title, $request->reason));
+
+        return redirect()->route('forum.show', ['id' => $id])->with('success', 'Jawaban berhasil dihapus');
     }
 }

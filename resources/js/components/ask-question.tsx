@@ -32,7 +32,7 @@ export default function AskQuestion() {
   }
 
   return (
-    <Card className="bg-background">
+    <Card className="bg-background mb-4">
       <CardContent>
         <div className="flex flex-row gap-3 items-center">
           <Avatar className="h-12 w-12">

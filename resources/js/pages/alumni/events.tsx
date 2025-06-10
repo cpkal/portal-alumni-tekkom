@@ -234,7 +234,7 @@ export default function EventsPage({ events }: any): any {
                         Daftar Sekarang
                       </Button>
                     )}
-                    <Button variant='outline' onClick={() => getDetailEvent(a)}>View details</Button>
+                    <Button variant='outline' onClick={() => getDetailEvent(a)}>Lihat detail</Button>
                   </CardFooter>
                 </Card>
               )
@@ -258,16 +258,17 @@ export default function EventsPage({ events }: any): any {
                     <div className="mx-auto flex flex-col items-center gap-2">
                       <p className="text-xl font-semibold">{detailEvent.event_name}</p>
                       <p className="flex gap-2 text-sm items-center"> <Building />{detailEvent.event_location}</p>
-                      <p className="text-sm flex gap-2 items-center"><Calendar /> 25 Mei 2025</p>
-                      <p className="text-sm flex gap-2 items-center"><Clock /> 08.00 WIB - selesai</p>
+                      <p className="text-sm flex gap-2 items-center"><Calendar /> {detailEvent.event_date} - selesai</p>
+                      <p className="text-sm flex gap-2 items-center"><Clock /> {detailEvent.event_time} - selesai</p>
                     </div>
 
                     <div>
-                      <p className="my-2 font-semibold">About</p>
-                      {detailEvent.event_description}
+                      <p className="my-2 font-semibold">Deskripsi</p>
+                      {/* render html */}
+                      <div className="text-sm" dangerouslySetInnerHTML={{ __html: detailEvent.event_description }} />
                     </div>
 
-                    <div>
+                    {/* <div>
                       <p className="my-2 font-semibold">Contact Person</p>
                       <div className="flex flex-col gap-1">
                         <div className="flex gap-2">
@@ -279,7 +280,7 @@ export default function EventsPage({ events }: any): any {
                           081208312202 (Contact Person 2)
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </CardContent>
 
                   <div className="sticky bottom-0 p-3 bg-background border mt-auto">
@@ -302,7 +303,7 @@ export default function EventsPage({ events }: any): any {
             )
           ) : (
             <div className="sticky top-24 z-10">
-              <p className="text-2xl mx-auto font-semibold text-center mt-4">Click "View Details" <br /> Show here</p>
+              <p className="text-2xl mx-auto font-semibold text-center mt-4">Klik "Lihat detail" <br /> Tampilkan Disini</p>
             </div>
           )}
         </div>

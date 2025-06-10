@@ -59,13 +59,13 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
+        <AuthLayout title="Daftar Akun Alumni" description="Buat akun alumni untuk mengakses portal alumni Tekkom.">
             <Head title="Register" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
-                    <p className='text-xl font-semibold'>Account Information</p>
+                    <p className='text-xl font-semibold'>Informasi Akun</p>
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name">Nama</Label>
                         <Input
                             id="name"
                             type="text"
@@ -82,7 +82,7 @@ export default function Register() {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -92,7 +92,7 @@ export default function Register() {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
-                            placeholder="email@example.com"
+                            placeholder="Email"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -114,7 +114,7 @@ export default function Register() {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
+                        <Label htmlFor="password_confirmation">Konfirmasi password</Label>
                         <Input
                             id="password_confirmation"
                             type="password"
@@ -124,12 +124,12 @@ export default function Register() {
                             value={data.password_confirmation}
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
-                            placeholder="Confirm password"
+                            placeholder="Konfirmasi password"
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <p className='text-xl font-semibold'>Personal Information</p>
+                    <p className='text-xl font-semibold'>Informasi Alumni</p>
                     <div className="grid gap-2">
                         <Label htmlFor="nim">NIM</Label>
                         <Input
@@ -147,16 +147,16 @@ export default function Register() {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="graduation_year">Graduation Year</Label>
+                        <Label htmlFor="graduation_year">Tahun Lulus</Label>
                         <Select onValueChange={(value) => setData('graduation_year', value)} defaultValue={data.graduation_year}>
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Graduation Year" />
+                                <SelectValue placeholder="Tahun Lulus" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="2020">2020</SelectItem>
-                                <SelectItem value="2021">2021</SelectItem>
-                                <SelectItem value="2022">2022</SelectItem>
                                 <SelectItem value="2023">2023</SelectItem>
+                                <SelectItem value="2024">2024</SelectItem>
+                                <SelectItem value="2025">2025</SelectItem>
+                                <SelectItem value="2026">2026</SelectItem>
                             </SelectContent>
                         </Select>
                         {/* <Input
@@ -174,7 +174,7 @@ export default function Register() {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="active_phone_number">Active Phone Number</Label>
+                        <Label htmlFor="active_phone_number">Nomor Telepon Aktif</Label>
                         <Input
                             id="active_phone_number"
                             type="text"
@@ -184,13 +184,13 @@ export default function Register() {
                             value={data.active_phone_number}
                             onChange={(e) => onChangeActivePhoneNumber(e.target.value)}
                             disabled={processing}
-                            placeholder="Active Phone Number"
+                            placeholder="+6281234567890"
                         />
                         <InputError message={errors.active_phone_number} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="date_of_birth">Date of Birth</Label>
+                        <Label htmlFor="date_of_birth">Tanggal Lahir</Label>
                         <Input
                             id="date_of_birth"
                             type="date"
@@ -206,12 +206,12 @@ export default function Register() {
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
+                        Buat Akun
                     </Button>
                 </div>
 
                 <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
+                    Sudah punya akun?{' '}
                     <TextLink href={route('login')} tabIndex={6}>
                         Log in
                     </TextLink>

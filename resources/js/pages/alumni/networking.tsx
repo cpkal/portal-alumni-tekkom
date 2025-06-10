@@ -126,7 +126,7 @@ export default function NetworkingPage({ alumnis }: { alumnis: any }) {
       <div className="px-3 flex gap-4">
         <div className="w-3/5">
           <div className="flex justify-between items-end">
-            <p>Showing Alumni</p>
+            <p>List alumni</p>
             <Dialog>
               <DialogTrigger>
                 <Button variant="outline" className="flex items-center gap-2">
@@ -138,7 +138,7 @@ export default function NetworkingPage({ alumnis }: { alumnis: any }) {
                 <DialogHeader>
                   <DialogTitle className="flex gap-2 items-center"><Filter /> Filter </DialogTitle>
                   <DialogDescription>
-                    Filter job vacancies based on your preferences.
+                    Cari alumni berdasarkan nama
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4">
@@ -178,7 +178,7 @@ export default function NetworkingPage({ alumnis }: { alumnis: any }) {
 
           {/* grid-cols-2 for alumnis card */}
           <div className="grid grid-cols-2 gap-3">
-            {alumnis.data.map((alumni: any) => (
+            {alumni.map((alumni: any) => (
               <Card className="bg-background" key={alumni.id} onClick={() => getDetailAlumni(alumni)}>
                 <CardContent>
                   <div className="flex gap-2">
@@ -206,7 +206,7 @@ export default function NetworkingPage({ alumnis }: { alumnis: any }) {
 
                 <CardFooter className="flex gap-3">
 
-                  <Button variant='outline' onClick={() => setShowDetail(!showDetail)}>View details</Button>
+                  <Button variant='outline' onClick={() => setShowDetail(!showDetail)}>Lihat detail</Button>
                 </CardFooter>
               </Card>
             ))}
@@ -227,7 +227,7 @@ export default function NetworkingPage({ alumnis }: { alumnis: any }) {
             )
           ) : (
             <div className="sticky top-24 z-10">
-              <p className="text-2xl mx-auto font-semibold text-center mt-4">Click "View Details" <br /> Show here</p>
+              <p className="text-2xl mx-auto font-semibold text-center mt-4">Klik "Lihat detail" <br /> Tampilkan Disini</p>
             </div>
           )}
 

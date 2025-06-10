@@ -7,6 +7,7 @@ use App\Models\Alumni;
 use App\Models\Event;
 use App\Models\ForumQuestion;
 use App\Models\JobVacancy;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -15,12 +16,20 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
+        if(Auth::user()->role === 'admin') {
+            return redirect('/admin/dashboard');
+        }
+
         // profile completeness
         // query if user already has project
         $alumni = Auth::user()->alumni;
         $has_project = $alumni->projects()->exists();
         $has_experience = $alumni->experiences()->exists();
         $has_education = $alumni->educations()->exists();
+        $has_submitted_tracer_study = User::where('id', Auth::user()->id)->first()->tracerStudy()->exists();
+        $tracer_study = User::where('id', Auth::user()->id)->first()->tracerStudy;
+        
         // check if alumni nim, fullname, active_phone_number, date_of_birth, and short_description are filled
         $profile_completeness = [
             'has_nim' => !empty($alumni->nim),
@@ -74,6 +83,8 @@ class DashboardController extends Controller
             'alumnis' => $alumnis,
             'forum_questions' => $forum_questions,
             'events' => $events,
+            'has_submitted_tracer_study' => $has_submitted_tracer_study,
+            'tracer_study' => $tracer_study,
         ]);
     }
 }

@@ -283,7 +283,7 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row gap-2 mt-8">
                   <Flame />
-                  <p className="font-semibold">Tags</p>
+                  <p className="font-semibold">Tag</p>
                   {/* badges */}
                 </div>
 

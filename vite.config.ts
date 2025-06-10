@@ -14,6 +14,11 @@ export default defineConfig({
         react(),
         tailwindcss(),
     ],
+    server: {
+        cors: true,
+        host: 'localhost',  // paksa host jadi localhost, bukan ::1
+        port: 5173,
+    },
     esbuild: {
         jsx: 'automatic',
     },

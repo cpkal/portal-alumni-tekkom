@@ -31,11 +31,6 @@ import {
 import { usePage } from "@inertiajs/react"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Overview",
@@ -85,6 +80,14 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { auth }: any = usePage().props;
+
+  if(auth.user.role === 'admin') {
+    // remove overview, tracer study, job vacancies, events, profle & networking, and secondary nav items
+    data.navMain = data.navMain.filter(item =>
+      !["Overview", "Tracer Study", "Loker & Magang", "Acara Tekkom", "Profile & Networking"].includes(item.title)
+    );
+  }
+
   return (
     <Sidebar
       // h-[calc(100svh-var(--header-height))]!

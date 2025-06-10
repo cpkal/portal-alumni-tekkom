@@ -40,4 +40,10 @@ class TracerStudy extends Model
         'suggestion',
         'user_id',
     ];
+
+    // get readable updated_at date
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->translatedFormat('l, d F Y H:i:s');
+    }
 }

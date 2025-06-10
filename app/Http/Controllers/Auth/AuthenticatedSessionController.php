@@ -33,16 +33,8 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-        // check if user admin or alumni
-        $user = User::find(Auth::id());
-        if ($user->role == 'alumni') {
-            // redirect to alumni dashboard
-            return redirect()->intended(route('home', absolute: false));
-        } elseif ($user->role == 'admin') {
-            // redirect to admin dashboard
-            return redirect()->intended(route('admin.dashboard', absolute: false));
-        }
+        
+        return redirect()->intended(route('home', absolute: false));
     }
 
     /**

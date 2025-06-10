@@ -28,43 +28,40 @@ class RegisterAlumniRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'nim' => 'required|string|unique:'.Alumni::class,
+            'nim' => [
+                'required',
+                'string',
+                'max:7',
+                'unique:'.Alumni::class,
+                'regex:/^(20|2[1-9]|[3-9][0-9])\d{5}$/'
+            ],
             'graduation_year' => 'required',
             'active_phone_number' => 'required',
             'date_of_birth'=> 'required',
         ];
     }
 
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
             'name.required' => 'Nama lengkap harus diisi',
             'email.required' => 'Email harus diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Password harus diisi',
+            'nim.max' => 'NIM harus terdiri dari 7 digit angka cth: 2023001',
             'nim.required' => 'NIM harus diisi',
+            'nim.regex' => 'NIM harus terdiri dari 7 digit, dimulai dengan 20, 21, 22, 23, 24, 25, atau 26',
+            'nim.unique' => 'NIM sudah terdaftar',
             'graduation_year.required' => 'Tahun kelulusan harus diisi',
             'active_phone_number.required' => 'Nomor telepon aktif harus diisi',
             'date_of_birth.required' => 'Tanggal lahir harus diisi',
         ];
     }
-
-    // public function userFields(): array
-    // {
-    //     return [
-    //         'name'=> '',
-    //         'email'=> Identical::class,
-    //         'password'=> Identical::class,
-    //     ];
-    // }
-
-    // public function alumniFields(): array
-    // {
-    //     return [
-    //         'name' => Identical::class,
-    //         'nim'=> Identical::class,
-    //         'graduation_year'=> Identical::class,
-    //         'active_phone_number'=> Identical::class,
-    //         'date_of_birth'=> Identical::class,
-    //     ];
-    // }
 }

@@ -18,10 +18,35 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
   const [isCurrentlyHaveJob, setJobStatus] = useState<string>('yes');
 
   useEffect(() => {
+    if(localStorage.getItem('continuing_working') === null) {
+      localStorage.setItem('continuing_working', 'yes');
+    }
     setJobStatus(localStorage.getItem('continuing_working') ?? 'yes');
   }, []);
 
   const { tracer } : any = usePage().props;
+
+  const [salary, setSalary] = useState<string>('');
+
+  const handleChangeSalary = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Remove non-numeric characters
+    const numericValue = value.replace(/[^0-9]/g, '');
+    // Format the numeric value with commas
+    const formattedValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // max 10,2
+    if (numericValue.length > 13) {
+      return;
+    }
+
+    setSalary(formattedValue);
+    localStorage.setItem('monthly_salary', numericValue);
+    localStorage.setItem('monthly_salary_formatted', formattedValue);
+  };
+
+  useEffect(() => {
+    setSalary(localStorage.getItem('monthly_salary_formatted') ?? '');
+  }, []);
 
   return (
     <Card>
@@ -49,7 +74,7 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
         {isCurrentlyHaveJob == 'yes' ? (
           <>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="company_name">Nama Perusahaan/Instansi</Label>
+              <Label htmlFor="company_name">Nama Perusahaan/Instansi<span className="text-red-500">*</span></Label>
               <Input
                 disabled={isSubmitted}
                 id="company_name"
@@ -59,11 +84,11 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
                 onChange={(e) => localStorage.setItem('company_name', e.target.value)}
                 required
 
-                placeholder="Ex. Harvard University"
+                placeholder="Nama Perusahaan/Instansi"
               />
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="company_address">Alamat Perusahaan/Instansi</Label>
+              <Label htmlFor="company_address">Alamat Perusahaan/Instansi<span className="text-red-500">*</span></Label>
               <Input
                 disabled={isSubmitted}
                 id="company_address"
@@ -71,11 +96,11 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
                 autoComplete="company_address"
                 defaultValue={ isSubmitted ? tracer.company_address : localStorage.getItem('company_address') ?? ''}
                 onChange={(e) => localStorage.setItem('company_address', e.target.value)}
-                placeholder="Ex. PT Cahaya xxx"
+                placeholder="Alamat Perusahaan/Instansi"
               />
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="job_position">Posisi/Jabatan</Label>
+              <Label htmlFor="job_position">Posisi/Jabatan<span className="text-red-500">*</span></Label>
               <Input
                 disabled={isSubmitted}
                 id="job_position"
@@ -83,11 +108,11 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
                 autoComplete="job_position"
                 defaultValue={ isSubmitted ? tracer.job_position : localStorage.getItem('job_position') ?? ''}
                 onChange={(e) => localStorage.setItem('job_position', e.target.value)}
-                placeholder="Ex. Magister / S2"
+                placeholder="Posisi/Jabatan Anda"
               />
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="company_business_field">Bidang Usaha Perusahaan/Instansi</Label>
+              <Label htmlFor="company_business_field">Bidang Usaha Perusahaan/Instansi<span className="text-red-500">*</span></Label>
               <Input
                 disabled={isSubmitted}
                 id="company_business_field"
@@ -95,11 +120,11 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
                 autoComplete="company_business_field"
                 defaultValue={ isSubmitted ? tracer.company_business_field : localStorage.getItem('company_business_field') ?? ''}
                 onChange={(e) => localStorage.setItem('company_business_field', e.target.value)}
-                placeholder="Ex. Magister / S2"
+                placeholder="Ex. Teknologi Informasi, Pendidikan, Kesehatan, dll."
               />
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="wait_time_first_job">Berapa lama setelah lulus Anda mendapatkan pekerjaan pertama?</Label>
+              <Label htmlFor="wait_time_first_job">Berapa lama setelah lulus Anda mendapatkan pekerjaan pertama?<span className="text-red-500">*</span></Label>
               <Select disabled={isSubmitted} defaultValue={ isSubmitted ? tracer.wait_time_first_job : localStorage.getItem('wait_time_first_job') ?? ''} onValueChange={(val) => {
                 localStorage.setItem('wait_time_first_job', val);
               }}>
@@ -108,11 +133,10 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Fruits</SelectLabel>
                     <SelectItem value="1">Kurang dari 1 bulan</SelectItem>
                     <SelectItem value="2">1 – 3 bulan</SelectItem>
-                    <SelectItem value="4">6 – 12 bulan</SelectItem>
                     <SelectItem value="3">3 – 6 bulan</SelectItem>
+                    <SelectItem value="4">6 – 12 bulan</SelectItem>
                     <SelectItem value="5">1 – 2 tahun</SelectItem>
                     <SelectItem value="6">2 tahun atau lebih</SelectItem>
                   </SelectGroup>
@@ -129,30 +153,31 @@ export default function CareerInformation({ currentPage, setCurrentPage, totalPa
               /> */}
             </div>
             <div className="flex flex-col gap-3">
-              <label htmlFor="is_job_related_to_major">Apakah studi lanjut Anda relevan dengan bidang studi S1 Anda? (Ya/Tidak)</label>
-              <RadioGroup disabled={isSubmitted} defaultValue={ isSubmitted ? (tracer.is_job_related_to_major ? 'yes' : 'no') : localStorage.getItem('is_job_related_to_major') ?? 'yes'} id="is_job_related_to_major" onValueChange={(val) => {
+              <label htmlFor="is_job_related_to_major">Apakah studi lanjut Anda relevan dengan bidang studi S1 Anda? (Ya/Tidak)<span className="text-red-500">*</span></label>
+              <RadioGroup disabled={isSubmitted} defaultValue={ isSubmitted ? (tracer.is_job_related_to_major ? 'yes' : 'no') : localStorage.getItem('is_job_related_to_major') ?? ''} id="is_job_related_to_major" onValueChange={(val) => {
                 localStorage.setItem('is_job_related_to_major', val);
               }}>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="yes" id="yes" />
-                  <Label htmlFor="yes">Ya</Label>
+                  <RadioGroupItem value="yes" id="job_related_yes" />
+                  <Label htmlFor="job_related_yes">Ya</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="no" id="no" />
-                  <Label htmlFor="no">Tidak</Label>
+                  <RadioGroupItem value="job_related_no" id="job_related_no" />
+                  <Label htmlFor="job_related_no">Tidak</Label>
                 </div>
               </RadioGroup>
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="monthly_salary">Pendapatan per Bulan</Label>
+              <Label htmlFor="monthly_salary">Pendapatan per Bulan dalam rupiah (opsional)</Label>
               <Input
                 disabled={isSubmitted}
                 id="monthly_salary"
                 type="text"
                 autoComplete="monthly_salary"
                 defaultValue={localStorage.getItem('monthly_salary') ?? ''}
-                onChange={(e) => localStorage.setItem('monthly_salary', e.target.value)}
-                placeholder="Ex. Rp5.000.000"
+                value={salary}
+                onChange={handleChangeSalary}
+                placeholder="Gaji" // Example: 5000000
               />
             </div>
           </>

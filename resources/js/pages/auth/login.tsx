@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
+        <AuthLayout title="Log in" description="Masukkan akun Anda untuk masuk ke portal alumni">
             <Head title="Log in" />
 
             
@@ -44,7 +44,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -54,7 +54,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             autoComplete="email"
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+                            placeholder="Email"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -64,7 +64,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             <Label htmlFor="password">Password</Label>
                             {canResetPassword && (
                                 <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
+                                    Lupa Password?
                                 </TextLink>
                             )}
                         </div>

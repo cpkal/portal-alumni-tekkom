@@ -16,10 +16,10 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function Dashboard({ completeness_percentage, forum_activity, alumnis, forum_questions, events }: any) {
-  const { job_vacancies }: any = usePage().props;
+export default function Dashboard({ completeness_percentage, forum_activity, alumnis, forum_questions, events, has_submitted_tracer_study, tracer_study }: any) {
+  const { auth }: any = usePage().props;
 
-  console.log(job_vacancies)
+  const { job_vacancies }: any = usePage().props;
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -29,7 +29,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
           <Card className='bg-background flex flex-col justify-between'>
             <CardHeader>
               <div className="flex h-full justify-between items-center gap-2">
-                <p>Profile Completion</p>
+                <p className='font-semibold'>Kelengkapan Profil</p>
                 <Check />
               </div>
             </CardHeader>
@@ -41,7 +41,11 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
                 </div>
                 <div>
                   <p className='text-xl font-semibold'>{completeness_percentage}%</p>
-                  <p className='text-xs'>Complete your profile for better matches</p>
+                  {completeness_percentage < 100 ? (
+                    <p className='text-xs'>Lengkapi profil Anda</p>
+                  ) : (
+                    <p className='text-xs'>Profil Anda lengkap</p>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -50,7 +54,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
           <Card className='bg-background flex flex-col justify-between'>
             <CardHeader>
               <div className="flex h-full justify-between items-center gap-2">
-                <p>Tracer Study Status</p>
+                <p className='font-semibold'>Status Tracer Study</p>
                 <BookOpenCheck />
               </div>
             </CardHeader>
@@ -60,12 +64,22 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
 
                 <div className='flex justify-between w-full items-end gap-3'>
                   <div>
-                    <p className='text-xl font-semibold'>Submitted</p>
-                    <p className='text-xs'>Last updated: 21 May 2025</p>
+                    <p className='text-xl font-semibold'>{has_submitted_tracer_study ? 'Disubmit' : 'Belum submit'}</p>
+                    {tracer_study && (
+                      <p className='text-xs'>{tracer_study.updated_at}</p>
+                    )}
                   </div>
-                  <div>
-                    <Badge>Reviewed</Badge>
-                  </div>
+                  {(tracer_study && has_submitted_tracer_study) && (
+                    <div>
+                      {tracer_study.status === 'reviewed' ? (
+                        <Badge className='bg-green-500 text-white'>Selesai</Badge>
+                      ) : tracer_study.status === 'submitted' ? (
+                        <Badge className='bg-yellow-500 text-white'>Sedang Direview</Badge>
+                      ) : (
+                        <Badge className='bg-red-500 text-white'>Ditolak</Badge>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -74,7 +88,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
           <Card className='bg-background flex flex-col justify-between'>
             <CardHeader>
               <div className="flex h-full justify-between items-center gap-2">
-                <p>Recent Forum Activity</p>
+                <p className='font-semibold'>Aktivitas Forum Terbaru</p>
                 <MessagesSquare />
               </div>
             </CardHeader>
@@ -85,7 +99,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
                 <div className='flex justify-between w-full items-end gap-3'>
                   <div>
                     <p className='text-xl font-semibold'>{forum_activity}</p>
-                    <p className='text-xs'>Replies in last 7 days</p>
+                    <p className='text-xs'>Aktifitas di 7 hari terakir</p>
                   </div>
                   <div>
                   </div>
@@ -98,7 +112,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
             <Card className='bg-background flex flex-col justify-between'>
               <CardHeader>
                 <div className="flex h-full justify-between items-center gap-2">
-                  <p>People You May Now</p>
+                  <p className='font-semibold'>Alumni TEKKOM</p>
                   <Link href={route('networking')}>
                     See All
                   </Link>
@@ -132,7 +146,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
             <Card className='bg-background flex flex-col justify-between'>
               <CardHeader>
                 <div className="flex h-full justify-between items-center gap-2">
-                  <p>Job & Internship Suggestions</p>
+                  <p className='font-semibold'>Lowongan kerja & Magang</p>
                   <Link href={route('job-vacancies')}>
                     See All
                   </Link>
@@ -163,7 +177,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
             <Card className='bg-background flex flex-col justify-between'>
               <CardHeader>
                 <div className="flex h-full justify-between items-center gap-2">
-                  <p>Recent Forum Discussions</p>
+                  <p className='font-semibold'>Diskusi forum terbaru</p>
                   <Link href={route('forum')}>
                     See All
                   </Link>
@@ -194,7 +208,7 @@ export default function Dashboard({ completeness_percentage, forum_activity, alu
             <Card className='bg-background flex flex-col justify-between'>
               <CardHeader>
                 <div className="flex h-full justify-between items-center gap-2">
-                  <p>Events Recommendation</p>
+                  <p className='font-semibold'>Acara</p>
                   <Link href={route('events')}>
                     See All
                   </Link>

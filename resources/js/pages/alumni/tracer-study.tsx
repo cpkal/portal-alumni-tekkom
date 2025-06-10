@@ -1,11 +1,7 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head } from "@inertiajs/react";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -31,21 +27,25 @@ type TracerStudyPageProps = {
 export default function TracerStudyPage({ tracer, is_user_has_submitted_tracer_study }: TracerStudyPageProps) {
 
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 5; // Assuming there are 5 steps in the tracer study
+  const totalPages = 5; // Assuming there are 5 steps in the tracer study  
 
-  useEffect(() => {
-    console.log(currentPage)
-  }, [currentPage]);
+  // if user has submitted tracer study, show alert
+
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Tracer Study" />
+
+      {/* dialog if user has submitted to thanks for the participation */}
+
+
       <div className="flex flex-col gap-4 px-5">
         <div className="flex flex-row items-center justify-between">
           <div>
-            <h1 className="text-xl">Tracer Study Form</h1>
+            <h1 className="text-xl">Formulir Tracer Study</h1>
 
-            <p>Help us improve by sharing your progress after graduation.</p>
+            <p>Bantu TEKKOM dengan sharing kegiatan setelah lulus</p>
+
           </div>
 
 
@@ -67,6 +67,15 @@ export default function TracerStudyPage({ tracer, is_user_has_submitted_tracer_s
 
       <div className="w-2/3 mx-auto mt-12">
 
+        {is_user_has_submitted_tracer_study && (
+          <Alert className="my-4">
+            <AlertTitle>Terima kasih!</AlertTitle>
+            <AlertDescription>
+              Terima kasih telah mengisi Tracer Study. Partisipasi Anda sangat berharga bagi kami.
+            </AlertDescription>
+          </Alert>
+        )}
+
         {currentPage === 1 ? (
           <PersonalInformation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} isSubmitted={is_user_has_submitted_tracer_study} />
         ) : currentPage === 2 ? (
@@ -79,13 +88,14 @@ export default function TracerStudyPage({ tracer, is_user_has_submitted_tracer_s
           <EducationEvaluation currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} isSubmitted={is_user_has_submitted_tracer_study} />
         ) : ''}
 
-        <Alert variant='default' className="my-12">
+        {!is_user_has_submitted_tracer_study && (<Alert variant='default' className="my-12">
           <CircleAlert className="h-4 w-4" />
-          <AlertTitle>Heads up!</AlertTitle>
+          <AlertTitle>Perhatian!</AlertTitle>
           <AlertDescription>
-            Please complete all required fields to proceed to next step
+            Isi semua data yang diperlukan dengan benar sebelum melanjutkan ke halaman berikutnya. Pastikan semua informasi yang diberikan akurat dan lengkap.
           </AlertDescription>
         </Alert>
+        )}
       </div>
     </AppLayout>
   );

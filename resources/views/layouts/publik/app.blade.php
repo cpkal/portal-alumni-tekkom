@@ -164,7 +164,7 @@
         <a href="{{ route('direktori.index') }}" class="nav-link">
           <i class="bi bi-people me-1"></i>Alumni
         </a>
-        <a href="{{ $isHome ? '#berita' : url('/#berita') }}" class="nav-link">
+        <a href="{{ route('index') . '#berita' }}" class="nav-link">
           <i class="bi bi-newspaper me-1"></i>Berita
         </a>
       </div>
@@ -178,13 +178,13 @@
 
       <!-- Kanan -->
       <div class="d-flex gap-3">
-        <a href="{{ $isHome ? '#event' : url('/#event') }}" class="nav-link">
+        <a href="{{ route('index') . '#event' }}" class="nav-link">
           <i class="bi bi-calendar-event me-1"></i>Event
         </a>
-        <a href="{{ $isHome ? '#lowongan' : url('/#lowongan') }}" class="nav-link">
+        <a href="{{ route('index') . '#lowongan' }}" class="nav-link">
           <i class="bi bi-briefcase me-1"></i>Lowongan
         </a>
-        <a href="{{ $isHome ? '#magang' : url('/#magang') }}" class="nav-link">
+        <a href="{{ route('index') . '#magang' }}" class="nav-link">
           <i class="bi bi-mortarboard me-1"></i>Magang
         </a>
         <a href="{{ route('contact') }}" class="nav-link">

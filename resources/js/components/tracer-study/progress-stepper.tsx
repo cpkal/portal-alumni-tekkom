@@ -5,7 +5,7 @@ type ProgressStepperProps = {
 };
 
 export default function ProgressStepper({ currentPage, setCurrentPage } : ProgressStepperProps) {
-  const circleStepActive = 'bg-foreground text-black';
+  const circleStepActive = 'bg-foreground text-background';
   const circleStepInactive = 'bg-background text-foreground';
 
   return (

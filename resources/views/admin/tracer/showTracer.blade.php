@@ -139,13 +139,13 @@
     <h3>Evaluasi Pendidikan</h3>
     <table class="table table-bordered">
         <tr>
-            <th>Kepuasan Studi</th>
+            <th>Kepuasan Studi {{ $tracer->study_satisfaction}}</th>
             <td>
                 @switch($tracer->study_satisfaction)
-                    @case(1) Sangat Puas @break
-                    @case(2) Puas @break
-                    @case(3) Tidak Puas @break
-                    @case(4) Sangat Tidak Puas @break
+                    @case(4) Sangat Puas @break
+                    @case(3) Puas @break
+                    @case(2) Tidak Puas @break
+                    @case(1) Sangat Tidak Puas @break
                 @endswitch
             </td>
         </tr>
@@ -153,10 +153,10 @@
             <th>Kesesuaian Kurikulum</th>
             <td>
                 @switch($tracer->curriculum_suitability)
-                    @case(1) Sangat Sesuai @break
-                    @case(2) Sesuai @break
-                    @case(3) Tidak Sesuai @break
-                    @case(4) Sangat Tidak Sesuai @break
+                    @case(4) Sangat Sesuai @break
+                    @case(3) Sesuai @break
+                    @case(2) Tidak Sesuai @break
+                    @case(1) Sangat Tidak Sesuai @break
                 @endswitch
             </td>
         </tr>
@@ -164,10 +164,10 @@
             <th>Kepuasan Fasilitas</th>
             <td>
                 @switch($tracer->facilities_satisfaction)
-                    @case(1) Sangat Puas @break
-                    @case(2) Puas @break
-                    @case(3) Tidak Puas @break
-                    @case(4) Sangat Tidak Puas @break
+                    @case(4) Sangat Puas @break
+                    @case(3) Puas @break
+                    @case(2) Tidak Puas @break
+                    @case(1) Sangat Tidak Puas @break
                 @endswitch
             </td>
         </tr>

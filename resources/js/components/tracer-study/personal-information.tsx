@@ -26,16 +26,16 @@ type PersonalInformation = {
 export default function PersonalInformation({ currentPage, setCurrentPage, totalPages, isSubmitted }: PersonalInformationProps) {
   const [isNextButtonDisabled, setNextButtonDisabled] = useState(true);
 
-  const { tracer } : any = usePage().props;
+  const { tracer }: any = usePage().props;
 
   return (
     <Card>
       <CardHeader>
-        <p className="text-xl font-semibold">Personal Info</p>
+        <p className="text-xl font-semibold">Info Personal</p>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
-          <Label htmlFor="full_name">Nama Lengkap</Label>
+          <Label htmlFor="full_name">Nama Lengkap<span className="text-red-500">*</span></Label>
           <Input
             disabled={isSubmitted}
             id="full_name"
@@ -49,7 +49,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
           />
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="nim">Nomor Induk Mahasiswa (NIM)</Label>
+          <Label htmlFor="nim">Nomor Induk Mahasiswa (NIM)<span className="text-red-500">*</span></Label>
           <Input
             disabled={isSubmitted}
             id="nim"
@@ -61,7 +61,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
           />
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="enrollment_year">Tahun Masuk</Label>
+          <Label htmlFor="enrollment_year">Tahun Masuk<span className="text-red-500">*</span></Label>
           <Input
             disabled={isSubmitted}
             id="enrollment_year"
@@ -73,7 +73,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
           />
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="graduation_year">Tahun Lulus</Label>
+          <Label htmlFor="graduation_year">Tahun Lulus<span className="text-red-500">*</span></Label>
           <Input
             disabled={isSubmitted}
             id="graduation_year"
@@ -85,7 +85,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
           />
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="undergraduate_thesis_title">Judul Skripsi</Label>
+          <Label htmlFor="undergraduate_thesis_title">Judul Skripsi (opsional)</Label>
           <Input
             disabled={isSubmitted}
             id="undergraduate_thesis_title"
@@ -95,7 +95,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
             placeholder="Ex. Rancang Bangun xxx" />
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="address">Alamat</Label>
+          <Label htmlFor="address">Alamat<span className="text-red-500">*</span></Label>
           <Input
             disabled={isSubmitted}
             id="address"
@@ -106,7 +106,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
           />
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="active_phone_number">Nomor Telepon</Label>
+          <Label htmlFor="active_phone_number">Nomor Telepon<span className="text-red-500">*</span></Label>
           <Input
             disabled={isSubmitted}
             id="active_phone_number"
@@ -117,7 +117,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
           />
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">Email<span className="text-red-500">*</span></Label>
           <Input
             disabled={isSubmitted}
             id="email"
@@ -128,6 +128,7 @@ export default function PersonalInformation({ currentPage, setCurrentPage, total
           />
         </div>
       </CardContent>
+
 
       <CardFooter className="flex gap-2 justify-end">
         <Button variant='outline' disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Kembali</Button>

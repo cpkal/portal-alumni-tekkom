@@ -17,6 +17,9 @@ export default function FurtherStudy({ currentPage, setCurrentPage, totalPages, 
   const [isContinuingFurtherStudy, setContinuingFurtherStudy] = useState<string>('yes');
 
   useEffect(() => {
+    if(localStorage.getItem('continuing_study') === null) {
+      localStorage.setItem('continuing_study', 'yes');
+    }
     setContinuingFurtherStudy(localStorage.getItem('continuing_study') ?? 'yes');
   }, []);
 

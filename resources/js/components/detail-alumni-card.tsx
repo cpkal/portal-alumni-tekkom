@@ -29,11 +29,11 @@ export default function DetailAlumniCard({ alumni, isPreview = false }: { alumni
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <p className="text-xl font-semibold">{alumni.fullname}</p>
-            <p className="text-sm">Graduated at {alumni.graduation_year}</p>
+            <p className="text-sm">Lulus pada {alumni.graduation_year}</p>
           </div>
 
           <div>
-            <p className="my-2 font-semibold">About</p>
+            <p className="my-2 font-semibold">Dekripsi Singkat</p>
             {alumni.short_description ? (
               <p className="text-sm">{alumni.short_description}</p>
             ) : (
@@ -41,8 +41,8 @@ export default function DetailAlumniCard({ alumni, isPreview = false }: { alumni
             )}
           </div>
 
-          <div>
-            <p className="my-2 font-semibold">Contact Information</p>
+          <div className="mt-4">
+            <p className="my-2 font-semibold">Informasi Kontak</p>
             <div className="flex flex-col gap-1">
               <div className="flex gap-2">
                 <Phone />
@@ -51,7 +51,7 @@ export default function DetailAlumniCard({ alumni, isPreview = false }: { alumni
             </div>
           </div>
 
-          <div>
+          <div className="mt-4">
             <p className="my-2 font-semibold">Pengalaman kerja</p>
             <div className="flex flex-col gap-1">
               {alumni.experiences.length > 0 ? (
@@ -66,7 +66,7 @@ export default function DetailAlumniCard({ alumni, isPreview = false }: { alumni
             </div>
           </div>
 
-          <div>
+          <div className="mt-4">
             <p className="my-2 font-semibold">Pendidikan</p>
             <div className="flex flex-col gap-1">
               {alumni.educations.length > 0 ? (
@@ -81,8 +81,8 @@ export default function DetailAlumniCard({ alumni, isPreview = false }: { alumni
             </div>
           </div>
 
-          <div>
-            <p className="my-2 font-semibold">Projects</p>
+          <div className="mt-4">
+            <p className="my-2 font-semibold">Proyek</p>
             <div className="flex flex-col gap-1">
               {alumni.projects.length > 0 ? (
                 alumni.projects.map((project: any) => (

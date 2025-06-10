@@ -139,7 +139,7 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
       <div className="px-3 flex gap-4">
         <div className="w-2/5">
           <div className="flex justify-between items-end">
-            <p>Showing Jobs</p>
+            <p>List Loker & Magang</p>
 
             <Dialog>
               <DialogTrigger>
@@ -239,7 +239,7 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
                 <CardContent>
                   <div className="flex gap-2">
                     <div>
-                      <p className="text-xl font-semibold">{jobVacancy.job_title}</p>
+                      <p className="text-xl font-semibold">{jobVacancy.job_title} - {jobVacancy.employment_type_formatted}</p>
                       <p className="text-sm">{jobVacancy.company_name}</p>
                     </div>
                   </div>
@@ -254,15 +254,15 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
                       <p>{jobVacancy.salary_start_rupiah} - {jobVacancy.salary_end_rupiah} {jobVacancy.salary_period}</p>
                     </div>
                     <div>
-                      <p>Qualifications</p>
+                      <p>Kualifikasi</p>
                       <p>{jobVacancy.qualifications}</p>
                     </div>
                   </div>
                 </CardContent>
 
                 <CardFooter className="flex gap-3">
-                  <Button onClick={() => goToJobApplication(jobVacancy.apply_link)}>Go Apply</Button>
-                  <Button variant='outline' onClick={() => getDetailJob(jobVacancy)}>View details</Button>
+                  <Button onClick={() => goToJobApplication(jobVacancy.apply_link)}>Lamar Sekarang</Button>
+                  <Button variant='outline' onClick={() => getDetailJob(jobVacancy)}>Lihat Detail</Button>
                 </CardFooter>
               </Card>
             ))}
@@ -287,7 +287,7 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
         ) : (
           <div className="w-3/5">
             <div className="sticky top-24 z-10">
-              <p className="text-2xl mx-auto font-semibold text-center mt-4">Click "View Details" <br /> Show here</p>
+              <p className="text-2xl mx-auto font-semibold text-center mt-4">Klik "Lihat detail" <br /> Tampilkan disini</p>
             </div>
           </div >
         )}

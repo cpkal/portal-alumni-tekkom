@@ -17,6 +17,7 @@ use App\Http\Controllers\BeritaController as ControllersBeritaController;
 use App\Http\Controllers\DirektoriController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StatistikController;
+use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\VerifiedUser;
 use Illuminate\Support\Facades\Route;
 
@@ -80,7 +81,7 @@ Route::middleware(['auth', VerifiedUser::class])->group(function () {
     Route::get('job-vacancies/{id}', [JobVacancyController::class, 'show'])->name('job-vacancies.show');
 });
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->middleware(['auth', AdminOnly::class])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/users', [UserController::class, 'tabelUser'])->name('admin.user.tabelUser');

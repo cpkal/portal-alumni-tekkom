@@ -15,8 +15,6 @@ type EducationEvaluationProps = {
 };
 
 export default function EducationEvaluation({ currentPage, setCurrentPage, totalPages, isSubmitted }: EducationEvaluationProps) {
-  const { data, setData, post, processing, errors, reset } = useForm();
-
   const handleSubmitTracerStudy = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -83,7 +81,7 @@ export default function EducationEvaluation({ currentPage, setCurrentPage, total
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
-          <label htmlFor="study_satisfaction">Apakah studi lanjut Anda relevan dengan bidang studi S1 Anda? (Ya/Tidak)</label>
+          <label htmlFor="study_satisfaction">Seberapa puas Anda dengan pendidikan yang Anda terima di   Program Studi Teknik Komputer UPI?<span className="text-red-500">*</span></label>
           <RadioGroup disabled={isSubmitted} defaultValue={localStorage.getItem('study_satisfaction') ?? ''} className="flex" id="study_satisfaction" onValueChange={(val) => {
             localStorage.setItem('study_satisfaction', val);
           }}>
@@ -107,55 +105,55 @@ export default function EducationEvaluation({ currentPage, setCurrentPage, total
         </div>
 
         <div className="flex flex-col gap-3 mt-3">
-          <label htmlFor="curriculum_suitability">Apakah kurikulum yang diajarkan sesuai dengan kebutuhan industri? (Sangat Sesuai / Sesuai / Kurang Sesuai / Tidak Sesuai)</label>
+          <label htmlFor="curriculum_suitability">Apakah kurikulum yang diajarkan sesuai dengan kebutuhan industri?<span className="text-red-500">*</span></label>
           <RadioGroup disabled={isSubmitted} defaultValue={localStorage.getItem('curriculum_suitability') ?? ''} className="flex" id="curriculum_suitability" onValueChange={(val) => {
             localStorage.setItem('curriculum_suitability', val);
           }}>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="4" id="4" />
-              <Label htmlFor="4">Sangat Sesuai</Label>
+              <RadioGroupItem value="4" id="4_c" />
+              <Label htmlFor="4_c">Sangat Sesuai</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="3" id="3" />
-              <Label htmlFor="3">Sesuai</Label>
+              <RadioGroupItem value="3" id="3_c" />
+              <Label htmlFor="3_c">Sesuai</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="2" id="2" />
-              <Label htmlFor="2">Kurang Sesuai</Label>
+              <RadioGroupItem value="2" id="2_c" />
+              <Label htmlFor="2_c">Tidak Sesuai</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="1" id="1" />
-              <Label htmlFor="1">Tidak Sesuai</Label>
+              <RadioGroupItem value="1" id="1_c" />
+              <Label htmlFor="1_c">Sangat Tidak Sesuai</Label>
             </div>
           </RadioGroup>
         </div>
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="facilities_satisfaction">Bagaimana penilaian Anda terhadap fasilitas yang disediakan oleh universitas?</label>
+          <label htmlFor="facilities_satisfaction">Bagaimana penilaian Anda terhadap fasilitas yang disediakan oleh universitas?<span className="text-red-500">*</span></label>
           <RadioGroup disabled={isSubmitted} defaultValue={localStorage.getItem('facilities_satisfaction') ?? ''} className="flex" id="facilities_satisfaction" onValueChange={(val) => {
             localStorage.setItem('facilities_satisfaction', val);
           }}>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="4" id="4" />
-              <Label htmlFor="4">Sangat Puas</Label>
+              <RadioGroupItem value="4" id="4_f" />
+              <Label htmlFor="4_f">Sangat Puas</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="3" id="3" />
-              <Label htmlFor="3">Puas</Label>
+              <RadioGroupItem value="3" id="3_f" />
+              <Label htmlFor="3_f">Puas</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="2" id="2" />
-              <Label htmlFor="2">Tidak Puas</Label>
+              <RadioGroupItem value="2" id="2_f" />
+              <Label htmlFor="2_f">Tidak Puas</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="1" id="1" />
-              <Label htmlFor="1">Sangat Tidak Puas</Label>
+              <RadioGroupItem value="1" id="1_f" />
+              <Label htmlFor="1_f">Sangat Tidak Puas</Label>
             </div>
           </RadioGroup>
         </div>
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="competency_suitability">Apakah Anda merasa keterampilan yang diajarkan sesuai dengan pekerjaan Anda saat ini? (Ya/Tidak)</label>
+          <label htmlFor="competency_suitability">Apakah Anda merasa keterampilan yang diajarkan sesuai dengan pekerjaan Anda saat ini?<span className="text-red-500">*</span></label>
           <RadioGroup disabled={isSubmitted} defaultValue={localStorage.getItem('competency_suitability') ?? ''} id="competency_suitability" onValueChange={(val) => {
             localStorage.setItem('competency_suitability', val);
           }}>
@@ -171,7 +169,7 @@ export default function EducationEvaluation({ currentPage, setCurrentPage, total
         </div>
 
         <div className="flex flex-col gap-3">
-          <Label htmlFor="suggestion">Saran dan Masukan untuk Program Studi Teknik Komputer</Label>
+          <Label htmlFor="suggestion">Saran dan Masukan untuk Program Studi Teknik Komputer (opsional)</Label>
           <Textarea
             disabled={isSubmitted}
             id="suggestion"

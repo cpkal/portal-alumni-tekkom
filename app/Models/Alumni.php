@@ -45,4 +45,9 @@ class Alumni extends Model
         return $this->hasMany(ForumReply::class, 'alumni_id');
     }
     
+    //belongs to a user
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

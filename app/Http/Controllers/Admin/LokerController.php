@@ -97,6 +97,7 @@ class LokerController extends Controller
                 'job_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+            
 
             $lowongans = JobVacancy::findOrFail($id);
             $lowongans->update([
@@ -111,6 +112,18 @@ class LokerController extends Controller
                 'salary_start' => $request->salary_start,
                 'salary_end' => $request->salary_end,
             ]);
+
+            // Handle job banner upload if it exists
+            if ($request->hasFile('job_banner')) {
+                $jobBannerPath = $request->file('job_banner')->store('job_banners', 'public');
+                $lowongans->job_banner = $jobBannerPath;
+            }
+            // Handle poster upload if it exists
+            if ($request->hasFile('poster')) {
+                $posterPath = $request->file('poster')->store('posters', 'public');
+                $lowongans->poster = $posterPath;
+            }
+            $lowongans->save();
 
             return redirect()->route('admin.lowongan.tabelLoker')->with('success', 'Lowongan berhasil diperbarui.');
         }

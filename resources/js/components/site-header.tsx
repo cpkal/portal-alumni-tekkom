@@ -21,14 +21,17 @@ export function SiteHeader() {
 
   const { url } = usePage()
 
-  // This gives only the pathname from route() (e.g., "/events")
-  const eventsPath = useMemo(() => new URL(route('events'), window.location.origin).pathname, [])
-  const eventsRegisteredPath = useMemo(() => new URL(route('events.registered'), window.location.origin).pathname, [])
-  const isEventsPage = url === eventsPath || url === eventsRegisteredPath;
+  const pathname = useMemo(() => new URL(window.location.href).pathname, []);
 
-  const forumPath = useMemo(() => new URL(route('forum'), window.location.origin).pathname, [])
-  const forumMyQuestionPath = useMemo(() => new URL(route('forum.my-questions'), window.location.origin).pathname, [])
-  const isForumPage = url === forumPath || url === forumMyQuestionPath;
+  // This gives only the pathname from route() (e.g., "/events")
+  const eventsPath = useMemo(() => new URL(route('events'), window.location.origin).pathname, []);
+  const eventsRegisteredPath = useMemo(() => new URL(route('events.registered'), window.location.origin).pathname, []);
+  const isEventsPage = pathname === eventsPath || pathname === eventsRegisteredPath;
+
+  const forumPath = useMemo(() => new URL(route('forum'), window.location.origin).pathname, []);
+  const forumMyQuestionPath = useMemo(() => new URL(route('forum.my-questions'), window.location.origin).pathname, []);
+  const isForumPage = pathname === forumPath || pathname === forumMyQuestionPath;
+
 
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
@@ -75,7 +78,7 @@ export function SiteHeader() {
                 Forum
               </Button>
             </Link>
-            <Link href={route('forum.my-questions')}>
+            <Link href={route('forum') + '?tab=my-questions'}>
               <Button variant="ghost" size="sm">
                 Pertanyaan Saya
               </Button>

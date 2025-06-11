@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
 
         if(Auth::user()->role === 'admin') {
-            return redirect('/admin/dashboard');
+            return Inertia::location(route('admin.dashboard'));
         }
 
         // profile completeness
@@ -64,7 +64,7 @@ class DashboardController extends Controller
 
         // get random 3 forum questions and count replies
         // eager load user relation to avoid N+1 problem
-        $forum_questions = ForumQuestion::with('user')
+        $forum_questions = ForumQuestion::with(['user', 'user.alumni'])
             ->withCount('replies')
             ->inRandomOrder()
             ->take(3)

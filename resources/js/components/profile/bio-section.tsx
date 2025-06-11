@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Pencil } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { assert } from "console";
 
 export default function BioSection({ user }: { user: any }) {
   return (
@@ -21,7 +22,7 @@ export default function BioSection({ user }: { user: any }) {
         <div className="flex gap-3 mx-4 py-2 items-center border-b border-border">
           {/* avatar */}
           <Avatar className="w-24 h-24">
-            <AvatarImage src="/avatars/shadcn.jpg" alt="shadcn" />
+            <AvatarImage src={user.alumni.profile_image ? '/storage/' + user.alumni.profile_image : 'https://static.vecteezy.com/system/resources/thumbnails/024/983/914/small_2x/simple-user-default-icon-free-png.png'} alt="shadcn" />
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-center">

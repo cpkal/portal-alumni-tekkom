@@ -7,7 +7,7 @@ export default function DetailJob({ detailJob, setShowDetail, goToJobApplication
       <div className="sticky top-16 z-10 overflow-y-scroll h-[calc(100vh-4rem)] pb-0">
         <div className="relative">
           <X className="absolute top-2 right-2 bg-background rounded-full hover:cursor-pointer" onClick={() => setShowDetail(false)} />
-          <img className="rounded-t-md" src="https://image-service-cdn.seek.com.au/dd4a0d6cbc6de353bc702a0d239709b351a9162b/205993b4ce5632be9b98efc740d1679152a970f7" alt="" />
+          <img className="rounded-t-md" src={detailJob.job_banner ? '/storage/' + detailJob.job_banner : 'https://placehold.co/940x336'} alt="" />
         </div>
         <div className="my-4">
           <p className="text-2xl font-medium">{detailJob?.job_title}</p>
@@ -49,7 +49,7 @@ export default function DetailJob({ detailJob, setShowDetail, goToJobApplication
 
         <div className="sticky bottom-0 p-3 bg-background border mt-auto">
           <Button className="w-full" onClick={() => goToJobApplication(detailJob?.apply_link)}>
-            Go Apply
+            Lamar Sekarang
           </Button>
         </div>
       </div>

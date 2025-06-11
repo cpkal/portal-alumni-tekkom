@@ -16,9 +16,11 @@ class ForumController extends Controller
     {
         $search = request('search');
         $tag = request('tag');
+        $tab = request('tab');
         // user who post question, taga, replies and user who replies
         $forum_questions = ForumQuestion::with([
             'user',
+            'user.alumni',
             'tags',
             'replies' => function ($query) {
                 $query->with('alumni')
@@ -35,8 +37,14 @@ class ForumController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('title', 'like', '%' . $search . '%')
                     ->orWhere('description', 'like', '%' . $search . '%');
-            })
-            ->paginate(4);
+            });
+
+        if($tab == 'my-questions') {
+            // filter by user id
+            $forum_questions = $forum_questions->where('user_id', Auth::id());
+        }
+
+        $forum_questions = $forum_questions->paginate(4);
 
         // get random forum tags
         $forum_tags = ForumTag::inRandomOrder()->take(10)->get();

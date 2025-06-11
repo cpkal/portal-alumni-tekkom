@@ -25,7 +25,7 @@ export default function DetailAlumniCard({ alumni, isPreview = false }: { alumni
         <CardContent >
           <div className="mx-auto flex flex-col items-center gap-2">
             <Avatar className="h-18 w-18">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={alumni.profile_image ? '/storage/' + alumni.profile_image : 'https://static.vecteezy.com/system/resources/thumbnails/024/983/914/small_2x/simple-user-default-icon-free-png.png'} alt="shadcn" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <p className="text-xl font-semibold">{alumni.fullname}</p>

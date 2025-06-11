@@ -27,7 +27,11 @@ export default function AskQuestion() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     post(route("forum.my-questions.store"), {
-      onFinish: () => reset("title", "question"),
+      onFinish: () => {
+        // force refresh the page
+        // reset();
+        window.location.reload();
+      }
     });
   }
 
@@ -35,10 +39,10 @@ export default function AskQuestion() {
     <Card className="bg-background mb-4">
       <CardContent>
         <div className="flex flex-row gap-3 items-center">
-          <Avatar className="h-12 w-12">
+          {/* <Avatar className="h-12 w-12">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          </Avatar> */}
           {isOpen ? (
             <form className="w-full" onSubmit={submit}>
               <div className="flex flex-col gap-4">

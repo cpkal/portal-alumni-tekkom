@@ -125,7 +125,6 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
       reason: removeReason === 'other' ? otherReason : removeReason,
     }, {
       preserveScroll: true,
-      preserveState: true,
       onSuccess: () => {
         // Remove post from forumQuestions state
         setForumQuestions((prev: any) => prev.filter((question: any) => question.id !== id));
@@ -216,18 +215,25 @@ export default function ForumPage({ forum_questions, forum_tags }: any) {
                     <div className="flex flex-row gap-3 items-start justify-between">
                       <div className="flex items-start gap-4">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src="https://github.com/shadcn.png" />
+                          <AvatarImage src={question.user.alumni.profile_image ? '/storage/' + question.user.alumni.profile_image : 'https://static.vecteezy.com/system/resources/thumbnails/024/983/914/small_2x/simple-user-default-icon-free-png.png'} alt="shadcn" />
                           <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
 
                         <div className="flex items-center">
                           <p>{question.user.name}</p>
-                          <p className="text-xs">&nbsp; asked on {question.created_at}</p>
+                          <p className="text-xs">&nbsp; ditanyakan pada {question.readable_created_at}</p>
                         </div>
                       </div>
 
                       <div>
-                        <Badge>#careerTalk</Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-primary text-primary-foreground">
+                            {question.status}
+                          </Badge>
+                          <Badge className="bg-secondary text-secondary-foreground">
+                            {question.replies.length} Replies
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   </CardHeader>

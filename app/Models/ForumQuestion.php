@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class ForumQuestion extends Model
 {
     protected $table = "forum_questions";
+
+    // custom attributes
+    protected $appends = [
+        'readable_created_at',
+    ];
 
     // has many tags
     public function tags()
@@ -24,5 +30,10 @@ class ForumQuestion extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getReadableCreatedAtAttribute()
+    {
+        return \Carbon\Carbon::parse($this->created_at)->translatedFormat('d F Y, H:i');
     }
 }

@@ -183,7 +183,7 @@ export default function NetworkingPage({ alumnis }: { alumnis: any }) {
                 <CardContent>
                   <div className="flex gap-2">
                     <Avatar className="h-18 w-18">
-                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarImage src={alumni.profile_image ? '/storage/' + alumni.profile_image : 'https://static.vecteezy.com/system/resources/thumbnails/024/983/914/small_2x/simple-user-default-icon-free-png.png'} alt="shadcn" />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div>

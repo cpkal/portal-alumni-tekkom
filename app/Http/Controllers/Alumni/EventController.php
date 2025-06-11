@@ -48,6 +48,8 @@ class EventController extends Controller
             $query->where('user_id', $user->id);
         }])->paginate(4);
 
+        // return $events;
+
         foreach ($events as $e) {
             // if participant for current user exists, mark as registered
             $e->is_registered = $e->participants->isNotEmpty();

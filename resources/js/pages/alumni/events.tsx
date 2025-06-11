@@ -20,7 +20,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function EventsPage({ events }: any): any {
+export default function EventsPage({ events, event}: any): any {
   const [isLoading, setLoading] = useState(false);
   const [loadingInfiniteScroll, setLoadingInfiniteScroll] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -31,6 +31,17 @@ export default function EventsPage({ events }: any): any {
 
   const [searchEventText, setSearchEventText] = useState('');
   const [eventType, setEventType] = useState('all');
+
+  useEffect(() => {
+    // if there is jobId in the URL, fetch the job details
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventId = urlParams.get('eventId');
+    if (eventId) {
+      setShowDetail(true);
+      // set detailjob
+      setDetailEvent(event);
+    }
+  }, []);
 
   // flash success
   useEffect(() => {
@@ -198,7 +209,7 @@ export default function EventsPage({ events }: any): any {
                 <Card className="bg-background pt-0 flex flex-col justify-between" key={a.id}>
                   {/* add background image to card */}
                   <div>
-                    <img className="rounded-t-md" src="https://www.wtcmanila.com.ph/wp-content/uploads/2022/08/rear-view-of-audience-in-the-conference-hall-or-se-2021-08-30-06-51-57-utc-1.jpg" />
+                    <img className="rounded-t-md" src={a.event_image ?? 'https://placehold.co/600x400'} />
                   </div>
                   <CardContent>
                     <div className="flex gap-2">
@@ -252,7 +263,7 @@ export default function EventsPage({ events }: any): any {
               <div className="sticky top-16 z-10">
                 <Card className="bg-background py-0 overflow-y-scroll h-[calc(100vh-4rem)]">
                   <div>
-                    <img className="rounded-t-md" src="https://www.wtcmanila.com.ph/wp-content/uploads/2022/08/rear-view-of-audience-in-the-conference-hall-or-se-2021-08-30-06-51-57-utc-1.jpg" />
+                    <img className="rounded-t-md" src={detailEvent.event_image ?? 'https://placehold.co/600x400'} />
                   </div>
                   <CardContent>
                     <div className="mx-auto flex flex-col items-center gap-2">

@@ -33,10 +33,7 @@ export default function AddReply({ forumId, ...props }: any) {
     <Card className="bg-background" {...props}>
       <CardContent>
         <div className="flex flex-row gap-3 items-center">
-          <Avatar className="h-12 w-12">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+        
           {isOpen ? (
             <form className="w-full" onSubmit={submit}>
               <div className="flex flex-col gap-4">

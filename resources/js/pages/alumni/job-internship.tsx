@@ -30,7 +30,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export default function JobInternshipPage({ job_vacancies }: any): any {
+export default function JobInternshipPage({ job_vacancies, job_vacancy }: any): any {
   const [isLoading, setLoading] = useState(false);
   const [loadingInfiniteScroll, setLoadingInfiniteScroll] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -44,6 +44,18 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
   const [employmentType, setEmploymentType] = useState('all');
   const [salaryStart, setSalaryStart]: any = useState(null);
   const [salaryEnd, setSalaryEnd]: any = useState(null);
+
+  useEffect(() => {
+    // if there is jobId in the URL, fetch the job details
+    const urlParams = new URLSearchParams(window.location.search);
+    const jobId = urlParams.get('jobId');
+    if (jobId) {
+      setShowDetail(true);
+      // set detailjob
+      setDetailJob(job_vacancy);
+    }
+  }, []);
+
 
   const getDetailJob = (jobVacancy: any) => {
     setShowDetail(true);
@@ -255,7 +267,8 @@ export default function JobInternshipPage({ job_vacancies }: any): any {
                     </div>
                     <div>
                       <p>Kualifikasi</p>
-                      <p>{jobVacancy.qualifications}</p>
+                      {/* render html */}
+                      <div className="text-sm" dangerouslySetInnerHTML={{ __html: jobVacancy.qualifications }} />
                     </div>
                   </div>
                 </CardContent>

@@ -81,6 +81,11 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
+        // format event_time to H:i if provided
+        if ($request->has('event_time') && $request->event_time) {
+            $request->merge(['event_time' => date('H:i', strtotime($request->event_time))]);
+        }
+
         $request->validate([
             'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'event_name' => 'required',

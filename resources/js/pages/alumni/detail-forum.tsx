@@ -71,7 +71,7 @@ export default function DetailForumPage({ forum_question, forum_tags }: any) {
                 <h2 className="text-2xl">{forum_question.title}</h2>
                 <div className="flex gap-3 text-sm items-center mt-2">
                   <p>Diposting oleh {forum_question.user.name}</p>
-                  <p>{forum_question.created_at}</p>
+                  <p>{forum_question.readable_created_at}</p>
                   <p className="flex items-center gap-1"><MessageCircleMore />  {forum_question.replies.length}</p>
                   <p className="flex items-center gap-1"><Eye />  {forum_question.views}</p>
                 </div>

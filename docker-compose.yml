@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tekkom-alumni-app
+    ports:
+      - "8088:8088"  # HTTP (OpenLiteSpeed)
+      - "443:443"    # HTTPS
+      - "7080:7080"  # Admin panel
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql 
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_URL: https://localhost
+    memory_limit: 1024M
+    cpus: 1.0
+
+  mysql:
+    image: mysql:5.7
+    container_name: tekkom-alumni-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: alumni
+      MYSQL_USER: alumni
+      MYSQL_PASSWORD: alumni123
+    ports:
+      - "3306:3306"

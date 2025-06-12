@@ -10,7 +10,7 @@
         <!-- APA ITU TEKNIK KOMPUTER -->
         <div class="row align-items-center mb-5">
             <div class="col-md-4">
-                <img src="/images/tentang-1.jpg" alt="Apa itu Teknik Komputer" class="img-fluid rounded shadow">
+                <img src="{{ asset('images/tentang1.png') }}" alt="Apa itu Teknik Komputer" class="img-fluid rounded shadow">
             </div>
             <div class="col-md-8">
                 <h5 class="fw-bold">APA ITU TEKNIK KOMPUTER?</h5>
@@ -23,7 +23,7 @@
         <!-- TUJUAN -->
         <div class="row align-items-center mb-5">
             <div class="col-md-4 order-md-2">
-                <img src="/images/tentang-2.jpg" alt="Tujuan" class="img-fluid rounded shadow">
+                <img src="{{ asset('images/tentang2.png') }}" alt="Tujuan" class="img-fluid rounded shadow">
             </div>
             <div class="col-md-8 order-md-1">
                 <h5 class="fw-bold">TUJUAN</h5>
@@ -40,7 +40,7 @@
         <!-- SASARAN -->
         <div class="row align-items-center">
             <div class="col-md-4">
-                <img src="/images/tentang-3.jpg" alt="Sasaran" class="img-fluid rounded shadow">
+                <img src="{{ asset('images/tentang3.png') }}" alt="Sasaran" class="img-fluid rounded shadow">
             </div>
             <div class="col-md-8">
                 <h5 class="fw-bold">SASARAN</h5>

@@ -67,10 +67,11 @@ class BeritaController extends Controller
         ]);
 
        $slug = Str::slug($request->title);
+       $imagePath = null;
 
         if ($request->hasFile('image')) {
+            // store image to public/news_images
             $imagePath = $request->file('image')->store('news_images', 'public');
-            $request->merge(['image' => $imagePath]);
         }
 
         $beritas = News::findOrFail($id);
@@ -78,6 +79,7 @@ class BeritaController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'author' => $request->author,
+            'image' => $imagePath ? $imagePath : $beritas->image, // keep old image if no new image is uploaded
             'slug' => $slug ?? $beritas->slug,
             'is_published' => $request->is_published == 'on' ? true : false,
         ]);

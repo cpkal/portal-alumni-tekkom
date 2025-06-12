@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
 
         if(Auth::user()->role === 'admin') {
-            return Inertia::location(route('admin.dashboard'));
+            return Inertia::render('redir');
         }
 
         // profile completeness

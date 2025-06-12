@@ -44,12 +44,14 @@ class HomeController extends Controller
             '#FF9F40'
         ];
 
-        $latestNews = \App\Models\News::latest()->take(3)->get();
-        $moreNews = \App\Models\News::whereNotIn('id', $latestNews->pluck('id'))->inRandomOrder()->take(4)->get();
+        $headlineNews = \App\Models\News::latest()->where('is_published', true)->first();
+        // get 3 lateset news excluding the headline news
+        $latestNews = \App\Models\News::latest()->where('id', '!=', $headlineNews->id)->where('is_published', true)->take(3)->get();
+        $moreNews = \App\Models\News::whereNotIn('id', $latestNews->pluck('id'))->where('is_published', true)->inRandomOrder()->take(4)->get();
         $latestPublicEvents = \App\Models\Event::latest()->take(3)->where('public_can_register', true)->get();
         $latestInternship = \App\Models\JobVacancy::latest()->take(4)->where('employment_type', 'internship')->get();
         $latestJobVacancies = \App\Models\JobVacancy::latest()->take(4)->where('employment_type', '!=', 'internship')->get();
-        $alumni = \App\Models\User::where('role', 'alumni')->inRandomOrder()->take(3)->get();
+        $alumni = \App\Models\Alumni::inRandomOrder()->take(3)->get();
 
         
         return view('publik.dashboard', [
@@ -57,6 +59,7 @@ class HomeController extends Controller
             'latestPublicEvents' => $latestPublicEvents,
             'latestJobVacancies' => $latestJobVacancies,
             'latestInternship' => $latestInternship,
+            'headlineNews' => $headlineNews,
             'moreNews' => $moreNews,
             'alumni' => $alumni,
             'alumniByYear' => [

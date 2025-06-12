@@ -344,16 +344,17 @@
                 @foreach ($alumni as $alumnus)
                     <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
                         <div class="alumni-card">
-                            <img src="/images/profile-placeholder.png" class="alumni-photo" alt="Foto Alumni">
-                            <h6 class="fw-bold text-dark">{{ $alumnus->fullname }}</h6>
-                            <p class="text-muted small mb-3">Lulusan Tahun {{ $alumnus->graduation_year }}</p>
-                            <a href="#" class="btn btn-danger btn-sm">Lihat Profile</a>
+                            <img src={{ asset('storage/' . $alumnus->profile_image) }} class="alumni-photo"
+                                alt="Foto Alumni">
+                            <h5 class="fw-bold mb-2 text-black">{{ $alumnus->fullname }}</h5>
+                            <p class="text-black">{{ $alumnus->graduation_year }}</p>
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            <a href={{ route('direktori.index') }} class="text-white mt-4 d-inline-block text-decoration-none fw-semibold fs-5">
+            <a href={{ route('direktori.index') }}
+                class="text-white mt-4 d-inline-block text-decoration-none fw-semibold fs-5">
                 <em>LIHAT SEMUA ALUMNI &gt;&gt;</em>
             </a>
         </div>
@@ -374,7 +375,7 @@
                 <div class="col-lg-6 mb-4">
                     <div class="card border-0 shadow-sm h-100 news-card-main">
                         <div class="position-relative overflow-hidden" style="height: 300px;">
-                            <img src="/images/news-main.jpg" class="card-img-top h-100 w-100"
+                            <img src="{{ asset('storage/'.$headlineNews->image) }}" class="card-img-top h-100 w-100"
                                 style="object-fit: cover; transition: transform 0.3s ease;" alt="Berita Utama">
                             <div class="position-absolute top-0 start-0 m-3">
                                 <span class="badge bg-danger px-3 py-2">HEADLINE</span>
@@ -386,15 +387,12 @@
                                 <small class="text-muted">15 Desember 2024</small>
                                 <span class="mx-2">•</span>
                                 <i class="bi bi-person text-muted me-2"></i>
-                                <small class="text-muted">Admin IATK</small>
+                                <small class="text-muted">{{ $headlineNews->author }}</small>
                             </div>
-                            <h4 class="card-title fw-bold mb-3">Alumni Teknik Komputer Raih Penghargaan Startup Terbaik
-                                2024</h4>
-                            <p class="card-text mb-3">Feri Ilham, alumni angkatan 2020, berhasil meraih penghargaan Startup
-                                Terbaik kategori Technology Innovation dalam ajang Indonesia Digital Awards 2024. Startup
-                                yang didirikannya, TechSolve, telah membantu lebih dari 500 UMKM go digital...</p>
+                            <h4 class="card-title fw-bold mb-3">{{ $headlineNews->title }}</h4>
+                            <p class="card-text mb-3">{!! $headlineNews->content !!}</p>
                             <div class="mt-auto">
-                                <a href="#" class="btn btn-primary-custom px-4">Baca Selengkapnya</a>
+                                {{-- <a href="{{ route('publik.berita_detail', $headlineNews->slug) }}" class="btn btn-primary-custom px-4">Baca Selengkapnya</a> --}}
                             </div>
                         </div>
                     </div>
@@ -404,12 +402,11 @@
                 <div class="col-lg-6">
                     <div class="row">
                         @foreach ($latestNews as $news)
-                            <div class="col-12 mb-3">
+                            <div class="col-12 mb-3 mt-3">
                                 <div class="card border-0 shadow-sm news-card-side">
                                     <div class="row g-0">
                                         <div class="col-4">
-                                            <div class="position-relative overflow-hidden h-100"
-                                                style="min-height: 120px;">
+                                            <div class="position-relative overflow-hidden h-100" style="min-height: 120px;">
                                                 <img src="{{ asset('storage/' . $news->image) }}"
                                                     class="img-fluid h-100 w-100" style="object-fit: cover;"
                                                     alt="Berita 1">
@@ -441,7 +438,7 @@
             </div>
 
             <!-- Berita Lainnya -->
-            <div class="row mt-4">
+            {{-- <div class="row mt-4">
                 <div class="col-12">
                     <h4 class="fw-bold mb-4">Berita Lainnya</h4>
                 </div>
@@ -475,15 +472,16 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
+            </div> --}}
             <!-- Tombol Lihat Semua -->
-            <div class="text-center mt-4">
+            {{-- <div class="text-center mt-4">
                 <a href="#" class="btn btn-outline-primary px-5 py-2">
                     Lihat Semua Berita
                 </a>
-            </div>
+            </div> --}}
         </div>
     </div>
+    
 
     <!-- Event Section -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
@@ -578,9 +576,9 @@
                 </div>
             @endforeach
         </div>
-        <div class="text-center">
+        {{-- <div class="text-center">
             <a href="#" class="btn btn-outline-primary px-4">Lihat Semua Lowongan</a>
-        </div>
+        </div> --}}
     </div>
 
     <!-- Lowongan Magang Terbaru -->
@@ -633,9 +631,9 @@
             @endforeach
         </div>
 
-        <div class="text-center">
+        {{-- <div class="text-center">
             <a href="#" class="btn btn-outline-danger px-4">Lihat Semua Magang</a>
-        </div>
+        </div> --}}
     </div>
 
     <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel"

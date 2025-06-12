@@ -470,11 +470,11 @@
             data: {
                 labels: studiLanjutLabels,
                 datasets: [{
-                    label: 'Status Alumni',
+                    label: 'Kesesuaian Studi Lanjut',
                     data: studiLanjutData,
-                    backgroundColor: ['#010169', '#FF0000', '#28a745', '#ffc107'],
-                    borderWidth: 2,
-                    borderColor: '#fff'
+                    backgroundColor: '#010169',
+                    borderColor: '#010169',
+                    borderWidth: 1
                 }]
             },
             options: {
